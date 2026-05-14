@@ -36,12 +36,12 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="admin-layout min-h-screen">
+    <div className="admin-layout min-h-screen pb-20 md:pb-0">
       <Sidebar collapsed={collapsed} onCollapse={setCollapsed} />
       <main
         className={`sidebar-transition min-h-screen ${
           collapsed ? "ml-[72px]" : "ml-[260px]"
-        }`}
+        } max-md:ml-0`}
       >
         {children}
       </main>

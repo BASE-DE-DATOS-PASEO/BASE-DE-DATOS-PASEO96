@@ -76,9 +76,9 @@ function PlanCard({ plan }: { plan: Plan }) {
   const isOro = plan.variant === "oro";
 
   const cardClasses = [
-    "relative flex flex-col rounded-2xl border p-8 shadow-lg transition-all duration-300",
+    "relative flex flex-col rounded-2xl border p-5 shadow-lg transition-all duration-300 sm:p-6 lg:p-8",
     isPlata
-      ? "scale-[1.04] border-blue-600 bg-white shadow-2xl shadow-blue-100 z-10"
+      ? "border-blue-600 bg-white shadow-2xl shadow-blue-100 z-10 md:scale-[1.04]"
       : "",
     isOro ? "border-amber-400 bg-gradient-to-b from-amber-50/60 to-white" : "",
     !isPlata && !isOro ? "border-gray-200 bg-white" : "",
@@ -119,7 +119,7 @@ function PlanCard({ plan }: { plan: Plan }) {
         <div className="mt-3 flex items-baseline gap-1">
           <span
             className={[
-              "text-4xl font-extrabold tracking-tight",
+              "text-3xl font-extrabold tracking-tight sm:text-4xl",
               isOro ? "text-amber-600" : "",
               isPlata ? "text-blue-600" : "",
               !isPlata && !isOro ? "text-gray-900" : "",
@@ -178,8 +178,8 @@ export default function PlanesPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Navbar */}
       <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="text-2xl font-extrabold tracking-tight text-gray-900">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
+          <Link href="/" className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl">
             PASEO 96
           </Link>
           <Link
@@ -192,19 +192,19 @@ export default function PlanesPage() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center">
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
+      <section className="mx-auto max-w-4xl px-4 pt-14 pb-12 text-center sm:px-6 sm:pt-20 sm:pb-16">
+        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
           Elegi el plan ideal para tu puesto
         </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-lg text-gray-500">
+        <p className="mx-auto mt-5 max-w-2xl text-base text-gray-500 sm:text-lg">
           Publica tus productos, llega a mas clientes y hace crecer tu negocio
           en Paseo 96
         </p>
       </section>
 
       {/* Plan cards */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
-        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-3">
+      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-24">
+        <div className="grid grid-cols-1 items-start gap-5 md:grid-cols-3 lg:gap-8">
           {plans.map((plan) => (
             <PlanCard key={plan.name} plan={plan} />
           ))}

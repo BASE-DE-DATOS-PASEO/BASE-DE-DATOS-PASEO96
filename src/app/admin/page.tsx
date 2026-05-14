@@ -64,10 +64,10 @@ export default function AdminDashboard() {
   return (
     <>
       <Header title="Inicio" />
-      <div className="p-6 lg:p-8 max-w-5xl">
+      <div className="max-w-5xl p-4 sm:p-6 lg:p-8">
         {/* Saludo */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-foreground">Hola, Jere 👋</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Hola, Jere 👋</h2>
           <p className="text-muted text-sm mt-1">
             Esto es lo que necesitás ver hoy
           </p>
@@ -78,7 +78,7 @@ export default function AdminDashboard() {
           {/* Solicitudes pendientes */}
           <Link
             href="/admin/solicitudes"
-            className="btn-press flex items-center gap-4 p-5 rounded-2xl bg-white border border-gray-100 hover:border-amber-300 hover:shadow-lg hover:shadow-amber-100/40 hover:-translate-y-0.5 transition-all duration-300 group"
+            className="btn-press flex flex-col items-start gap-4 rounded-2xl bg-white p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-lg hover:shadow-amber-100/40 sm:flex-row sm:items-center sm:p-5 border border-gray-100 group"
           >
             <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
               <ClipboardCheck size={22} className="text-amber-500" />
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
                 Puesteros que quieren sumarse. Revisá el comprobante y aprobá.
               </p>
             </div>
-            <div className="flex items-center gap-1 text-sm font-semibold text-amber-600 group-hover:translate-x-1 transition-transform">
+            <div className="flex items-center gap-1 text-sm font-semibold text-amber-600 transition-transform group-hover:translate-x-1 sm:ml-auto">
               Revisar
               <ArrowRight size={16} />
             </div>
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
           {/* Cobros pendientes */}
           <Link
             href="/admin/cobros"
-            className="btn-press flex items-center gap-4 p-5 rounded-2xl bg-white border border-gray-100 hover:border-red-300 hover:shadow-lg hover:shadow-red-100/40 hover:-translate-y-0.5 transition-all duration-300 group"
+            className="btn-press flex flex-col items-start gap-4 rounded-2xl bg-white p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-red-300 hover:shadow-lg hover:shadow-red-100/40 sm:flex-row sm:items-center sm:p-5 border border-gray-100 group"
           >
             <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
               <AlertCircle size={22} className="text-red-500" />
@@ -116,14 +116,14 @@ export default function AdminDashboard() {
                 Mandales un WhatsApp o marcalos como pagados.
               </p>
             </div>
-            <div className="flex items-center gap-1 text-sm font-semibold text-red-600 group-hover:translate-x-1 transition-transform">
+            <div className="flex items-center gap-1 text-sm font-semibold text-red-600 transition-transform group-hover:translate-x-1 sm:ml-auto">
               Ver cobros
               <ArrowRight size={16} />
             </div>
           </Link>
 
           {/* Total del mes */}
-          <div className="flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 hover:shadow-lg hover:shadow-emerald-100/40 transition-shadow duration-300">
+          <div className="flex flex-col items-start gap-4 rounded-2xl border border-emerald-100 bg-gradient-to-r from-emerald-50 to-teal-50 p-4 transition-shadow duration-300 hover:shadow-lg hover:shadow-emerald-100/40 sm:flex-row sm:items-center sm:p-5">
             <div className="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/20">
               <DollarSign size={22} className="text-white" />
             </div>
@@ -133,7 +133,7 @@ export default function AdminDashboard() {
                 <Counter value={ingresosDelMes} duration={1400} prefix="$ " />
               </p>
             </div>
-            <div className="flex items-center gap-1 text-sm text-emerald-700 shrink-0">
+            <div className="flex items-center gap-1 text-sm text-emerald-700 shrink-0 sm:ml-auto">
               <TrendingUp size={14} />
               <span className="font-semibold">
                 <Counter value={puestosActivos.length} duration={1000} /> puesteros activos
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* ── Mini resumen ── */}
-        <div className="grid grid-cols-3 gap-3 mb-10">
+        <div className="grid grid-cols-1 gap-3 mb-10 sm:grid-cols-3">
           <div className="p-4 rounded-xl bg-white border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all duration-300">
             <p className="text-xs text-muted uppercase tracking-wider font-medium">Puestos activos</p>
             <p className="text-2xl font-bold text-foreground mt-1">

@@ -64,7 +64,7 @@ export default function SolicitudesPage() {
   return (
     <>
       <Header title="Solicitudes de alta" />
-      <div className="p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <div className="stat-card p-5 relative z-10">
@@ -110,7 +110,7 @@ export default function SolicitudesPage() {
         </h2>
 
         {pendientes.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center">
+          <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center sm:p-12">
             <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-3">
               <Check size={24} className="text-emerald-500" />
             </div>
@@ -136,9 +136,9 @@ export default function SolicitudesPage() {
                 key={s.id}
                 className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
                   {/* Avatar + datos principales */}
-                  <div className="flex items-start gap-4 flex-1">
+                  <div className="flex flex-1 items-start gap-3 sm:gap-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold shrink-0">
                       {s.nombreComercial.slice(0, 2).toUpperCase()}
                     </div>
@@ -186,7 +186,7 @@ export default function SolicitudesPage() {
 
                   {/* Monto + acciones */}
                   <div className="flex items-center gap-3 lg:flex-col lg:items-end">
-                    <div className="text-right">
+                    <div className="text-left sm:text-right">
                       <p className="text-xs text-muted">
                         {s.metodoPago === "efectivo" ? "Efectivo" : "Transferencia (con IVA)"}
                       </p>
@@ -209,10 +209,10 @@ export default function SolicitudesPage() {
                 )}
 
                 {/* Botones de acción */}
-                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100">
+                <div className="mt-4 flex flex-col gap-2 border-t border-gray-100 pt-4 sm:flex-row sm:items-center">
                   <button
                     onClick={() => setDetalle(s)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="flex items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
                   >
                     <FileText size={14} />
                     Ver detalle + comprobante
@@ -220,14 +220,14 @@ export default function SolicitudesPage() {
                   <button
                     onClick={() => aprobar(s.id)}
                     disabled={requiereRevision}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600 transition-colors ml-auto disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-40 sm:ml-auto"
                   >
                     <Check size={14} />
                     Aprobar
                   </button>
                   <button
                     onClick={() => rechazar(s.id)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-red-200 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors"
+                    className="flex items-center justify-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
                   >
                     <X size={14} />
                     Rechazar

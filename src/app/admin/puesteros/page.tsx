@@ -50,22 +50,20 @@ export default function PuesterosPage() {
   return (
     <>
       <Header title="Puesteros" />
-      <div className="p-8 max-w-6xl">
+      <div className="max-w-6xl p-4 sm:p-6 lg:p-8">
         {/* Resumen simple */}
-        <div className="flex items-center gap-6 mb-8">
-          <div>
+        <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="rounded-2xl border border-gray-100 bg-white p-4">
             <p className="text-3xl font-bold text-foreground">{puesteros.length}</p>
             <p className="text-sm text-muted">puesteros totales</p>
           </div>
-          <div className="h-10 w-px bg-border" />
-          <div>
+          <div className="rounded-2xl border border-gray-100 bg-white p-4">
             <p className="text-3xl font-bold text-emerald-500">
               {puesteros.filter((p) => p.estadoActividad === "activo").length}
             </p>
             <p className="text-sm text-muted">activos</p>
           </div>
-          <div className="h-10 w-px bg-border" />
-          <div>
+          <div className="rounded-2xl border border-gray-100 bg-white p-4">
             <p className="text-3xl font-bold text-amber-500">
               {puesteros.filter((p) => p.estadoPago === "pendiente").length}
             </p>
@@ -74,8 +72,8 @@ export default function PuesterosPage() {
         </div>
 
         {/* Buscador + botón */}
-        <div className="flex items-center gap-3 mb-5">
-          <div className="relative flex-1 max-w-md">
+        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
             <input
               type="text"
@@ -87,14 +85,14 @@ export default function PuesterosPage() {
           </div>
           <button
             onClick={openNew}
-            className="flex items-center gap-2 bg-accent hover:bg-accent-hover text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
           >
             <Plus size={16} /> Nuevo puestero
           </button>
         </div>
 
         {/* Tabla simple */}
-        <div className="rounded-2xl bg-white border border-gray-100 overflow-hidden">
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white">
           <div className="hidden sm:grid grid-cols-[1.5fr_1fr_1fr_auto] gap-4 px-5 py-3 text-xs font-semibold text-muted uppercase tracking-wider border-b border-gray-100 bg-gray-50">
             <div>Local</div>
             <div>Plan</div>
@@ -109,7 +107,7 @@ export default function PuesterosPage() {
               return (
                 <div
                   key={p.id}
-                  className="grid grid-cols-1 sm:grid-cols-[1.5fr_1fr_1fr_auto] gap-4 px-5 py-4 items-center hover:bg-gray-50/50 transition-colors"
+                  className="grid grid-cols-1 gap-3 px-4 py-4 transition-colors hover:bg-gray-50/50 sm:grid-cols-[1.5fr_1fr_1fr_auto] sm:items-center sm:gap-4 sm:px-5"
                 >
                   {/* Local */}
                   <div className="flex items-center gap-3 min-w-0">
@@ -281,10 +279,10 @@ function PuesteroForm({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
-        <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 rounded-t-2xl flex items-center justify-between z-10">
+      <div className="relative mx-0 max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-2xl bg-white shadow-2xl sm:mx-4 sm:rounded-2xl">
+        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-gray-100 bg-white px-4 py-4 sm:px-6">
           <h3 className="text-lg font-semibold text-foreground">
             {isEditing ? `Editar: ${puestero.nombreComercial}` : "Nuevo puestero"}
           </h3>
@@ -293,12 +291,12 @@ function PuesteroForm({
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="space-y-6 p-4 sm:p-6">
           <div>
             <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
               <Store size={16} className="text-accent" /> Datos del puesto
             </h4>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="text-xs font-medium text-muted block mb-1.5">Responsable *</label>
                 <input type="text" value={nombreResponsable} onChange={(e) => setNombreResponsable(e.target.value)} placeholder="Ej: Carlos Méndez" className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-lg text-foreground placeholder:text-muted" />
@@ -314,7 +312,7 @@ function PuesteroForm({
             <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
               <MapPin size={16} className="text-accent" /> Ubicación
             </h4>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="text-xs font-medium text-muted block mb-1.5">Fila *</label>
                 <input type="text" value={fila} onChange={(e) => setFila(e.target.value)} placeholder="Ej: A" className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-lg text-foreground placeholder:text-muted" />
@@ -330,7 +328,7 @@ function PuesteroForm({
             <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
               <Phone size={16} className="text-accent" /> Contacto
             </h4>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="text-xs font-medium text-muted block mb-1.5">WhatsApp *</label>
                 <input type="text" value={telefono} onChange={(e) => setTelefono(e.target.value)} placeholder="5491155001234" className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-lg text-foreground placeholder:text-muted" />
@@ -396,10 +394,10 @@ function PuesteroForm({
           </div>
         </div>
 
-        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 rounded-b-2xl flex items-center justify-between gap-3">
+        <div className="sticky bottom-0 flex flex-col gap-3 rounded-b-2xl border-t border-gray-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           {isEditing && puestero ? (
             confirmDelete ? (
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs text-red-600 font-medium">¿Seguro?</span>
                 <button
                   onClick={() => onDelete(puestero.id)}
@@ -425,7 +423,7 @@ function PuesteroForm({
             )
           ) : <span />}
 
-          <div className="flex items-center gap-3">
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
             <button onClick={onClose} className="px-4 py-2.5 text-sm font-medium text-muted border border-gray-200 rounded-lg hover:bg-gray-50">
               Cancelar
             </button>

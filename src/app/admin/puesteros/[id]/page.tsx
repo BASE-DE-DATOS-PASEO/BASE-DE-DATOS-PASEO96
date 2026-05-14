@@ -40,7 +40,7 @@ export default function PuesteroDetalle() {
     return (
       <>
         <Header title="Puesto no encontrado" />
-        <div className="p-8 text-center text-muted">
+        <div className="p-4 text-center text-muted sm:p-8">
           <p>Este puesto no existe.</p>
           <Link href="/admin/puesteros" className="text-accent mt-4 inline-block">
             Volver al listado
@@ -55,7 +55,7 @@ export default function PuesteroDetalle() {
   return (
     <>
       <Header title={puesto.nombreComercial} />
-      <div className="p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         {/* Back button */}
         <button
           onClick={() => router.push("/admin/puesteros")}
@@ -65,18 +65,18 @@ export default function PuesteroDetalle() {
         </button>
 
         {/* Header card */}
-        <div className="bg-white border border-gray-100 rounded-xl p-6 mb-6 shadow-sm">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-4">
+        <div className="mb-6 rounded-xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-start gap-3 sm:items-center sm:gap-4">
               <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center">
                 <Store size={28} className="text-accent" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-foreground">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground">
                   {puesto.nombreComercial}
                 </h2>
                 <p className="text-muted text-sm">{puesto.nombreResponsable}</p>
-                <div className="flex items-center gap-2 mt-2">
+                <div className="mt-2 flex flex-wrap items-center gap-2">
                   <span
                     className={clsx(
                       "flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full",
@@ -122,7 +122,7 @@ export default function PuesteroDetalle() {
             </div>
             <button
               onClick={() => setShowEdit(true)}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-accent hover:bg-accent-hover text-white rounded-lg transition-colors"
+              className="flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
             >
               <Edit2 size={14} /> Editar puesto
             </button>
@@ -130,7 +130,7 @@ export default function PuesteroDetalle() {
         </div>
 
         {/* Info grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 gap-4 mb-6 lg:grid-cols-3 lg:gap-6">
           {/* Datos */}
           <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
             <h3 className="font-semibold text-foreground mb-4">Información</h3>
@@ -387,18 +387,18 @@ function EditPuesteroModal({
   const labelClass = "text-xs font-medium text-gray-500 block mb-1.5";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto">
+      <div className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-2xl bg-white shadow-2xl sm:rounded-2xl">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between z-10 rounded-t-2xl">
+        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-gray-100 bg-white px-4 py-4 sm:px-6">
           <h3 className="text-lg font-semibold text-gray-900">Editar puesto</h3>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors">
             <X size={18} />
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="space-y-5 p-4 sm:p-6">
           {/* Nombres */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
@@ -503,7 +503,7 @@ function EditPuesteroModal({
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex items-center justify-end gap-3 rounded-b-2xl">
+        <div className="sticky bottom-0 flex flex-col gap-2 rounded-b-2xl border-t border-gray-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-end sm:gap-3 sm:px-6">
           <button onClick={onClose} className="px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
             Cancelar
           </button>

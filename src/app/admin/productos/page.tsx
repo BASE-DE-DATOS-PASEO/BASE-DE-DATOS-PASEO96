@@ -50,10 +50,10 @@ export default function ProductosPage() {
   return (
     <>
       <Header title="Productos" />
-      <div className="p-6 lg:p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-1 gap-3 mb-8 sm:grid-cols-2 xl:grid-cols-4">
           {[
             { label: "Total cargados", value: productos.length, color: "text-foreground" },
             { label: "Visibles en la web", value: visibles, color: "text-accent" },
@@ -62,14 +62,14 @@ export default function ProductosPage() {
           ].map((s) => (
             <div key={s.label} className="stat-card p-5 relative z-10">
               <p className="text-xs text-muted font-medium uppercase tracking-wider">{s.label}</p>
-              <p className={`text-3xl font-bold mt-2 ${s.color}`}>{s.value}</p>
+              <p className={`text-2xl sm:text-3xl font-bold mt-2 ${s.color}`}>{s.value}</p>
             </div>
           ))}
         </div>
 
         {/* Toolbar */}
-        <div className="flex items-center gap-3 mb-6 flex-wrap">
-          <div className="relative flex-1 min-w-[200px] max-w-sm">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="relative flex-1 sm:min-w-[200px] sm:max-w-sm">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
             <input
               type="text"
@@ -82,7 +82,7 @@ export default function ProductosPage() {
           <select
             value={filtroCategoria}
             onChange={(e) => setFiltroCategoria(e.target.value)}
-            className="text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20"
+            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 sm:w-auto"
           >
             <option value="todas">Todas las categorías</option>
             {categorias.map((cat) => (
@@ -91,7 +91,7 @@ export default function ProductosPage() {
           </select>
           <button
             onClick={openNew}
-            className="ml-auto flex items-center gap-2 bg-accent hover:bg-accent-hover text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-sm"
+            className="flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent-hover sm:ml-auto"
           >
             <Plus size={16} /> Nuevo producto
           </button>
@@ -99,7 +99,7 @@ export default function ProductosPage() {
 
         {/* Grid */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {filtered.map((prod) => {
               const puesto = puesteros.find((p) => p.id === prod.puesteroId);
               const isVisible = prod.visible && puesto?.estadoActividad === "activo";
@@ -261,12 +261,12 @@ function ProductoForm({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
+      <div className="relative mx-0 max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-2xl bg-white shadow-2xl sm:mx-4 sm:rounded-2xl">
 
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 rounded-t-2xl flex items-center justify-between z-10">
+        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-gray-100 bg-white px-4 py-4 sm:px-6">
           <h3 className="text-lg font-semibold text-foreground">
             {isEditing ? "Editar producto" : "Nuevo producto"}
           </h3>
@@ -275,7 +275,7 @@ function ProductoForm({
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="space-y-5 p-4 sm:p-6">
 
           {/* Puesto */}
           <div>
@@ -316,7 +316,7 @@ function ProductoForm({
           />
 
           {/* Categoría + Subcategoría */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="text-xs font-medium text-muted block mb-1.5">Categoría *</label>
               <select
@@ -346,7 +346,7 @@ function ProductoForm({
           </div>
 
           {/* Precios */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[
               { label: "Precio minorista *", value: precioMinorista, set: setPrecioMinorista },
               { label: "Precio mayorista", value: precioMayorista, set: setPrecioMayorista },
@@ -381,7 +381,7 @@ function ProductoForm({
           </div>
 
           {/* Talles */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="text-xs font-medium text-muted block mb-1.5">Talle desde</label>
               <input
@@ -439,10 +439,10 @@ function ProductoForm({
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 rounded-b-2xl flex items-center justify-between gap-3">
+        <div className="sticky bottom-0 flex flex-col gap-3 rounded-b-2xl border-t border-gray-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           {isEditing ? (
             confirmDelete ? (
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs text-red-600 font-medium">¿Seguro?</span>
                 <button
                   onClick={() => { deleteProducto(producto.id); onClose(); }}
@@ -467,7 +467,7 @@ function ProductoForm({
             )
           ) : <span />}
 
-          <div className="flex items-center gap-3">
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
             <button
               onClick={onClose}
               className="px-4 py-2.5 text-sm font-medium text-muted border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"

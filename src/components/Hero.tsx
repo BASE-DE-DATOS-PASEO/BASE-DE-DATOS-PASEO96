@@ -83,11 +83,7 @@ export default function Hero({
 
   return (
     <section className="relative w-full overflow-hidden bg-white pt-16 sm:pt-18">
-      {/* Soft background blobs */}
-      <div className="absolute -left-48 -top-24 w-[600px] h-[600px] rounded-full bg-blue-100/60 blur-[100px] pointer-events-none" />
-      <div className="absolute right-0 bottom-0 w-[500px] h-[500px] rounded-full bg-blue-50/70 blur-[100px] pointer-events-none" />
-
-      <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div className="relative mx-auto grid max-w-[1280px] items-center gap-8 px-4 py-8 sm:px-6 sm:py-10 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-14">
 
         {/* ── Left column ── */}
         <div className="flex flex-col">
@@ -105,19 +101,19 @@ export default function Hero({
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-4">
+          <h1 className="mb-4 text-3xl font-extrabold leading-[1.08] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
             Todo lo que buscás,
             <br />
             <span className="text-blue-600">está en Paseo 96</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-gray-500 text-lg leading-relaxed mb-8">
+          <p className="mb-6 max-w-2xl text-base leading-relaxed text-gray-500 sm:mb-8 sm:text-lg">
             Explorá productos únicos, contactá directamente con vendedores por WhatsApp y más.
           </p>
 
           {/* Search bar */}
-          <div className="rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center px-4 py-3.5 mb-4 focus-within:border-blue-400 focus-within:shadow-md transition-all duration-300">
+          <div className="mb-4 flex items-center rounded-2xl border border-gray-200 bg-white px-3 py-3 shadow-sm transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-md sm:px-4 sm:py-3.5">
             <Search className="w-5 h-5 text-gray-400 shrink-0" />
             <input
               ref={searchInputRef}
@@ -138,10 +134,10 @@ export default function Hero({
           </div>
 
           {/* Category chips — dinámicos: se generan desde el store */}
-          <div className="flex flex-wrap items-center gap-2 mb-8">
+          <div className="-mx-4 mb-6 flex items-center gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:mb-8 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
             <button
               onClick={() => onCategorySelect(null)}
-              className={`btn-press flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`btn-press flex shrink-0 items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                 !activeCategoryId && !busqueda
                   ? "bg-blue-600 text-white shadow-sm"
                   : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600"
@@ -157,7 +153,7 @@ export default function Hero({
                 <button
                   key={cat.id}
                   onClick={() => onCategorySelect(catSlug)}
-                  className={`btn-press flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  className={`btn-press flex shrink-0 items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     isActive
                       ? "bg-blue-600 text-white shadow-sm"
                       : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600"
@@ -171,7 +167,7 @@ export default function Hero({
           </div>
 
           {/* Feature pills */}
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {featurePills.map((pill) => (
               <div
                 key={pill.title}

@@ -25,28 +25,28 @@ export default function CategoriasPage() {
   return (
     <>
       <Header title="Categorías" />
-      <div className="p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 gap-3 mb-8 sm:grid-cols-3 sm:gap-4">
           <div className="stat-card p-5 relative z-10">
             <p className="text-xs text-muted font-medium uppercase tracking-wider">Categorías</p>
-            <p className="text-3xl font-bold mt-2 text-accent blue-glow">{categorias.length}</p>
+            <p className="text-2xl sm:text-3xl font-bold mt-2 text-accent blue-glow">{categorias.length}</p>
             <p className="text-xs text-muted mt-2">activas</p>
           </div>
           <div className="stat-card p-5 relative z-10">
             <p className="text-xs text-muted font-medium uppercase tracking-wider">Subcategorías</p>
-            <p className="text-3xl font-bold mt-2 text-foreground">{categorias.reduce((sum, c) => sum + c.subcategorias.length, 0)}</p>
+            <p className="text-2xl sm:text-3xl font-bold mt-2 text-foreground">{categorias.reduce((sum, c) => sum + c.subcategorias.length, 0)}</p>
             <p className="text-xs text-muted mt-2">en total</p>
           </div>
           <div className="stat-card p-5 relative z-10">
             <p className="text-xs text-muted font-medium uppercase tracking-wider">Productos</p>
-            <p className="text-3xl font-bold mt-2 text-blue-500">{productos.length}</p>
+            <p className="text-2xl sm:text-3xl font-bold mt-2 text-blue-500">{productos.length}</p>
             <p className="text-xs text-muted mt-2">categorizados</p>
           </div>
         </div>
 
         {/* Top bar */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold text-foreground">
               Gestión de Categorías
@@ -57,14 +57,14 @@ export default function CategoriasPage() {
               setEditingCat(null);
               setShowForm(true);
             }}
-            className="flex items-center gap-2 bg-accent hover:bg-accent-hover text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm"
+            className="flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent-hover"
           >
             <Plus size={18} /> Nueva categoría
           </button>
         </div>
 
         {/* Category cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {categorias.map((cat) => {
             const prodCount = productos.filter(
               (p) => p.categoriaId === cat.id
@@ -196,13 +196,13 @@ function CategoriaForm({
     setSubcats(subcats.filter((_, i) => i !== idx));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative bg-card rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto mx-4">
-        <div className="sticky top-0 bg-card border-b border-border px-6 py-4 rounded-t-2xl flex items-center justify-between z-10">
+      <div className="relative mx-0 max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-card shadow-2xl sm:mx-4 sm:rounded-2xl">
+        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-border bg-card px-4 py-4 sm:px-6">
           <h3 className="text-lg font-semibold text-foreground">
             {isEditing ? "Editar categoría" : "Nueva categoría"}
           </h3>
@@ -214,7 +214,7 @@ function CategoriaForm({
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="space-y-6 p-4 sm:p-6">
           <div>
             <label className="text-xs font-medium text-muted block mb-1.5">
               Nombre de la categoría *

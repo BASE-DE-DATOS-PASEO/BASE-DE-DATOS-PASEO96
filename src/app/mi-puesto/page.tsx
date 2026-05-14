@@ -557,7 +557,7 @@ export default function MiPuestoPage() {
 
       {/* ═══ MODAL AGREGAR / EDITAR ════════════════════════ */}
       {modalMode !== "closed" && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-6 px-4">
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto sm:items-start sm:px-4 sm:py-6">
           {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black/40 backdrop-blur-sm"
@@ -565,9 +565,9 @@ export default function MiPuestoPage() {
           />
 
           {/* Modal */}
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg my-auto">
+          <div className="relative my-0 max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white shadow-2xl sm:my-auto sm:rounded-2xl">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-100 bg-white px-4 py-4 sm:px-6">
               <h3 className="text-lg font-semibold text-gray-900">
                 {modalMode === "crear"
                   ? "Nuevo producto"
@@ -582,7 +582,7 @@ export default function MiPuestoPage() {
             </div>
 
             {/* Body */}
-            <div className="p-6 space-y-5">
+            <div className="space-y-5 p-4 sm:p-6">
               {/* ── Nombre ── */}
               <div>
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
@@ -600,7 +600,7 @@ export default function MiPuestoPage() {
               </div>
 
               {/* ── Categoría + Subcategoría ── */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
                     Categoría *
@@ -660,7 +660,7 @@ export default function MiPuestoPage() {
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
                   Precios
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div>
                     <p className="text-[11px] text-gray-400 mb-1">
                       Minorista *
@@ -734,7 +734,7 @@ export default function MiPuestoPage() {
               </div>
 
               {/* ── Talles ── */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
                     Talle desde
@@ -830,7 +830,7 @@ export default function MiPuestoPage() {
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3">
+            <div className="sticky bottom-0 flex flex-col gap-2 border-t border-gray-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-end sm:gap-3 sm:px-6">
               <button
                 onClick={cerrarModal}
                 className="px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"

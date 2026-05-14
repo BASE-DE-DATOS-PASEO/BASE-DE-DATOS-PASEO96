@@ -386,7 +386,7 @@ export default function SuscripcionPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Navbar */}
       <header className="sticky top-0 z-40 border-b border-gray-100 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <button
             onClick={() => setMetodo(null)}
             className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
@@ -400,7 +400,7 @@ export default function SuscripcionPage() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-5xl px-6 py-10">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
         {/* Header con resumen del plan */}
         <div className="mb-8 text-center">
           <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r ${plan.color} text-white text-sm font-semibold mb-4`}>
@@ -408,7 +408,7 @@ export default function SuscripcionPage() {
             Plan {plan.nombre} ·{" "}
             {metodo === "transferencia" ? "Transferencia" : "Efectivo"}
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">
+          <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
             {metodo === "transferencia"
               ? "Último paso: transferí y listo"
               : "Último paso: completá tus datos"}
@@ -420,11 +420,11 @@ export default function SuscripcionPage() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-6">
+        <div className="grid gap-5 lg:grid-cols-5 lg:gap-6">
           {/* ── COLUMNA IZQUIERDA: Instrucciones de pago ── */}
           <div className="lg:col-span-3 space-y-5">
             {/* Paso 1: Monto */}
-            <section className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6">
+            <section className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">
                   1
@@ -433,14 +433,14 @@ export default function SuscripcionPage() {
                   {metodo === "transferencia" ? "Monto a transferir" : "Monto a entregar en efectivo"}
                 </h2>
               </div>
-              <div className={`rounded-2xl bg-gradient-to-r ${plan.color} p-6 text-white text-center`}>
+              <div className={`rounded-2xl bg-gradient-to-r ${plan.color} p-4 text-center text-white sm:p-6`}>
                 <p className="text-sm opacity-90">
                   Plan {plan.nombre} — 1 mes
                   {metodo === "transferencia" && (
                     <span className="ml-1 font-medium">(incluye 21% IVA)</span>
                   )}
                 </p>
-                <p className="text-5xl font-extrabold mt-2">{formatPrecio(montoFinal)}</p>
+                <p className="mt-2 text-3xl font-extrabold sm:text-5xl">{formatPrecio(montoFinal)}</p>
                 {metodo === "transferencia" && (
                   <p className="text-xs opacity-90 mt-1">
                     Base {formatPrecio(precioBase)} + IVA{" "}
@@ -458,7 +458,7 @@ export default function SuscripcionPage() {
             </section>
 
             {/* Paso 2: Datos bancarios o instrucciones efectivo */}
-            <section className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6">
+            <section className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">
                   2
@@ -538,7 +538,7 @@ export default function SuscripcionPage() {
             </section>
 
             {/* Paso 3: Seguridad */}
-            <section className="rounded-2xl bg-emerald-50 border border-emerald-100 p-5">
+            <section className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4 sm:p-5">
               <div className="flex items-start gap-3">
                 <ShieldCheck size={20} className="text-emerald-600 shrink-0 mt-0.5" />
                 <div>
@@ -557,7 +557,7 @@ export default function SuscripcionPage() {
           <div className="lg:col-span-2">
             <form
               onSubmit={enviarSolicitud}
-              className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6 sticky top-24"
+              className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-24"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">
@@ -581,7 +581,7 @@ export default function SuscripcionPage() {
                   placeholder="Moda Urbana"
                   required
                 />
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <Campo
                     label="Fila"
                     value={form.fila}
