@@ -125,7 +125,7 @@ alter table egresos       enable row level security;
 
 -- Helper: identificar al admin por email
 create or replace function is_admin() returns boolean as $$
-  select coalesce(auth.jwt()->>'email', '') = 'paseodelsur96@gmail.com'
+  select lower(coalesce(auth.jwt()->>'email', '')) = 'paseodelsur96@gmail.com'
 $$ language sql stable;
 
 -- ── CATEGORÍAS: lectura pública, escritura solo admin ───────
