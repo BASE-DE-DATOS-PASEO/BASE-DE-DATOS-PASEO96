@@ -122,7 +122,6 @@ export default function ProductosPage() {
                         fill
                         sizes="(max-width: 768px) 50vw, 200px"
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        unoptimized
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

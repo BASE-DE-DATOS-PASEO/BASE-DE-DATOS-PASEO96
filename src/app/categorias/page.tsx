@@ -39,7 +39,6 @@ export default function CategoriasPage() {
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  unoptimized
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-white to-blue-50" />

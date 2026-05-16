@@ -91,7 +91,6 @@ export default function PuestoPage({ params }: { params: Promise<{ id: string }>
                   fill
                   sizes="80px"
                   className="object-cover"
-                  unoptimized
                 />
               </div>
             ) : (

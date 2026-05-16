@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-
-const ADMIN_EMAIL = "paseodelsur96@gmail.com";
+import { ADMIN_EMAIL } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);

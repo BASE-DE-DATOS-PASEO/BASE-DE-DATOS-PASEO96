@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { ADMIN_EMAIL } from "@/lib/mock-data";
 import type { User } from "@supabase/supabase-js";
-
-const ADMIN_EMAIL = "paseodelsur96@gmail.com";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);

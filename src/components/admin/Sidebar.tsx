@@ -11,8 +11,10 @@ import {
   ClipboardCheck,
   Tag,
   Package,
+  LogOut,
 } from "lucide-react";
 import clsx from "clsx";
+import { useAuth, signOut } from "@/lib/auth";
 
 const menuItems = [
   { label: "Inicio", href: "/admin", icon: Home },
@@ -30,6 +32,14 @@ interface SidebarProps {
 
 export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const displayName = user?.user_metadata?.full_name
+    ? user.user_metadata.full_name.split(" ")[0]
+    : user?.email
+      ? user.email.split("@")[0]
+      : "Admin";
+  const initial = displayName.charAt(0).toUpperCase();
 
   return (
     <>
@@ -90,21 +100,39 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
         {/* Footer */}
         <div className={clsx("px-4 py-4 border-t border-border shrink-0", collapsed && "px-2")}>
           {collapsed ? (
-            <button
-              onClick={() => onCollapse(false)}
-              className="w-full flex items-center justify-center p-2 rounded-xl hover:bg-blue-50 text-muted transition-colors"
-            >
-              <ChevronRight size={18} />
-            </button>
+            <div className="flex flex-col items-center gap-2">
+              <button
+                onClick={() => onCollapse(false)}
+                className="w-full flex items-center justify-center p-2 rounded-xl hover:bg-blue-50 text-muted transition-colors"
+              >
+                <ChevronRight size={18} />
+              </button>
+              <button
+                onClick={() => signOut()}
+                title="Cerrar sesión"
+                className="w-full flex items-center justify-center p-2 rounded-xl hover:bg-blue-50 text-muted hover:text-red-500 transition-colors"
+              >
+                <LogOut size={18} />
+              </button>
+            </div>
           ) : (
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-blue-500/20 shrink-0">
-                J
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-blue-500/20 shrink-0">
+                  {initial}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-foreground">{displayName}</p>
+                  <p className="text-[11px] text-muted truncate">Administrador</p>
+                </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-foreground">Jere</p>
-                <p className="text-[11px] text-muted truncate">Administrador</p>
-              </div>
+              <button
+                onClick={() => signOut()}
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-muted hover:text-red-500 hover:bg-blue-50 transition-colors"
+              >
+                <LogOut size={16} />
+                <span>Cerrar sesión</span>
+              </button>
             </div>
           )}
         </div>

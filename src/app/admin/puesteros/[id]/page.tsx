@@ -278,7 +278,6 @@ export default function PuesteroDetalle() {
                           fill
                           sizes="48px"
                           className="object-cover"
-                          unoptimized
                         />
                       ) : (
                         <Package size={20} className="text-muted" />

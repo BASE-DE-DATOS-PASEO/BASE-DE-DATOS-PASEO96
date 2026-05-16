@@ -111,7 +111,9 @@ export default function CategoriasPage() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          deleteCategoria(cat.id);
+                          if (window.confirm(`¿Eliminar la categoría "${cat.nombre}"? Esta acción no se puede deshacer.`)) {
+                            deleteCategoria(cat.id);
+                          }
                         }}
                         className="p-1.5 rounded-lg hover:bg-gray-50 text-muted hover:text-danger transition-colors"
                       >

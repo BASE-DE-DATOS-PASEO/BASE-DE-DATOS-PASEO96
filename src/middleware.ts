@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createSupabaseMiddlewareClient } from "@/lib/supabase-server";
-
-const ADMIN_EMAIL = "paseodelsur96@gmail.com";
+import { ADMIN_EMAIL } from "@/lib/mock-data";
 
 const PROTECTED_ROUTES = ["/admin", "/mi-puesto"];
 

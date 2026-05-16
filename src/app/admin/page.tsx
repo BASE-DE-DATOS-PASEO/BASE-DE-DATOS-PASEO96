@@ -16,8 +16,10 @@ import { useStore } from "@/store/useStore";
 import { preciosPlanes } from "@/lib/mock-data";
 import Link from "next/link";
 import Counter from "@/components/Counter";
+import { useAuth } from "@/lib/auth";
 
 export default function AdminDashboard() {
+  const { user } = useAuth();
   const { puesteros, productos, solicitudes } = useStore();
   const solicitudesPendientes = solicitudes.filter((s) => s.estado === "pendiente");
 
@@ -67,7 +69,7 @@ export default function AdminDashboard() {
       <div className="max-w-5xl p-4 sm:p-6 lg:p-8">
         {/* Saludo */}
         <div className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Hola, Jere 👋</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Hola, {user?.user_metadata?.full_name ? user.user_metadata.full_name.split(" ")[0] : user?.email ? user.email.split("@")[0] : "Admin"} 👋</h2>
           <p className="text-muted text-sm mt-1">
             Esto es lo que necesitás ver hoy
           </p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Filter, ChevronDown } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
 import ProductCard from "./ProductCard";
@@ -16,15 +16,9 @@ interface ProductGridProps {
 export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChange }: ProductGridProps) {
   const { productos, categorias, getLocalById } = usePublicStore();
   const [orden, setOrden] = useState("relevantes");
-  const [loading, setLoading] = useState(true);
+  const [loading] = useState(false);
   const headerRef = useScrollReveal<HTMLDivElement>();
   const gridRef = useScrollReveal<HTMLDivElement>(0.05);
-
-  // Simulate initial loading
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(t);
-  }, []);
 
   // Filter by category
   let productosFiltrados = categoriaActiva

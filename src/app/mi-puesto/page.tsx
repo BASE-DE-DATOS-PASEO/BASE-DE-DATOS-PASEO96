@@ -384,7 +384,6 @@ export default function MiPuestoPage() {
                       fill
                       sizes="(max-width: 640px) 100vw, 50vw"
                       className="object-cover"
-                      unoptimized
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">

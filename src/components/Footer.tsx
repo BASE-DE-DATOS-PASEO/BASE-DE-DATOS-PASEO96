@@ -1,15 +1,9 @@
 import Link from "next/link";
-import { Instagram, Facebook, Music2, MapPin, Clock } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 
 const quickLinks = [
   { label: "Inicio", href: "/" },
   { label: "Categorías", href: "/categorias" },
-];
-
-const socialLinks = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Music2, href: "#", label: "TikTok" },
 ];
 
 export default function Footer() {
@@ -34,21 +28,6 @@ export default function Footer() {
               WhatsApp.
             </p>
 
-            {/* Social icons */}
-            <div className="flex items-center gap-3 mt-6">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 hover:bg-blue-600 transition-colors duration-200"
-                >
-                  <social.icon className="w-5 h-5 text-white" />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Quick links */}
