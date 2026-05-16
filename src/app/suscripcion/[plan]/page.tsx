@@ -143,6 +143,15 @@ export default function SuscripcionPage() {
       return;
     }
 
+    if (form.nombreResponsable.trim().length > 100) {
+      setFormError("El nombre es demasiado largo (máximo 100 caracteres).");
+      return;
+    }
+    if (form.nombreComercial.trim().length > 100) {
+      setFormError("El nombre del local es demasiado largo (máximo 100 caracteres).");
+      return;
+    }
+
     if (metodo === "transferencia" && !archivoSubido) {
       setFormError("Subí el comprobante de transferencia antes de enviar.");
       return;
@@ -780,6 +789,7 @@ function Campo({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
+        maxLength={type === "email" ? 100 : 200}
         className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-colors"
       />
     </div>

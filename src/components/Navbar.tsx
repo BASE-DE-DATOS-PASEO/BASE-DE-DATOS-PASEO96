@@ -37,6 +37,15 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [mobileOpen]);
+
   return (
     <>
       <nav
@@ -101,6 +110,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(true)}
               className="md:hidden p-2 rounded-xl hover:bg-black/5 transition-colors btn-press"
               aria-label="Abrir menú"
+              aria-expanded={mobileOpen}
             >
               <Menu className="w-6 h-6 text-gray-700" />
             </button>
@@ -118,6 +128,9 @@ export default function Navbar() {
 
       {/* Mobile panel */}
       <div
+        role="dialog"
+        aria-label="Menú de navegación"
+        aria-hidden={!mobileOpen}
         className={`fixed top-0 right-0 bottom-0 z-[70] w-[280px] mobile-menu-panel transform transition-transform duration-350 ease-out ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}

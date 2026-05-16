@@ -110,6 +110,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 20vw, 16vw"
               className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.08]"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           ) : (
             <div className="text-gray-300 text-xs font-medium">Sin foto</div>
@@ -118,6 +119,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
           <button
             onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
+            aria-label="Me gusta"
             className={`btn-press absolute bottom-2 right-2 w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-250 hover:bg-white hover:scale-110 ${
               liked ? "bg-white opacity-100 scale-100" : "bg-white/80 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0"
             }`}
@@ -155,10 +157,11 @@ export default function ProductCard({ producto }: ProductCardProps) {
             className="modal-backdrop fixed inset-0 z-[80] bg-black/80 backdrop-blur-md"
             onClick={() => setModalOpen(false)}
           />
-          <div role="dialog" aria-modal="true" className="modal-content fixed inset-0 sm:inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl z-[90] bg-white sm:rounded-2xl overflow-hidden shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7)] ring-1 ring-black/5 flex flex-col md:max-h-[90vh]">
+          <div role="dialog" aria-modal="true" aria-label="Detalle de producto" className="modal-content fixed inset-0 sm:inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl z-[90] bg-white sm:rounded-2xl overflow-hidden shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7)] ring-1 ring-black/5 flex flex-col md:max-h-[90vh]">
             {/* Close button */}
             <button
               onClick={() => setModalOpen(false)}
+              aria-label="Cerrar detalle"
               className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-colors shadow-sm"
             >
               <X className="w-5 h-5 text-pub-text-secondary" />
@@ -187,12 +190,14 @@ export default function ProductCard({ producto }: ProductCardProps) {
                   <>
                     <button
                       onClick={() => setActiveImg(i => i === 0 ? producto.imagenes.length - 1 : i - 1)}
+                      aria-label="Imagen anterior"
                       className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md hover:bg-white"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setActiveImg(i => i === producto.imagenes.length - 1 ? 0 : i + 1)}
+                      aria-label="Imagen siguiente"
                       className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md hover:bg-white"
                     >
                       <ChevronRight className="w-4 h-4" />
@@ -206,6 +211,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
                       <button
                         key={i}
                         onClick={() => setActiveImg(i)}
+                        aria-label={`Ver imagen ${i + 1}`}
                         className={`w-2 h-2 rounded-full transition-all ${i === activeImg ? "bg-white w-5" : "bg-white/60"}`}
                       />
                     ))}

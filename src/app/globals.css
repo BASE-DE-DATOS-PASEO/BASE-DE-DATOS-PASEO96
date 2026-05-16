@@ -408,6 +408,12 @@ select option {
   animation: fadeIn 0.4s var(--ease-out-smooth);
 }
 
+/* === ACCESIBILIDAD: focus-visible global === */
+:focus-visible {
+  outline: 2px solid var(--color-pub-primary, #2563eb);
+  outline-offset: 2px;
+}
+
 /* === ACCESIBILIDAD: respetar preferencia de usuario === */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

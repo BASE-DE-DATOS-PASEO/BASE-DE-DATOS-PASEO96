@@ -13,10 +13,11 @@ export default function BottomNav({ onSearchFocus }: BottomNavProps) {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bottom-nav md:hidden">
+    <nav aria-label="Navegación principal" className="fixed bottom-0 left-0 right-0 z-50 bottom-nav md:hidden">
       <div className="flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-current="page"
           className="flex flex-col items-center gap-0.5 px-3 py-1.5 text-blue-600"
         >
           <Home className="w-5 h-5" />
