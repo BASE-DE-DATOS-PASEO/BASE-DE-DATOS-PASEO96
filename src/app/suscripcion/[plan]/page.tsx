@@ -118,6 +118,31 @@ export default function SuscripcionPage() {
   async function enviarSolicitud(e: React.FormEvent) {
     e.preventDefault();
     if (!metodo) return;
+
+    // Client-side validation
+    if (form.nombreResponsable.trim().length < 2) {
+      setFormError("El nombre debe tener al menos 2 caracteres.");
+      return;
+    }
+    if (form.nombreComercial.trim().length < 2) {
+      setFormError("El nombre del local debe tener al menos 2 caracteres.");
+      return;
+    }
+    const digitsOnly = form.telefono.replace(/\D/g, "");
+    if (digitsOnly.length < 8) {
+      setFormError("El teléfono debe tener al menos 8 dígitos.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.gmailAcceso.trim())) {
+      setFormError("El Gmail de acceso no tiene un formato válido.");
+      return;
+    }
+    if (form.email.trim() && !emailRegex.test(form.email.trim())) {
+      setFormError("El email opcional no tiene un formato válido.");
+      return;
+    }
+
     if (metodo === "transferencia" && !archivoSubido) {
       setFormError("Subí el comprobante de transferencia antes de enviar.");
       return;
