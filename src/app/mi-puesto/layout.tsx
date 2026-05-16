@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Package, Store, BarChart3, Crown, LogOut, Clock, XCircle } from "lucide-react";
 import { useCurrentPuestero } from "@/lib/current-puestero";
-import { clearSessionEmail, useSessionEmail } from "@/lib/pre-supabase-session";
+import { useAuth, signOut } from "@/lib/auth";
 import { useStore } from "@/store/useStore";
 
 const tabs = [
@@ -21,16 +21,11 @@ export default function MiPuestoLayout({
 }) {
   const pathname = usePathname();
   const puestero = useCurrentPuestero();
-  const sessionEmail = useSessionEmail();
+  const { email } = useAuth();
   const solicitud = useStore((s) =>
-    s.solicitudes.find((sol) => sol.gmailAcceso === sessionEmail)
+    s.solicitudes.find((sol) => sol.gmailAcceso === email)
   );
   const hasAccess = !!puestero;
-
-  function logout() {
-    clearSessionEmail();
-    window.location.href = "/login";
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -78,7 +73,7 @@ export default function MiPuestoLayout({
             )}
             <button
               type="button"
-              onClick={logout}
+              onClick={signOut}
               className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600 transition-colors ml-2"
             >
               <LogOut size={15} />
@@ -117,7 +112,7 @@ export default function MiPuestoLayout({
         {hasAccess ? (
           children
         ) : (
-          <AccessState email={sessionEmail} solicitud={solicitud} />
+          <AccessState email={email} solicitud={solicitud} />
         )}
       </main>
     </div>

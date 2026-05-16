@@ -2,16 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Mail, Lock, ShieldCheck, ArrowRight } from "lucide-react";
-import { seguridadPreSupabase } from "@/lib/mock-data";
-import { useStore } from "@/store/useStore";
-import { setSessionEmail } from "@/lib/pre-supabase-session";
+import { ShieldCheck, ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
-  const puesteros = useStore((s) => s.puesteros);
-  const solicitudes = useStore((s) => s.solicitudes);
-  const [email, setEmail] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loadingGoogle, setLoadingGoogle] = useState(false);
 
@@ -25,45 +19,13 @@ export default function LoginPage() {
         options: { redirectTo },
       });
       if (error) {
-        console.error("[login] google", error);
         setLoginError("No se pudo iniciar sesión con Google. Probá de nuevo en unos segundos.");
         setLoadingGoogle(false);
       }
-    } catch (err) {
-      console.error("[login] google", err);
+    } catch {
       setLoginError("Error inesperado al conectar con Google.");
       setLoadingGoogle(false);
     }
-  }
-
-  function resolverAcceso(rawEmail: string) {
-    const normalized = rawEmail.trim().toLowerCase();
-    if (normalized === seguridadPreSupabase.gmailAdmin) {
-      setSessionEmail(normalized);
-      window.location.href = "/admin";
-      return;
-    }
-
-    const puesto = puesteros.find(
-      (p) => p.gmailAcceso === normalized && p.estadoActividad === "activo"
-    );
-
-    if (puesto) {
-      setSessionEmail(normalized);
-      window.location.href = "/mi-puesto";
-      return;
-    }
-
-    const solicitud = solicitudes.find((s) => s.gmailAcceso === normalized);
-    if (solicitud) {
-      setSessionEmail(normalized);
-      window.location.href = "/mi-puesto";
-      return;
-    }
-
-    setLoginError(
-      "Ese Gmail no tiene una solicitud registrada ni un puesto aprobado."
-    );
   }
 
   return (
@@ -101,59 +63,14 @@ export default function LoginPage() {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A11.96 11.96 0 0 0 1 12c0 1.94.46 3.77 1.18 5.07l3.66-2.98z" fill="#FBBC05" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
             </svg>
-            Continuar con Google
+            {loadingGoogle ? "Conectando..." : "Continuar con Google"}
           </button>
 
-          {/* Divider */}
-          <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-slate-200" />
-            <span className="text-xs text-slate-400 font-medium">o</span>
-            <div className="flex-1 h-px bg-slate-200" />
-          </div>
-
-          {/* Email / Password */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              resolverAcceso(email);
-            }}
-            className="space-y-4"
-          >
-            <div className="relative">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setLoginError("");
-                }}
-                placeholder="tu@email.com"
-                required
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all duration-200"
-              />
-            </div>
-            <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input
-                type="password"
-                placeholder="Contraseña"
-                required
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all duration-200"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl px-4 py-3 text-sm transition-all duration-200 shadow-sm shadow-blue-600/20 cursor-pointer"
-            >
-              Iniciar sesión
-            </button>
-            {loginError && (
-              <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-                {loginError}
-              </p>
-            )}
-          </form>
+          {loginError && (
+            <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+              {loginError}
+            </p>
+          )}
 
           {/* Primera vez CTA */}
           <div className="mt-8 pt-6 border-t border-slate-100 text-center">
