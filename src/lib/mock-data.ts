@@ -240,10 +240,6 @@ export const datosTransferencia = {
   whatsappAdmin: "5492215410783",
 };
 
-export const seguridadPreSupabase = {
-  gmailAdmin: "paseodelsur96@gmail.com",
-};
-
 // ── EGRESOS ──────────────────────────────────────────────────
 
 export const categoriasEgreso = [
@@ -253,8 +249,6 @@ export const categoriasEgreso = [
   { value: "operativo", label: "Operativo", color: "bg-violet-400/10 text-violet-400" },
   { value: "otros", label: "Otros", color: "bg-gray-100 text-muted" },
 ];
-
-export const categoryImages: Record<number, string> = {};
 
 // ── FUNCIONES HELPER ─────────────────────────────────────────
 
