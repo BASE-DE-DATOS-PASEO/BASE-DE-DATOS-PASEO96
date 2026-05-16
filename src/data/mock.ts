@@ -31,43 +31,27 @@ function getState() {
 
 // ── CATEGORÍAS ───────────────────────────────────────────────
 
-export function getCategorias(): CategoriaPublica[] {
+function getCategorias(): CategoriaPublica[] {
   const { categorias, puesteros, productos } = getState();
   return categorias.map((c) => categoriaToPublica(c, puesteros, productos));
 }
 
-// Static ref for components that read at module level
-// (will be current at time of import, but use getCategorias() in render for reactivity)
-export const categorias: CategoriaPublica[] = getCategorias();
-
 // ── LOCALES ──────────────────────────────────────────────────
 
-export function getLocales(): LocalPublico[] {
+function getLocales(): LocalPublico[] {
   const { puesteros } = getState();
   return puesteros
     .filter((p) => p.estadoActividad === "activo")
     .map(puesteroToLocal);
 }
 
-export const locales: LocalPublico[] = getLocales();
-
 // ── PRODUCTOS ────────────────────────────────────────────────
 
-export function getProductos(): ProductoPublico[] {
+function getProductos(): ProductoPublico[] {
   const { productos, categorias } = getState();
   return productos
     .filter((p) => p.visible)
     .map((p) => productoToPublico(p, categorias));
-}
-
-export const productos: ProductoPublico[] = getProductos();
-
-// ── CATEGORÍAS RÁPIDAS ───────────────────────────────────────
-// Función reactiva: devuelve los nombres de todas las categorías del store.
-// Usar dentro de componentes para obtener siempre la lista actualizada.
-export function getCategoriasRapidasNombres(): string[] {
-  const { categorias } = getState();
-  return categorias.map((c) => c.nombre);
 }
 
 // Slug helper re-exportado para componentes que lo necesiten
@@ -85,10 +69,6 @@ export function formatPrecio(precio: number): string {
 
 export function getProductosByLocal(localId: string): ProductoPublico[] {
   return getProductos().filter((p) => p.localId === localId);
-}
-
-export function getProductosByCategoria(categoriaId: string): ProductoPublico[] {
-  return getProductos().filter((p) => p.categoriaId === categoriaId);
 }
 
 export function getRelatedProducts(

@@ -58,7 +58,6 @@ export default function CategoriaDetailPage({ params }: { params: Promise<{ id: 
             priority
             sizes="100vw"
             className="object-cover"
-            unoptimized
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-700" />

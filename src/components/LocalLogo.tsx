@@ -37,7 +37,6 @@ export default function LocalLogo({
           fill
           sizes={`${size}px`}
           className="object-cover"
-          unoptimized
         />
       </div>
     );

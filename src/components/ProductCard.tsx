@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
@@ -27,6 +27,14 @@ export default function ProductCard({ producto }: ProductCardProps) {
     return () => { document.body.style.overflow = prev; };
   }, [modalOpen]);
 
+  // Cierra el modal con la tecla Escape
+  useEffect(() => {
+    if (!modalOpen) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setModalOpen(false); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [modalOpen]);
+
   // Trackeamos vista cuando se abre el modal del producto
   useEffect(() => {
     if (!modalOpen) return;
@@ -44,8 +52,8 @@ export default function ProductCard({ producto }: ProductCardProps) {
   if (!local) return null;
 
   const isPremium = local.plan === "plata" || local.plan === "oro";
-  const moreFromSeller = getProductosByLocal(producto.localId).filter(p => p.id !== producto.id).slice(0, 6);
-  const related = getRelatedProducts(producto, 6);
+  const moreFromSeller = useMemo(() => getProductosByLocal(producto.localId).filter(p => p.id !== producto.id).slice(0, 6), [producto.localId, producto.id]);
+  const related = useMemo(() => getRelatedProducts(producto, 6), [producto]);
 
   const waMessage = encodeURIComponent(`Hola! Vi "${producto.nombre}" en Paseo 96 y quería consultar si está disponible.`);
   const waLink = `https://wa.me/${local.telefono}?text=${waMessage}`;
@@ -102,7 +110,6 @@ export default function ProductCard({ producto }: ProductCardProps) {
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 20vw, 16vw"
               className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.08]"
-              unoptimized
             />
           ) : (
             <div className="text-gray-300 text-xs font-medium">Sin foto</div>
@@ -148,7 +155,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
             className="modal-backdrop fixed inset-0 z-[80] bg-black/80 backdrop-blur-md"
             onClick={() => setModalOpen(false)}
           />
-          <div className="modal-content fixed inset-0 sm:inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl z-[90] bg-white sm:rounded-2xl overflow-hidden shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7)] ring-1 ring-black/5 flex flex-col md:max-h-[90vh]">
+          <div role="dialog" aria-modal="true" className="modal-content fixed inset-0 sm:inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl z-[90] bg-white sm:rounded-2xl overflow-hidden shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7)] ring-1 ring-black/5 flex flex-col md:max-h-[90vh]">
             {/* Close button */}
             <button
               onClick={() => setModalOpen(false)}
@@ -170,7 +177,6 @@ export default function ProductCard({ producto }: ProductCardProps) {
                       sizes="(max-width: 768px) 100vw, 672px"
                       className="object-cover"
                       priority
-                      unoptimized
                     />
                   ) : (
                     <div className="text-gray-300 text-sm font-medium">Sin foto</div>
@@ -351,7 +357,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
                         >
                           <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center">
                             {p.imagenes[0] ? (
-                              <Image src={p.imagenes[0]} alt={p.nombre} fill sizes="96px" className="object-cover" unoptimized />
+                              <Image src={p.imagenes[0]} alt={p.nombre} fill sizes="96px" className="object-cover" />
                             ) : (
                               <span className="text-[10px] text-gray-300">Sin foto</span>
                             )}
@@ -374,7 +380,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
                         <div key={p.id} className="shrink-0 w-24">
                           <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center">
                             {p.imagenes[0] ? (
-                              <Image src={p.imagenes[0]} alt={p.nombre} fill sizes="96px" className="object-cover" unoptimized />
+                              <Image src={p.imagenes[0]} alt={p.nombre} fill sizes="96px" className="object-cover" />
                             ) : (
                               <span className="text-[10px] text-gray-300">Sin foto</span>
                             )}

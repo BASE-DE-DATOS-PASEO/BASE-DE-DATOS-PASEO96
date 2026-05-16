@@ -61,7 +61,6 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                   className="object-cover transition-transform duration-[700ms] ease-out group-hover:scale-[1.12]"
-                  unoptimized
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-white to-blue-50" />

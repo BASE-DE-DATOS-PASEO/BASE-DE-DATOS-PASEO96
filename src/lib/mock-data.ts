@@ -5,6 +5,9 @@
 // Mantiene solamente tipos, planes, categorías base y arrays vacíos
 // para probar estados reales antes de conectar Supabase.
 
+// ── ADMIN ───────────────────────────────────────────────────
+export const ADMIN_EMAIL = "paseodelsur96@gmail.com";
+
 // ── TIPOS ────────────────────────────────────────────────────
 
 export type Categoria = {

@@ -63,7 +63,7 @@ export function PhotoUploader({ value, onChange, folder, label, className }: Pho
 
       {value ? (
         <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 border border-gray-200">
-          <Image src={value} alt="preview" fill sizes="400px" className="object-cover" unoptimized />
+          <Image src={value} alt="preview" fill sizes="400px" className="object-cover" />
           <button
             type="button"
             onClick={clear}
@@ -172,11 +172,11 @@ export function PhotosUploader({ values, onChange, folder, max = 5, label }: Pho
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {fotos.map((url, i) => (
           <div key={url + i} className="relative aspect-square rounded-lg overflow-hidden bg-gray-50 border border-gray-200 group">
-            <Image src={url} alt={`foto ${i + 1}`} fill sizes="120px" className="object-cover" unoptimized />
+            <Image src={url} alt={`foto ${i + 1}`} fill sizes="120px" className="object-cover" />
             <button
               type="button"
               onClick={() => removeAt(i)}
-              className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
               aria-label="Quitar"
             >
               <X className="w-3.5 h-3.5" />
