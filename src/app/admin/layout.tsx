@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import Sidebar from "@/components/admin/Sidebar";
-import { seguridadPreSupabase } from "@/lib/mock-data";
-import { useSessionEmail } from "@/lib/pre-supabase-session";
+import { useAuth } from "@/lib/auth";
 
 export default function AdminLayout({
   children,
@@ -12,8 +12,15 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [collapsed, setCollapsed] = useState(false);
-  const sessionEmail = useSessionEmail();
-  const isAdmin = sessionEmail === seguridadPreSupabase.gmailAdmin;
+  const { isAdmin, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="admin-layout min-h-screen flex items-center justify-center">
+        <Loader2 className="w-6 h-6 text-blue-600 animate-spin" />
+      </div>
+    );
+  }
 
   if (!isAdmin) {
     return (
@@ -21,8 +28,7 @@ export default function AdminLayout({
         <div className="w-full max-w-md rounded-2xl bg-white border border-border p-8 text-center shadow-sm">
           <h1 className="text-xl font-bold text-foreground">Acceso restringido</h1>
           <p className="text-sm text-muted mt-2">
-            El panel de administración solo queda disponible para el Gmail admin configurado.
-            Esta compuerta se reemplaza por Supabase Auth y políticas de rol.
+            El panel de administración requiere iniciar sesión con el Gmail autorizado.
           </p>
           <Link
             href="/login"

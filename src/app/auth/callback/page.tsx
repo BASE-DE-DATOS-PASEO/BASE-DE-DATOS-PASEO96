@@ -3,17 +3,9 @@
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { setSessionEmail } from "@/lib/pre-supabase-session";
-import { seguridadPreSupabase } from "@/lib/mock-data";
 import { puesterosRepo, solicitudesRepo } from "@/lib/db";
 
-// ==========================================
-// Auth callback — recibe el retorno de Google OAuth
-// ==========================================
-// Cuando Google redirige acá, Supabase ya guardó la sesión.
-// Leemos el email del user, lo seteamos en el store local y
-// decidimos a dónde mandarlo (admin / mi-puesto / login).
-// ==========================================
+const ADMIN_EMAIL = "paseodelsur96@gmail.com";
 
 export default function AuthCallbackPage() {
   const [mensaje, setMensaje] = useState("Iniciando sesión…");
@@ -22,12 +14,10 @@ export default function AuthCallbackPage() {
     let cancelled = false;
 
     async function resolve() {
-      // Pequeña espera para que Supabase termine de procesar el #access_token
       const { data: { session } } = await supabase.auth.getSession();
       if (cancelled) return;
 
       if (!session) {
-        // No hay sesión → algo falló
         setMensaje("No se pudo iniciar sesión. Volvé a probar.");
         setTimeout(() => { window.location.href = "/login"; }, 1500);
         return;
@@ -40,16 +30,11 @@ export default function AuthCallbackPage() {
         return;
       }
 
-      // Guardamos sesión local (compatibilidad con el flow existente)
-      setSessionEmail(email);
-
-      // Admin?
-      if (email === seguridadPreSupabase.gmailAdmin.toLowerCase()) {
+      if (email === ADMIN_EMAIL) {
         window.location.href = "/admin";
         return;
       }
 
-      // Puestero existente?
       try {
         const puesteros = await puesterosRepo.list();
         const tienePuesto = puesteros.find((p) => p.gmailAcceso.toLowerCase() === email);
@@ -58,7 +43,6 @@ export default function AuthCallbackPage() {
           return;
         }
 
-        // Solicitud pendiente?
         const solicitudes = await solicitudesRepo.list();
         const tieneSolicitud = solicitudes.find((s) => s.gmailAcceso.toLowerCase() === email);
         if (tieneSolicitud) {
@@ -69,7 +53,6 @@ export default function AuthCallbackPage() {
         console.error("[callback] lookup", err);
       }
 
-      // No tiene nada → mandamos a planes para que se anote
       setMensaje("Todavía no tenés puesto. Te llevamos a los planes.");
       setTimeout(() => { window.location.href = "/planes"; }, 1500);
     }

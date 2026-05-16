@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { datosTransferencia, planConfig, montoConIva } from "@/lib/mock-data";
 import { useStore } from "@/store/useStore";
-import { setSessionEmail } from "@/lib/pre-supabase-session";
 import { uploadComprobante } from "@/lib/storage";
 
 /* ── Config de planes ──────────────────────────────────── */
@@ -161,7 +160,6 @@ export default function SuscripcionPage() {
         return;
       }
 
-      setSessionEmail(form.gmailAcceso);
       setEnviado(true);
     } catch (err) {
       console.error("[suscripcion] enviarSolicitud", err);
