@@ -70,9 +70,11 @@ export default function FAQ() {
                 className="rounded-2xl border border-[var(--color-pub-border)] bg-white overflow-hidden transition-shadow duration-200 hover:shadow-sm"
               >
                 <button
+                  id={`faq-question-${index}`}
                   onClick={() => toggle(index)}
                   className="w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 text-left"
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
                 >
                   <span className="text-sm sm:text-[15px] font-semibold text-[var(--color-pub-text)]">
                     {faq.question}
@@ -85,6 +87,9 @@ export default function FAQ() {
                 </button>
 
                 <div
+                  id={`faq-answer-${index}`}
+                  role="region"
+                  aria-labelledby={`faq-question-${index}`}
                   className="grid transition-all duration-300 ease-in-out"
                   style={{
                     gridTemplateRows: isOpen ? "1fr" : "0fr",

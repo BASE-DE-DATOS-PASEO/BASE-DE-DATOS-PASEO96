@@ -121,6 +121,7 @@ export default function Hero({
               value={busqueda}
               onChange={(e) => onSearch(e.target.value)}
               placeholder="¿Qué buscás? Ej: zapatillas, camperas, carteras..."
+              aria-label="Buscar productos"
               className="flex-1 ml-3 text-sm text-gray-800 placeholder:text-gray-400 bg-transparent outline-none"
             />
             {busqueda && (

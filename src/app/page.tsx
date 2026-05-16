@@ -42,7 +42,7 @@ export default function Home() {
   };
 
   return (
-    <div className="public-layout min-h-screen pb-16 md:pb-0">
+    <div id="main-content" className="public-layout min-h-screen pb-16 md:pb-0">
       <Navbar />
       <Hero
         busqueda={busqueda}

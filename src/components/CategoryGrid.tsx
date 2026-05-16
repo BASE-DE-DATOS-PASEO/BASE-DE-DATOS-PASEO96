@@ -52,6 +52,7 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
             <button
               key={cat.id}
               onClick={() => onCategorySelect(cat.id)}
+              aria-label={`Ver categoría ${cat.nombre}`}
               className="btn-press group relative overflow-hidden rounded-2xl aspect-[3/4] bg-gray-100 cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-500"
             >
               {cat.imagen ? (
