@@ -64,8 +64,8 @@ export default function Navbar({ searchValue, onSearchChange, onSearchSubmit }: 
           <div className="flex items-center gap-4 sm:gap-8 h-16">
             {/* Logo — pure wordmark */}
             <Link href="/" className="flex items-center shrink-0">
-              <span className="text-[15px] font-extrabold tracking-[-0.02em] text-[#0A0A0A]">
-                PASEO<span className="font-light italic text-[#525252]">/</span>96
+              <span className="text-[17px] font-extrabold tracking-[-0.02em] text-[#0A0A0A]">
+                PASEO <span className="text-[#3B82F6]">96</span>
               </span>
             </Link>
 
@@ -122,17 +122,16 @@ export default function Navbar({ searchValue, onSearchChange, onSearchSubmit }: 
             )}
 
             {/* Desktop right actions */}
-            <div className="hidden md:flex items-center gap-3 shrink-0">
+            <div className="hidden md:flex items-center gap-2.5 shrink-0">
               <Link
                 href="/planes"
-                className="text-sm font-medium text-[#737373] hover:text-[#0A0A0A] transition-colors"
+                className="px-4 py-2 text-sm font-semibold text-[#0A0A0A] rounded-full border border-[#0A0A0A]/15 hover:bg-[#0A0A0A] hover:text-white hover:border-[#0A0A0A] transition-all"
               >
-                Vender
+                Vender en Paseo 96
               </Link>
-              <span className="w-px h-4 bg-[#0A0A0A]/10" />
               <Link
                 href="/login"
-                className="flex items-center gap-1.5 text-sm font-semibold text-[#0A0A0A] hover:opacity-70 transition-opacity"
+                className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-[#3B82F6] rounded-full hover:bg-[#2F6EE0] transition-all shadow-sm hover:shadow-md hover:shadow-blue-500/30"
               >
                 <UserCircle2 className="w-4 h-4" />
                 Ingresar
@@ -207,7 +206,7 @@ export default function Navbar({ searchValue, onSearchChange, onSearchSubmit }: 
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="v3-btn-primary w-full"
+              className="flex items-center justify-center gap-2 w-full px-5 py-3.5 rounded-full bg-[#3B82F6] text-white font-semibold text-[15px] hover:bg-[#2F6EE0] transition-colors shadow-lg shadow-blue-500/25"
             >
               <UserCircle2 className="w-4 h-4" />
               Ingresar

@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight, ChevronLeft } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
 import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "./ProductCardSkeleton";
+import { useInView } from "@/hooks/useInView";
 
 interface ProductGridProps {
   busqueda: string;
@@ -94,36 +95,33 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
   const productosVisibles = productosOrdenados.slice(0, visibleCount);
   const hayMas = visibleCount < productosOrdenados.length;
 
+  const headerRef = useInView<HTMLDivElement>();
+  const gridContainerRef = useInView<HTMLDivElement>({ threshold: 0.02 });
+
   return (
-    <section className="relative w-full py-16 sm:py-24 v3-border-b">
+    <section className="relative w-full py-16 sm:py-24">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
-        {/* Header — eyebrow + display title + meta on the right */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
+        {/* Header — eyebrow + display title + sort */}
+        <div ref={headerRef} className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 v3-reveal">
           <div>
             <span className="v3-eyebrow mb-4">
               {busqueda ? "Búsqueda" : "Catálogo"}
             </span>
             <h2 className="mt-3 v3-display text-[40px] sm:text-[56px] lg:text-[68px]">
               {busqueda ? (
-                <>Resultados<br /><span className="v3-display-italic text-[#737373]">para “{busqueda}”</span></>
+                <>Resultados<br /><span className="text-[#3B82F6]">para “{busqueda}”</span></>
               ) : (
-                <>Todo en<br /><span className="v3-display-italic text-[#737373]">la feria.</span></>
+                <>Todo en<br /><span className="text-[#3B82F6]">la feria.</span></>
               )}
             </h2>
           </div>
-          <div className="flex flex-col sm:items-end gap-3 text-sm">
-            <p className="text-[#737373]">
-              <span className="text-[#0A0A0A] font-bold tabular-nums">{productosOrdenados.length.toLocaleString("es-AR")}</span> productos
-              {hayMas && (
-                <> · mostrando <span className="text-[#0A0A0A] font-bold tabular-nums">{productosVisibles.length}</span></>
-              )}
-            </p>
+          <div className="flex sm:items-end">
             <div className="relative">
               <select
                 value={orden}
                 onChange={(e) => { setOrden(e.target.value); setVisibleCount(PAGE_SIZE); }}
-                className="appearance-none bg-transparent border border-[#0A0A0A]/12 rounded-full pl-4 pr-9 py-2 text-sm font-medium text-[#0A0A0A] focus:outline-none focus:border-[#0A0A0A] cursor-pointer"
+                className="appearance-none bg-transparent border border-[#0A0A0A]/15 rounded-full pl-4 pr-9 py-2.5 text-sm font-semibold text-[#0A0A0A] focus:outline-none focus:border-[#0A0A0A] cursor-pointer hover:border-[#0A0A0A]/40 transition-colors"
               >
                 <option value="relevantes">Más relevantes</option>
                 <option value="menor">Menor precio</option>
@@ -134,13 +132,13 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
           </div>
         </div>
 
-        {/* Category filter strip — sticky */}
-        <div className="relative mb-10 sticky top-16 z-30 -mx-5 sm:-mx-8 lg:-mx-12 px-5 sm:px-8 lg:px-12 py-3 bg-[#FAFAF7]/85 backdrop-blur-md border-y border-[#0A0A0A]/06">
+        {/* Category filter strip — NOT sticky (fixes the floating bar bug) */}
+        <div className="relative mb-10">
           <button
             type="button"
             onClick={() => scrollBy("left")}
             aria-label="Anteriores"
-            className={`v3-icon-btn !w-9 !h-9 absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-10 ${
+            className={`v3-icon-btn !w-9 !h-9 absolute -left-1 sm:left-0 top-1/2 -translate-y-1/2 z-10 ${
               canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >
@@ -148,7 +146,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
           </button>
 
           <div
-            className={`absolute left-5 sm:left-8 top-0 bottom-0 w-12 bg-gradient-to-r from-[#FAFAF7] to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
+            className={`absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[#FAFAF7] to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
               canScrollLeft ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -177,7 +175,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
           </div>
 
           <div
-            className={`absolute right-5 sm:right-8 top-0 bottom-0 w-12 bg-gradient-to-l from-[#FAFAF7] to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
+            className={`absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#FAFAF7] to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
               canScrollRight ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -186,7 +184,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
             type="button"
             onClick={() => scrollBy("right")}
             aria-label="Siguientes"
-            className={`v3-icon-btn !w-9 !h-9 absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-10 ${
+            className={`v3-icon-btn !w-9 !h-9 absolute -right-1 sm:right-0 top-1/2 -translate-y-1/2 z-10 ${
               canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >
@@ -195,7 +193,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
         </div>
 
         {/* Product grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-10 sm:gap-x-5 sm:gap-y-12">
+        <div ref={gridContainerRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-10 sm:gap-x-5 sm:gap-y-12 v3-reveal-fade">
           {loading
             ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
             : productosVisibles.map((producto) => (
@@ -204,27 +202,20 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
           }
         </div>
 
-        {/* Ver más */}
+        {/* Ver más — slim progress bar (no numbers) + button */}
         {!loading && hayMas && (
-          <div className="mt-16 flex flex-col items-center gap-5">
-            <div className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#737373]">
-                <span className="text-[#0A0A0A] tabular-nums">{productosVisibles.length}</span>
-                <span className="mx-2 text-[#A3A3A3]">/</span>
-                <span className="tabular-nums">{productosOrdenados.length}</span>
-              </p>
-              <div className="mt-3 w-32 h-px bg-[#0A0A0A]/10 mx-auto relative">
-                <div
-                  className="absolute inset-0 bg-[#0A0A0A] transition-all duration-700"
-                  style={{ width: `${(visibleCount / productosOrdenados.length) * 100}%` }}
-                />
-              </div>
+          <div className="mt-16 flex flex-col items-center gap-6">
+            <div className="w-40 h-[2px] bg-[#0A0A0A]/08 relative overflow-hidden rounded-full">
+              <div
+                className="absolute inset-y-0 left-0 bg-[#3B82F6] transition-all duration-700 rounded-full"
+                style={{ width: `${(visibleCount / productosOrdenados.length) * 100}%` }}
+              />
             </div>
             <button
               onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
               className="v3-btn-primary"
             >
-              Cargar 60 más
+              Cargar más
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -233,7 +224,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
         {!loading && !hayMas && productosOrdenados.length > PAGE_SIZE && (
           <div className="mt-12 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#737373]">
-              Llegaste al final · {productosOrdenados.length} productos
+              Llegaste al final de la feria
             </p>
           </div>
         )}

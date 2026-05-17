@@ -4,12 +4,15 @@ import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { usePublicStore, formatPrecio } from "@/data/mock";
+import { useInView } from "@/hooks/useInView";
 
 export default function FeaturedProducts() {
   const { productos, getLocalById } = usePublicStore();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const headerRef = useInView<HTMLDivElement>();
+  const stripRef = useInView<HTMLDivElement>({ threshold: 0.05 });
 
   // Top 12 productos: priorizar puestos premium, luego más nuevos
   const featured = useMemo(() => {
@@ -59,16 +62,16 @@ export default function FeaturedProducts() {
   if (featured.length === 0) return null;
 
   return (
-    <section className="relative w-full py-16 sm:py-24 v3-border-b">
+    <section className="relative w-full py-16 sm:py-24">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
         {/* Header */}
-        <div className="flex items-end justify-between gap-6 mb-10">
+        <div ref={headerRef} className="flex items-end justify-between gap-6 mb-10 v3-reveal">
           <div>
             <span className="v3-eyebrow mb-4">Edición del día</span>
             <h2 className="mt-3 v3-display text-[40px] sm:text-[56px] lg:text-[68px]">
               Lo nuevo<br />
-              <span className="v3-display-italic text-[#737373]">en la feria</span>
+              <span className="text-[#3B82F6]">en la feria</span>
             </h2>
           </div>
 
@@ -95,7 +98,7 @@ export default function FeaturedProducts() {
         </div>
 
         {/* Horizontal scroller */}
-        <div className="relative -mx-5 sm:-mx-8 lg:-mx-12">
+        <div ref={stripRef} className="relative -mx-5 sm:-mx-8 lg:-mx-12 v3-reveal-fade">
           <div
             ref={scrollerRef}
             className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth no-scrollbar snap-x snap-mandatory px-5 sm:px-8 lg:px-12 pb-4"
@@ -153,15 +156,15 @@ export default function FeaturedProducts() {
                       <span className="w-1 h-1 rounded-full bg-[#737373]/40" />
                       <span>{local.ubicacion}</span>
                     </div>
-                    <h3 className="text-base font-semibold text-[#0A0A0A] leading-snug line-clamp-2">
+                    <h3 className="text-base font-semibold text-[#0A0A0A] leading-snug line-clamp-2 min-h-[2.6rem]">
                       {producto.nombre}
                     </h3>
-                    <div className="mt-2 flex items-baseline gap-2">
-                      <span className="text-base font-bold text-[#0A0A0A] tracking-tight">
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-2xl font-extrabold text-[#0A0A0A] tracking-tight tabular-nums">
                         {formatPrecio(producto.precio)}
                       </span>
                       {producto.precioAnterior && (
-                        <span className="text-xs text-[#A3A3A3] line-through">
+                        <span className="text-sm text-[#A3A3A3] line-through tabular-nums">
                           {formatPrecio(producto.precioAnterior)}
                         </span>
                       )}

@@ -139,25 +139,25 @@ export default function ProductCard({ producto }: ProductCardProps) {
           </div>
 
           {/* Product name */}
-          <h3 className="text-[13px] font-semibold text-[#0A0A0A] leading-snug line-clamp-2 min-h-[2.4rem]">
+          <h3 className="text-[13px] font-medium text-[#525252] leading-snug line-clamp-2 min-h-[2.4rem]">
             {producto.nombre}
           </h3>
 
-          {/* Price + location */}
-          <div className="mt-2 flex items-end justify-between gap-2">
-            <div className="flex items-baseline gap-1.5 flex-wrap">
-              <span className="text-[15px] font-bold text-[#0A0A0A] tracking-tight tabular-nums">
+          {/* Big bold price */}
+          <div className="mt-2">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="text-[22px] sm:text-[24px] font-extrabold text-[#0A0A0A] tracking-tight tabular-nums leading-none">
                 {formatPrecio(producto.precio)}
               </span>
               {producto.precioAnterior && (
-                <span className="text-[11px] text-[#A3A3A3] line-through tabular-nums">
+                <span className="text-xs text-[#A3A3A3] line-through tabular-nums">
                   {formatPrecio(producto.precioAnterior)}
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-[#737373] flex items-center gap-0.5 shrink-0">
+            <span className="mt-2 text-[10px] text-[#737373] flex items-center gap-1">
               <MapPin className="w-3 h-3" />
-              <span className="truncate max-w-[80px]">{local.ubicacion}</span>
+              <span className="truncate">{local.ubicacion}</span>
             </span>
           </div>
         </div>

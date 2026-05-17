@@ -20,12 +20,15 @@ export default function Footer() {
     <footer className="w-full bg-[#0A0A0A] text-white">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
-        {/* Top: Massive wordmark */}
-        <div className="py-16 sm:py-20 border-b border-white/08">
-          <h2 className="text-[18vw] sm:text-[160px] lg:text-[200px] xl:text-[240px] font-extrabold tracking-[-0.06em] leading-[0.85] text-white">
-            PASEO<span className="font-light italic text-white/40">/</span>96
+        {/* Top: PASEO + blue 96 chip */}
+        <div className="py-14 sm:py-16 border-b border-white/08">
+          <h2 className="text-[12vw] sm:text-[80px] lg:text-[104px] font-extrabold tracking-[-0.05em] leading-[0.9] text-white flex items-baseline gap-3 sm:gap-5">
+            PASEO
+            <span className="inline-flex items-center justify-center px-3 sm:px-5 py-1 bg-[#3B82F6] rounded-xl sm:rounded-2xl">
+              96
+            </span>
           </h2>
-          <p className="mt-6 text-base sm:text-lg text-white/70 max-w-xl leading-relaxed">
+          <p className="mt-6 text-sm sm:text-base text-white/70 max-w-xl leading-relaxed">
             La vidriera digital de la feria del Paseo del Sur. Productos cargados por
             los puestos. Hablás directo. Comprás como siempre.
           </p>

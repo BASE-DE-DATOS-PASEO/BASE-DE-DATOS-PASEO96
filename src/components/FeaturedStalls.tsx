@@ -5,33 +5,40 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
+import { useInView } from "@/hooks/useInView";
 
 export default function FeaturedStalls() {
   const { locales, getProductosByLocal } = usePublicStore();
+  const headerRef = useInView<HTMLDivElement>();
+  const gridRef = useInView<HTMLDivElement>({ threshold: 0.05 });
 
-  // Top 3 puestos premium (oro primero, después plata), con productos
+  // Top 3 puestos premium (oro primero, después plata), con al menos 1 producto
   const featured = useMemo(() => {
     const planWeight = (plan?: string) => plan === "oro" ? 2 : plan === "plata" ? 1 : 0;
     return [...locales]
       .filter((l) => l.plan === "oro" || l.plan === "plata")
-      .filter((l) => getProductosByLocal(l.id).length >= 3)
-      .sort((a, b) => planWeight(b.plan) - planWeight(a.plan))
+      .filter((l) => getProductosByLocal(l.id).length >= 1)
+      .sort((a, b) => {
+        const w = planWeight(b.plan) - planWeight(a.plan);
+        if (w !== 0) return w;
+        return getProductosByLocal(b.id).length - getProductosByLocal(a.id).length;
+      })
       .slice(0, 3);
   }, [locales, getProductosByLocal]);
 
   if (featured.length === 0) return null;
 
   return (
-    <section id="puesteros" className="relative w-full py-16 sm:py-24 v3-border-b">
+    <section id="puesteros" className="relative w-full py-16 sm:py-24">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
         {/* Header */}
-        <div className="flex items-end justify-between gap-6 mb-12">
+        <div ref={headerRef} className="flex items-end justify-between gap-6 mb-12 v3-reveal">
           <div>
             <span className="v3-eyebrow mb-4">Puestos destacados</span>
             <h2 className="mt-3 v3-display text-[40px] sm:text-[56px] lg:text-[68px]">
               Los favoritos<br />
-              <span className="v3-display-italic text-[#737373]">de la feria.</span>
+              <span className="text-[#3B82F6]">de la feria.</span>
             </h2>
           </div>
           <Link href="/categorias" className="v3-btn-link hidden sm:inline-flex mb-4">
@@ -41,7 +48,7 @@ export default function FeaturedStalls() {
         </div>
 
         {/* 3 puesteros */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 v3-reveal-stagger">
           {featured.map((local, idx) => {
             const productos = getProductosByLocal(local.id).slice(0, 3);
             return (

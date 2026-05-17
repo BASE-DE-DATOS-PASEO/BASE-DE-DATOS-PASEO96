@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
+import { useInView } from "@/hooks/useInView";
 
 interface HeroProps {
   onExplore: () => void;
@@ -19,6 +20,8 @@ function calcIsOpen(): boolean {
 export default function Hero({ onExplore }: HeroProps) {
   const [isOpen, setIsOpen] = useState(calcIsOpen);
   const { productos } = usePublicStore();
+  const titleRef = useInView<HTMLDivElement>();
+  const mosaicRef = useInView<HTMLDivElement>({ threshold: 0.05 });
 
   useEffect(() => {
     const id = setInterval(() => setIsOpen(calcIsOpen()), 60_000);
@@ -33,21 +36,14 @@ export default function Hero({ onExplore }: HeroProps) {
   }, [productos]);
 
   return (
-    <section className="relative w-full pt-24 sm:pt-28 pb-12 sm:pb-20 overflow-hidden v3-border-b">
+    <section className="relative w-full pt-24 sm:pt-28 pb-12 sm:pb-20 overflow-hidden">
       <div className="relative max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
-        {/* Top eyebrow row */}
-        <div className="flex items-center justify-between mb-10 sm:mb-16">
-          <div className="flex items-center gap-2">
+        {/* Top: status badge */}
+        <div className="mb-8 sm:mb-12">
+          <div className={`v3-status-badge ${isOpen ? "v3-status-open" : "v3-status-closed"}`}>
             <span className="v3-pulse-dot" aria-hidden />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#525252]">
-              {isOpen ? "La feria está abierta ahora" : "Feria cerrada · vuelve el sábado"}
-            </span>
-          </div>
-          <div className="hidden sm:flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#525252]">
-            La Plata, BA
-            <span className="w-1 h-1 rounded-full bg-[#737373]" />
-            Edición 2026
+            <span>{isOpen ? "Feria abierta ahora" : "Feria cerrada"}</span>
           </div>
         </div>
 
@@ -55,11 +51,11 @@ export default function Hero({ onExplore }: HeroProps) {
         <div className="grid grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-end">
 
           {/* ── Left: Statement (7 cols) ── */}
-          <div className="col-span-12 lg:col-span-7">
+          <div ref={titleRef} className="col-span-12 lg:col-span-7 v3-reveal">
             <h1 className="v3-display text-[14vw] sm:text-[88px] lg:text-[112px] xl:text-[128px]">
               La feria
               <br />
-              de siempre,
+              <span className="text-[#3B82F6]">de siempre,</span>
               <br />
               <span className="v3-display-italic text-[#737373]">a un clic.</span>
             </h1>
@@ -74,7 +70,7 @@ export default function Hero({ onExplore }: HeroProps) {
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={onExplore}
-                  className="v3-btn-primary"
+                  className="v3-btn-accent"
                 >
                   Explorar feria
                   <ArrowDownRight className="w-4 h-4" />
@@ -90,7 +86,7 @@ export default function Hero({ onExplore }: HeroProps) {
           </div>
 
           {/* ── Right: Mosaic of 4 products (5 cols) ── */}
-          <div className="col-span-12 lg:col-span-5">
+          <div ref={mosaicRef} className="col-span-12 lg:col-span-5 v3-reveal-fade">
             <div className="relative w-full aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]">
               <div className="grid grid-cols-12 grid-rows-12 gap-3 h-full">
 
@@ -154,7 +150,7 @@ export default function Hero({ onExplore }: HeroProps) {
                 <button
                   onClick={onExplore}
                   aria-label="Explorar productos"
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-xl shadow-black/15 flex items-center justify-center text-[#0A0A0A] hover:scale-110 active:scale-95 transition-transform z-10 group"
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#3B82F6] shadow-xl shadow-blue-500/40 flex items-center justify-center text-white hover:scale-110 hover:bg-[#2F6EE0] active:scale-95 transition-all z-10 group"
                 >
                   <ArrowUpRight className="w-7 h-7 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
