@@ -11,13 +11,13 @@ import {
   Store,
   X,
   Trash2,
+  ChevronDown,
 } from "lucide-react";
 import Image from "next/image";
 import { formatPrecio } from "@/lib/mock-data";
 import type { Producto } from "@/lib/mock-data";
 import { useStore } from "@/store/useStore";
 import { PhotosUploader } from "@/components/PhotoUploader";
-import clsx from "clsx";
 
 export default function ProductosPage() {
   const { productos, puesteros, categorias, deleteProducto } = useStore();
@@ -49,57 +49,65 @@ export default function ProductosPage() {
 
   return (
     <>
-      <Header title="Productos" />
-      <div className="p-4 sm:p-6 lg:p-8">
+      <Header
+        eyebrow="Catálogo"
+        title="Productos"
+        subtitle="Todo lo que cargan los puesteros. Editás visibilidad, precios y fotos."
+        action={
+          <button onClick={openNew} className="v3-admin-btn-accent">
+            <Plus size={15} />
+            <span className="hidden sm:inline">Nuevo producto</span>
+          </button>
+        }
+      />
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 gap-3 mb-8 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10">
+
+        {/* KPIs */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10">
           {[
-            { label: "Total cargados", value: productos.length, color: "text-foreground" },
-            { label: "Visibles en la web", value: visibles, color: "text-accent" },
-            { label: "Categorías", value: categorias.length, color: "text-blue-500" },
+            { label: "Cargados", value: productos.length, color: "text-[#0A0A0A]" },
+            { label: "En la web", value: visibles, color: "text-[#3B82F6]" },
+            { label: "Categorías", value: categorias.length, color: "text-[#0A0A0A]" },
             { label: "Puestos activos", value: puesteros.filter((p) => p.estadoActividad === "activo").length, color: "text-emerald-600" },
           ].map((s) => (
-            <div key={s.label} className="stat-card p-5 relative z-10">
-              <p className="text-xs text-muted font-medium uppercase tracking-wider">{s.label}</p>
-              <p className={`text-2xl sm:text-3xl font-bold mt-2 ${s.color}`}>{s.value}</p>
+            <div key={s.label} className="v3-stat-card">
+              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">{s.label}</p>
+              <p className={`text-3xl sm:text-4xl font-extrabold mt-2 tabular-nums tracking-tight ${s.color}`}>{s.value}</p>
             </div>
           ))}
         </div>
 
         {/* Toolbar */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-          <div className="relative flex-1 sm:min-w-[200px] sm:max-w-sm">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="relative flex-1">
+            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#737373]" />
             <input
               type="text"
-              placeholder="Buscar producto..."
+              placeholder="Buscar producto…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-xl text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
+              className="w-full pl-11 pr-4 py-3 text-sm bg-white border border-[#0A0A0A]/08 rounded-2xl text-[#0A0A0A] placeholder:text-[#A3A3A3] focus:outline-none focus:border-[#0A0A0A] focus:shadow-[0_0_0_4px_rgba(10,10,10,0.04)] transition-all"
             />
           </div>
-          <select
-            value={filtroCategoria}
-            onChange={(e) => setFiltroCategoria(e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 sm:w-auto"
-          >
-            <option value="todas">Todas las categorías</option>
-            {categorias.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.nombre}</option>
-            ))}
-          </select>
-          <button
-            onClick={openNew}
-            className="flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent-hover sm:ml-auto"
-          >
-            <Plus size={16} /> Nuevo producto
-          </button>
+          <div className="relative">
+            <select
+              value={filtroCategoria}
+              onChange={(e) => setFiltroCategoria(e.target.value)}
+              className="appearance-none w-full sm:w-auto bg-white border border-[#0A0A0A]/08 rounded-2xl pl-4 pr-10 py-3 text-sm font-semibold text-[#0A0A0A] focus:outline-none focus:border-[#0A0A0A] cursor-pointer"
+            >
+              <option value="todas">Todas las categorías</option>
+              {categorias.map((cat) => (
+                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+              ))}
+            </select>
+            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#0A0A0A] pointer-events-none" />
+          </div>
         </div>
 
-        {/* Grid */}
+        {/* Grid productos */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5">
             {filtered.map((prod) => {
               const puesto = puesteros.find((p) => p.id === prod.puesteroId);
               const isVisible = prod.visible && puesto?.estadoActividad === "activo";
@@ -108,74 +116,77 @@ export default function ProductosPage() {
               return (
                 <div
                   key={prod.id}
-                  className={clsx(
-                    "group rounded-2xl bg-white border border-gray-100 overflow-hidden hover:shadow-lg hover:border-blue-100 transition-all duration-300",
-                    !isVisible && "opacity-60"
-                  )}
+                  className={`group cursor-pointer ${!isVisible ? "opacity-60" : ""}`}
+                  onClick={() => openEdit(prod)}
                 >
                   {/* Image */}
-                  <div className="aspect-square relative overflow-hidden bg-gray-50">
+                  <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#F2F2EE] transition-all duration-400 group-hover:rounded-3xl">
                     {prod.imagenes[0] ? (
                       <Image
                         src={prod.imagenes[0]}
                         alt={prod.nombre}
                         fill
-                        sizes="(max-width: 768px) 50vw, 200px"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 50vw, 200px"
+                        className="object-cover group-hover:scale-[1.04] transition-transform duration-700"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Package size={36} className="text-gray-200" />
+                        <Package size={32} className="text-[#A3A3A3]" />
                       </div>
                     )}
 
                     {!isVisible && (
-                      <div className="absolute inset-0 bg-black/30 flex items-end p-2">
-                        <span className="flex items-center gap-1 bg-black/70 text-white text-[10px] px-2 py-1 rounded-full">
+                      <div className="absolute top-2.5 left-2.5">
+                        <span className="v3-admin-badge v3-admin-badge-neutral !bg-[#0A0A0A] !text-white">
                           <EyeOff size={10} /> Oculto
                         </span>
                       </div>
                     )}
 
-                    {/* Hover edit button */}
-                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1.5">
+                    {/* Hover actions */}
+                    <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1.5">
                       <button
-                        onClick={() => openEdit(prod)}
-                        className="p-1.5 bg-white rounded-lg shadow-md hover:bg-gray-50 text-gray-700"
+                        onClick={(e) => { e.stopPropagation(); openEdit(prod); }}
+                        className="w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center hover:scale-110 transition-transform"
                         title="Editar"
                       >
-                        <Edit2 size={13} />
+                        <Edit2 size={13} className="text-[#0A0A0A]" />
                       </button>
                       <button
-                        onClick={() => deleteProducto(prod.id)}
-                        className="p-1.5 bg-white rounded-lg shadow-md hover:bg-red-50 text-red-500"
+                        onClick={(e) => { e.stopPropagation(); deleteProducto(prod.id); }}
+                        className="w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center hover:scale-110 hover:bg-rose-50 transition-all"
                         title="Eliminar"
                       >
-                        <Trash2 size={13} />
+                        <Trash2 size={13} className="text-rose-600" />
                       </button>
                     </div>
                   </div>
 
                   {/* Info */}
-                  <div className="p-3">
+                  <div className="mt-3 px-0.5">
                     {catNombre && (
-                      <p className="text-[10px] text-blue-600 font-semibold uppercase tracking-wide mb-1">{catNombre}</p>
+                      <p className="text-[10px] text-[#737373] font-bold uppercase tracking-[0.12em] mb-1.5 truncate">{catNombre}</p>
                     )}
-                    <h4 className="text-sm font-semibold text-foreground leading-tight line-clamp-2 mb-1.5">
+                    <h4 className="text-[13px] font-semibold text-[#0A0A0A] leading-snug line-clamp-2 min-h-[2.4rem]">
                       {prod.nombre}
                     </h4>
-                    <div className="flex items-baseline gap-1.5 mb-2">
-                      <span className="text-sm font-bold text-foreground">{formatPrecio(prod.precioMinorista)}</span>
-                      {prod.precioAnterior && (
-                        <span className="text-xs text-muted line-through">{formatPrecio(prod.precioAnterior)}</span>
+                    <div className="mt-2">
+                      <div className="flex items-baseline gap-1.5 flex-wrap">
+                        <span className="text-[22px] font-extrabold text-[#0A0A0A] tracking-tight tabular-nums leading-none">
+                          {formatPrecio(prod.precioMinorista)}
+                        </span>
+                        {prod.precioAnterior && (
+                          <span className="text-[11px] text-[#A3A3A3] line-through tabular-nums">
+                            {formatPrecio(prod.precioAnterior)}
+                          </span>
+                        )}
+                      </div>
+                      {puesto && (
+                        <p className="mt-2 text-[10px] text-[#737373] flex items-center gap-1 truncate">
+                          <Store size={10} />
+                          {puesto.nombreComercial}
+                        </p>
                       )}
-                    </div>
-                    {prod.talleDesde && (
-                      <p className="text-[11px] text-muted mb-1.5">Talles: {prod.talleDesde} – {prod.talleHasta}</p>
-                    )}
-                    <div className="flex items-center gap-1.5 pt-2 border-t border-gray-50 text-[11px] text-muted">
-                      <Store size={11} />
-                      <span className="truncate">{puesto?.nombreComercial ?? "—"}</span>
                     </div>
                   </div>
                 </div>
@@ -183,10 +194,10 @@ export default function ProductosPage() {
             })}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-gray-200 bg-white py-16 text-center">
-            <Package size={32} className="text-gray-300 mx-auto mb-3" />
-            <p className="font-semibold text-foreground">Sin resultados</p>
-            <p className="text-sm text-muted mt-1">Probá cambiar el filtro o la búsqueda</p>
+          <div className="rounded-2xl border border-dashed border-[#0A0A0A]/15 bg-white py-16 text-center">
+            <Package size={32} className="text-[#A3A3A3] mx-auto mb-3" strokeWidth={1.5} />
+            <p className="font-bold text-[#0A0A0A]">Sin resultados</p>
+            <p className="text-sm text-[#737373] mt-1">Probá cambiar el filtro o la búsqueda</p>
           </div>
         )}
       </div>
@@ -201,7 +212,7 @@ export default function ProductosPage() {
   );
 }
 
-/* ── Formulario completo ── */
+/* ── Formulario v3 ── */
 
 function ProductoForm({
   producto,
@@ -260,176 +271,140 @@ function ProductoForm({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative mx-0 max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-2xl bg-white shadow-2xl sm:mx-4 sm:rounded-2xl">
+    <div className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center">
+      <div className="absolute inset-0 bg-[#0A0A0A]/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative mx-0 max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-3xl bg-white shadow-2xl sm:mx-4 sm:rounded-3xl border border-[#0A0A0A]/08">
 
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-gray-100 bg-white px-4 py-4 sm:px-6">
-          <h3 className="text-lg font-semibold text-foreground">
-            {isEditing ? "Editar producto" : "Nuevo producto"}
-          </h3>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-50 text-muted">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#0A0A0A]/06 bg-white/95 backdrop-blur-md px-6 py-5">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">
+              {isEditing ? "Editar" : "Crear"}
+            </span>
+            <h3 className="text-xl font-bold text-[#0A0A0A] tracking-tight mt-0.5 truncate max-w-xs">
+              {isEditing ? producto.nombre : "Nuevo producto"}
+            </h3>
+          </div>
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-[#0A0A0A]/04 text-[#525252]" aria-label="Cerrar">
             <X size={18} />
           </button>
         </div>
 
-        <div className="space-y-5 p-4 sm:p-6">
+        <div className="space-y-7 p-6">
 
           {/* Puesto */}
-          <div>
-            <label className="text-xs font-medium text-muted block mb-1.5">Puesto asociado *</label>
+          <Field label="Puesto asociado" required>
             <select
               value={puesteroId}
               onChange={(e) => setPuesteroId(Number(e.target.value))}
-              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20"
+              className="v3-admin-input"
             >
-              <option value={0}>Seleccionar puesto...</option>
+              <option value={0}>Seleccionar puesto…</option>
               {puesteros.filter((p) => p.estadoActividad === "activo").map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.nombreComercial} — Fila {p.fila}, Puesto {p.numeroPuesto}
                 </option>
               ))}
             </select>
-          </div>
+          </Field>
 
           {/* Nombre */}
-          <div>
-            <label className="text-xs font-medium text-muted block mb-1.5">Nombre del producto *</label>
+          <Field label="Nombre del producto" required>
             <input
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               placeholder="Ej: Remera Lisa Oversize"
-              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
+              className="v3-admin-input"
+            />
+          </Field>
+
+          {/* Fotos */}
+          <div>
+            <span className="text-xs font-semibold text-[#525252] block mb-2">
+              Fotos del producto
+            </span>
+            <PhotosUploader
+              label=""
+              values={imagenes}
+              onChange={setImagenes}
+              folder={folderFotos}
+              max={5}
             />
           </div>
 
-          {/* Fotos */}
-          <PhotosUploader
-            label="Fotos del producto"
-            values={imagenes}
-            onChange={setImagenes}
-            folder={folderFotos}
-            max={5}
-          />
-
           {/* Categoría + Subcategoría */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="text-xs font-medium text-muted block mb-1.5">Categoría *</label>
+            <Field label="Categoría" required>
               <select
                 value={categoriaId}
                 onChange={(e) => { setCategoriaId(Number(e.target.value)); setSubcategoria(""); }}
-                className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20"
+                className="v3-admin-input"
               >
-                <option value={0}>Seleccionar...</option>
+                <option value={0}>Seleccionar…</option>
                 {categorias.map((cat) => (
                   <option key={cat.id} value={cat.id}>{cat.nombre}</option>
                 ))}
               </select>
-            </div>
-            <div>
-              <label className="text-xs font-medium text-muted block mb-1.5">Subcategoría</label>
+            </Field>
+            <Field label="Subcategoría">
               <select
                 value={subcategoria}
                 onChange={(e) => setSubcategoria(e.target.value)}
-                className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20"
+                className="v3-admin-input"
               >
-                <option value="">Seleccionar...</option>
+                <option value="">Seleccionar…</option>
                 {subcategorias.map((sub) => (
                   <option key={sub} value={sub}>{sub}</option>
                 ))}
               </select>
-            </div>
+            </Field>
           </div>
 
           {/* Precios */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {[
-              { label: "Precio minorista *", value: precioMinorista, set: setPrecioMinorista },
-              { label: "Precio mayorista", value: precioMayorista, set: setPrecioMayorista },
-            ].map(({ label, value, set }) => (
-              <div key={label}>
-                <label className="text-xs font-medium text-muted block mb-1.5">{label}</label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted">$</span>
-                  <input
-                    type="number"
-                    value={value || ""}
-                    onChange={(e) => set(Number(e.target.value))}
-                    placeholder="0"
-                    className="w-full pl-7 pr-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
-                  />
-                </div>
-              </div>
-            ))}
-            <div>
-              <label className="text-xs font-medium text-muted block mb-1.5">Precio anterior <span className="text-[10px] text-muted">(tachado)</span></label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted">$</span>
-                <input
-                  type="number"
-                  value={precioAnterior}
-                  onChange={(e) => setPrecioAnterior(e.target.value)}
-                  placeholder="0"
-                  className="w-full pl-7 pr-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
-                />
-              </div>
-            </div>
+            <Field label="Precio minorista" required>
+              <PriceInput value={precioMinorista || ""} onChange={(v) => setPrecioMinorista(Number(v))} />
+            </Field>
+            <Field label="Precio mayorista">
+              <PriceInput value={precioMayorista || ""} onChange={(v) => setPrecioMayorista(Number(v))} />
+            </Field>
+            <Field label="Precio anterior" hint="Aparece tachado">
+              <PriceInput value={precioAnterior} onChange={setPrecioAnterior} />
+            </Field>
           </div>
 
           {/* Talles */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="text-xs font-medium text-muted block mb-1.5">Talle desde</label>
-              <input
-                type="text"
-                value={talleDesde}
-                onChange={(e) => setTalleDesde(e.target.value)}
-                placeholder="Ej: S, 36, 1"
-                className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-muted block mb-1.5">Talle hasta</label>
-              <input
-                type="text"
-                value={talleHasta}
-                onChange={(e) => setTalleHasta(e.target.value)}
-                placeholder="Ej: XL, 46, 14"
-                className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
-              />
-            </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Talle desde">
+              <input type="text" value={talleDesde} onChange={(e) => setTalleDesde(e.target.value)} placeholder="S / 36 / 1" className="v3-admin-input" />
+            </Field>
+            <Field label="Talle hasta">
+              <input type="text" value={talleHasta} onChange={(e) => setTalleHasta(e.target.value)} placeholder="XL / 46 / 14" className="v3-admin-input" />
+            </Field>
           </div>
 
           {/* Descripción */}
-          <div>
-            <label className="text-xs font-medium text-muted block mb-1.5">Descripción (opcional)</label>
-            <textarea
-              value={descripcion}
-              onChange={(e) => setDescripcion(e.target.value)}
-              placeholder="Material, características, colores disponibles..."
-              rows={3}
-              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-foreground placeholder:text-muted resize-none focus:outline-none focus:ring-2 focus:ring-accent/20"
-            />
-          </div>
+          <Field label="Descripción">
+            <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} placeholder="Material, características, colores…" rows={3} className="v3-admin-input resize-none" />
+          </Field>
 
           {/* Visible toggle */}
-          <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100">
+          <div className="flex items-center justify-between p-4 rounded-2xl bg-[#FAFAF7] border border-[#0A0A0A]/06">
             <div>
-              <p className="text-sm font-medium text-foreground">Visible en la web</p>
-              <p className="text-xs text-muted mt-0.5">Si lo apagás, el producto no aparece en Paseo 96</p>
+              <p className="text-sm font-semibold text-[#0A0A0A]">Visible en la web</p>
+              <p className="text-xs text-[#737373] mt-0.5">Si lo apagás, no aparece en Paseo 96</p>
             </div>
             <button
               type="button"
               onClick={() => setVisible(!visible)}
-              className={`relative w-11 h-6 rounded-full transition-colors duration-200 focus:outline-none ${
-                visible ? "bg-accent" : "bg-gray-300"
+              className={`relative w-12 h-7 rounded-full transition-colors duration-200 focus:outline-none focus:shadow-[0_0_0_4px_rgba(59,130,246,0.15)] ${
+                visible ? "bg-[#3B82F6]" : "bg-[#0A0A0A]/15"
               }`}
+              aria-pressed={visible}
             >
               <span
-                className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
+                className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform duration-200 ${
                   visible ? "translate-x-[22px]" : "translate-x-0.5"
                 }`}
               />
@@ -438,50 +413,62 @@ function ProductoForm({
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 flex flex-col gap-3 rounded-b-2xl border-t border-gray-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div className="sticky bottom-0 flex flex-col gap-3 border-t border-[#0A0A0A]/06 bg-white px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           {isEditing ? (
             confirmDelete ? (
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs text-red-600 font-medium">¿Seguro?</span>
-                <button
-                  onClick={() => { deleteProducto(producto.id); onClose(); }}
-                  className="px-3 py-1.5 text-xs font-semibold bg-red-500 text-white rounded-lg hover:bg-red-600"
-                >
+                <span className="text-xs text-rose-700 font-semibold">¿Seguro?</span>
+                <button onClick={() => { deleteProducto(producto.id); onClose(); }} className="px-3 py-1.5 text-xs font-semibold bg-rose-600 text-white rounded-lg hover:bg-rose-700">
                   Sí, eliminar
                 </button>
-                <button
-                  onClick={() => setConfirmDelete(false)}
-                  className="px-3 py-1.5 text-xs text-muted hover:text-foreground"
-                >
+                <button onClick={() => setConfirmDelete(false)} className="px-3 py-1.5 text-xs font-semibold text-[#525252] hover:text-[#0A0A0A]">
                   No
                 </button>
               </div>
             ) : (
-              <button
-                onClick={() => setConfirmDelete(true)}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              >
-                <Trash2 size={13} /> Eliminar
+              <button onClick={() => setConfirmDelete(true)} className="v3-admin-btn-danger">
+                <Trash2 size={14} /> Eliminar
               </button>
             )
           ) : <span />}
 
-          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
-            <button
-              onClick={onClose}
-              className="px-4 py-2.5 text-sm font-medium text-muted border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
-            >
-              Cancelar
-            </button>
-            <button
-              onClick={handleSave}
-              className="px-6 py-2.5 text-sm font-medium bg-accent hover:bg-accent-hover text-white rounded-xl transition-colors shadow-sm"
-            >
+          <div className="flex gap-2 sm:gap-3 sm:ml-auto">
+            <button onClick={onClose} className="v3-admin-btn-ghost">Cancelar</button>
+            <button onClick={handleSave} className="v3-admin-btn">
               {isEditing ? "Guardar cambios" : "Publicar producto"}
             </button>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ── Helpers ── */
+
+function Field({ label, required, hint, children }: { label: string; required?: boolean; hint?: string; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="text-xs font-semibold text-[#525252] block mb-1.5">
+        {label} {required && <span className="text-[#3B82F6]">*</span>}
+      </span>
+      {children}
+      {hint && <span className="text-[11px] text-[#A3A3A3] block mt-1">{hint}</span>}
+    </label>
+  );
+}
+
+function PriceInput({ value, onChange }: { value: string | number; onChange: (v: string) => void }) {
+  return (
+    <div className="relative">
+      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[#737373] font-semibold">$</span>
+      <input
+        type="number"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="0"
+        className="v3-admin-input pl-8 tabular-nums"
+      />
     </div>
   );
 }

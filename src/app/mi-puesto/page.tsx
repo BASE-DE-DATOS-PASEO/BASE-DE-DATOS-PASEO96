@@ -90,12 +90,12 @@ export default function MiPuestoPage() {
 
   if (!puestero) {
     return (
-      <div className="rounded-2xl border border-dashed border-amber-200 bg-amber-50/60 p-8 text-center">
+      <div className="rounded-2xl border border-dashed border-amber-200 bg-amber-50/40 p-10 text-center">
         <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mx-auto mb-4 shadow-sm">
           <AlertCircle size={26} className="text-amber-500" />
         </div>
-        <h1 className="text-xl font-bold text-gray-900">Todavía no hay un puesto activo</h1>
-        <p className="text-sm text-gray-600 mt-2 max-w-xl mx-auto">
+        <h1 className="text-2xl font-bold text-[#0A0A0A] tracking-tight">Todavía no hay un puesto activo</h1>
+        <p className="text-sm text-[#525252] mt-2 max-w-xl mx-auto leading-relaxed">
           Esta pantalla queda lista para cuando Jere apruebe una solicitud. En Supabase,
           el Gmail aprobado va a determinar qué puesto ve cada usuario.
         </p>
@@ -292,42 +292,43 @@ export default function MiPuestoPage() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
+
+      {/* ── Top: Editorial title ── */}
+      <section>
+        <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">
+          <span className="w-5 h-px bg-[#3B82F6]" />
+          Mi puesto
+        </span>
+        <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-[-0.04em] leading-[1.05] text-[#0A0A0A]">
+          {puestero.nombreComercial}
+        </h1>
+        <p className="text-[#525252] text-sm mt-2">
+          Cargá tus productos. Editás precios, fotos y visibilidad cuando quieras.
+        </p>
+      </section>
+
       {/* ── Stats row ─────────────────────────────────────── */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {stats.map((s) => {
           const Icon = s.icon;
           return (
-            <div
-              key={s.label}
-              className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <div
-                  className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center`}
-                >
-                  <Icon size={20} className={s.color} />
-                </div>
+            <div key={s.label} className="v3-stat-card">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">
+                  {s.label}
+                </p>
+                <Icon size={14} className="text-[#A3A3A3]" strokeWidth={1.8} />
               </div>
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span className="text-2xl font-bold text-gray-900">
+                <span className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tabular-nums tracking-tight">
                   {s.value}
                 </span>
-                {s.badge && (
-                  <span
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${planBadgeColor(puestero.plan)}`}
-                  >
-                    {puestero.plan === "oro" && <Crown size={12} />}
-                    {plan.nombre}
-                  </span>
-                )}
+                {s.badge && puestero.plan === "oro" && <Crown size={16} className="text-amber-500" />}
               </div>
-              <p className="text-sm text-gray-500 mt-1">
-                {s.label}
-                {s.sub && (
-                  <span className="text-gray-400 ml-1">{s.sub}</span>
-                )}
-              </p>
+              {s.sub && (
+                <p className="text-xs text-[#737373] mt-1">{s.sub}</p>
+              )}
             </div>
           );
         })}
@@ -335,21 +336,29 @@ export default function MiPuestoPage() {
 
       {/* ── Products section ──────────────────────────────── */}
       <section>
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg font-semibold text-gray-900">Mis productos</h2>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div>
+            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252]">
+              <span className="w-5 h-px bg-[#525252]" />
+              Catálogo
+            </span>
+            <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] text-[#0A0A0A]">
+              Tus productos
+            </h2>
+          </div>
           <div className="flex items-center gap-3">
             {!puedeAgregar && (
-              <span className="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg flex items-center gap-1">
-                <AlertCircle size={13} />
-                Límite de {plan.maxPublicaciones} productos alcanzado
+              <span className="v3-admin-badge v3-admin-badge-warning">
+                <AlertCircle size={11} />
+                Límite alcanzado
               </span>
             )}
             <button
               onClick={abrirCrear}
               disabled={!puedeAgregar}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="v3-admin-btn-accent"
             >
-              <Plus size={16} />
+              <Plus size={15} />
               Agregar producto
             </button>
           </div>
@@ -357,120 +366,101 @@ export default function MiPuestoPage() {
 
         {/* Empty state */}
         {productos.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-3">
-              <Package size={24} className="text-blue-500" />
+          <div className="rounded-2xl border border-dashed border-[#0A0A0A]/15 bg-white p-16 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-[#FAFAF7] flex items-center justify-center mx-auto mb-3 border border-[#0A0A0A]/06">
+              <Package size={24} className="text-[#A3A3A3]" strokeWidth={1.5} />
             </div>
-            <p className="font-semibold text-gray-900">
-              Todavía no cargaste productos
-            </p>
-            <p className="text-sm text-gray-500 mt-1">
-              Hacé click en &quot;Agregar producto&quot; para empezar.
+            <p className="font-bold text-[#0A0A0A]">Todavía no cargaste productos</p>
+            <p className="text-sm text-[#737373] mt-1">
+              Tocá &quot;Agregar producto&quot; para empezar
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
             {productos.map((p) => (
               <div
                 key={p.id}
-                className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                className="group"
               >
                 {/* Image */}
-                <div className="relative aspect-[4/3] bg-gray-100">
+                <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#F2F2EE] transition-all duration-400 group-hover:rounded-3xl">
                   {p.imagenes.length > 0 ? (
                     <Image
                       src={p.imagenes[0]}
                       alt={p.nombre}
                       fill
-                      sizes="(max-width: 640px) 100vw, 50vw"
-                      className="object-cover"
+                      sizes="(max-width: 640px) 50vw, 200px"
+                      className="object-cover group-hover:scale-[1.04] transition-transform duration-700"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Camera size={32} className="text-gray-300" />
+                      <Camera size={28} className="text-[#A3A3A3]" />
                     </div>
                   )}
-                  {/* Visibility badge */}
+
+                  {/* Visibility toggle */}
                   <button
                     onClick={() => toggleVisible(p)}
-                    className={`absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${
+                    className={`absolute top-2.5 right-2.5 inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all ${
                       p.visible
-                        ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
-                        : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                        ? "bg-emerald-500 text-white hover:bg-emerald-600"
+                        : "bg-[#0A0A0A] text-white hover:bg-[#1F1F1F]"
                     }`}
-                    title={
-                      p.visible
-                        ? "Visible en la web. Click para ocultar"
-                        : "Oculto. Click para mostrar"
-                    }
+                    title={p.visible ? "Visible · click para ocultar" : "Oculto · click para mostrar"}
                   >
-                    {p.visible ? (
-                      <Eye size={11} />
-                    ) : (
-                      <EyeOff size={11} />
-                    )}
+                    {p.visible ? <Eye size={10} /> : <EyeOff size={10} />}
                     {p.visible ? "Visible" : "Oculto"}
                   </button>
+
                   {/* Foto count */}
                   {p.imagenes.length > 1 && (
-                    <span className="absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full">
+                    <span className="absolute bottom-2.5 right-2.5 bg-white/95 backdrop-blur-sm text-[10px] font-bold text-[#0A0A0A] px-2 py-0.5 rounded-full">
                       {p.imagenes.length} fotos
                     </span>
                   )}
                 </div>
 
                 {/* Info */}
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 truncate">
+                <div className="mt-3 px-0.5">
+                  <h3 className="text-[13px] font-semibold text-[#0A0A0A] leading-snug line-clamp-2 min-h-[2.4rem]">
                     {p.nombre}
                   </h3>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <p className="text-lg font-bold text-gray-800">
+                  <div className="mt-2 flex items-baseline gap-1.5 flex-wrap">
+                    <span className="text-[22px] font-extrabold text-[#0A0A0A] tracking-tight tabular-nums leading-none">
                       {formatPrecio(p.precioMinorista)}
-                    </p>
+                    </span>
                     {p.precioAnterior && (
-                      <p className="text-sm text-gray-400 line-through">
+                      <span className="text-[11px] text-[#A3A3A3] line-through tabular-nums">
                         {formatPrecio(p.precioAnterior)}
-                      </p>
+                      </span>
                     )}
                   </div>
                   {p.precioMayorista && (
-                    <p className="text-xs text-blue-600 mt-0.5">
+                    <p className="text-[10.5px] text-[#3B82F6] font-semibold mt-1">
                       Mayor: {formatPrecio(p.precioMayorista)}
                     </p>
                   )}
 
                   {/* Actions */}
-                  <div className="flex items-center gap-2 mt-4">
+                  <div className="mt-3 flex items-center gap-2">
                     <button
-                      onClick={() => {
-                        setDeletingId(null);
-                        abrirEditar(p);
-                      }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+                      onClick={() => { setDeletingId(null); abrirEditar(p); }}
+                      className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg border border-[#0A0A0A]/12 text-[11px] font-bold uppercase tracking-wider text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-white hover:border-[#0A0A0A] transition-all"
                     >
-                      <Edit size={14} />
+                      <Edit size={12} />
                       Editar
                     </button>
                     <button
                       onClick={() => handleDelete(p.id)}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+                      className={`inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border text-[11px] font-bold uppercase tracking-wider transition-all ${
                         deletingId === p.id
-                          ? "border-red-300 bg-red-50 text-red-600 font-semibold"
-                          : "border-gray-200 text-red-500 hover:bg-red-50 hover:border-red-200"
+                          ? "border-rose-300 bg-rose-50 text-rose-700"
+                          : "border-[#0A0A0A]/12 text-[#525252] hover:text-rose-600 hover:border-rose-300"
                       }`}
                     >
-                      <Trash2 size={14} />
-                      {deletingId === p.id ? "¿Confirmar?" : "Eliminar"}
+                      <Trash2 size={12} />
+                      {deletingId === p.id && <span>OK?</span>}
                     </button>
-                    {deletingId === p.id && (
-                      <button
-                        onClick={() => setDeletingId(null)}
-                        className="text-xs text-gray-400 hover:text-gray-600 px-2"
-                      >
-                        Cancelar
-                      </button>
-                    )}
                   </div>
                 </div>
               </div>

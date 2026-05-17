@@ -2,19 +2,19 @@
 
 import Header from "@/components/admin/Header";
 import { useState } from "react";
+import Image from "next/image";
 import {
   Plus,
   Edit2,
   Trash2,
   Tag,
-  ChevronRight,
+  ChevronDown,
   X,
   Package,
 } from "lucide-react";
 import type { Categoria } from "@/lib/mock-data";
 import { useStore } from "@/store/useStore";
 import { PhotoUploader } from "@/components/PhotoUploader";
-import clsx from "clsx";
 
 export default function CategoriasPage() {
   const { categorias, productos, deleteCategoria } = useStore();
@@ -24,144 +24,159 @@ export default function CategoriasPage() {
 
   return (
     <>
-      <Header title="Categorías" />
-      <div className="p-4 sm:p-6 lg:p-8">
-        {/* Stats */}
-        <div className="grid grid-cols-1 gap-3 mb-8 sm:grid-cols-3 sm:gap-4">
-          <div className="stat-card p-5 relative z-10">
-            <p className="text-xs text-muted font-medium uppercase tracking-wider">Categorías</p>
-            <p className="text-2xl sm:text-3xl font-bold mt-2 text-accent blue-glow">{categorias.length}</p>
-            <p className="text-xs text-muted mt-2">activas</p>
-          </div>
-          <div className="stat-card p-5 relative z-10">
-            <p className="text-xs text-muted font-medium uppercase tracking-wider">Subcategorías</p>
-            <p className="text-2xl sm:text-3xl font-bold mt-2 text-foreground">{categorias.reduce((sum, c) => sum + c.subcategorias.length, 0)}</p>
-            <p className="text-xs text-muted mt-2">en total</p>
-          </div>
-          <div className="stat-card p-5 relative z-10">
-            <p className="text-xs text-muted font-medium uppercase tracking-wider">Productos</p>
-            <p className="text-2xl sm:text-3xl font-bold mt-2 text-blue-500">{productos.length}</p>
-            <p className="text-xs text-muted mt-2">categorizados</p>
-          </div>
-        </div>
-
-        {/* Top bar */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-foreground">
-              Gestión de Categorías
-            </h2>
-          </div>
+      <Header
+        eyebrow="Taxonomía"
+        title="Categorías"
+        subtitle="Cómo se organiza el catálogo. Cada categoría tiene su foto y subcategorías."
+        action={
           <button
-            onClick={() => {
-              setEditingCat(null);
-              setShowForm(true);
-            }}
-            className="flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent-hover"
+            onClick={() => { setEditingCat(null); setShowForm(true); }}
+            className="v3-admin-btn-accent"
           >
-            <Plus size={18} /> Nueva categoría
+            <Plus size={15} />
+            <span className="hidden sm:inline">Nueva categoría</span>
           </button>
+        }
+      />
+
+      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10">
+
+        {/* KPIs */}
+        <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-10">
+          <div className="v3-stat-card">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Categorías</p>
+            <p className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] mt-2 tabular-nums tracking-tight">
+              {categorias.length}
+            </p>
+          </div>
+          <div className="v3-stat-card">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Subcategorías</p>
+            <p className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] mt-2 tabular-nums tracking-tight">
+              {categorias.reduce((sum, c) => sum + c.subcategorias.length, 0)}
+            </p>
+          </div>
+          <div className="v3-stat-card">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Productos</p>
+            <p className="text-3xl sm:text-4xl font-extrabold text-[#3B82F6] mt-2 tabular-nums tracking-tight">
+              {productos.length}
+            </p>
+          </div>
         </div>
 
-        {/* Category cards */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {/* Category cards — bento-style with photos */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {categorias.map((cat) => {
-            const prodCount = productos.filter(
-              (p) => p.categoriaId === cat.id
-            ).length;
+            const prodCount = productos.filter((p) => p.categoriaId === cat.id).length;
             const isExpanded = expandedId === cat.id;
 
             return (
               <div
                 key={cat.id}
-                className="glass-card rounded-xl overflow-hidden hover:shadow-md transition-shadow"
+                className="bg-white border border-[#0A0A0A]/06 rounded-2xl overflow-hidden hover:border-[#0A0A0A]/20 hover:shadow-[0_12px_36px_-12px_rgba(10,10,10,0.12)] hover:-translate-y-0.5 transition-all duration-300"
               >
-                <div
-                  className="p-5 cursor-pointer"
-                  onClick={() =>
-                    setExpandedId(isExpanded ? null : cat.id)
-                  }
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center">
-                        <Tag size={18} className="text-accent" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">
-                          {cat.nombre}
-                        </h3>
-                        <p className="text-xs text-muted mt-0.5">
-                          {cat.subcategorias.length} subcategorías ·{" "}
-                          {prodCount} productos
-                        </p>
-                      </div>
+                {/* Photo */}
+                <div className="relative aspect-[16/9] bg-[#F2F2EE] overflow-hidden">
+                  {cat.imagen ? (
+                    <Image src={cat.imagen} alt={cat.nombre} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Tag size={28} className="text-[#A3A3A3]" strokeWidth={1.5} />
                     </div>
-                    <div className="flex items-center gap-1">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEditingCat(cat);
-                          setShowForm(true);
-                        }}
-                        className="p-1.5 rounded-lg hover:bg-gray-50 text-muted hover:text-foreground transition-colors"
-                      >
-                        <Edit2 size={14} />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (window.confirm(`¿Eliminar la categoría "${cat.nombre}"? Esta acción no se puede deshacer.`)) {
-                            deleteCategoria(cat.id);
-                          }
-                        }}
-                        className="p-1.5 rounded-lg hover:bg-gray-50 text-muted hover:text-danger transition-colors"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                      <ChevronRight
-                        size={16}
-                        className={clsx(
-                          "text-muted transition-transform",
-                          isExpanded && "rotate-90"
-                        )}
-                      />
-                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
+                    <h3 className="text-white font-bold text-xl tracking-tight drop-shadow-md">
+                      {cat.nombre}
+                    </h3>
                   </div>
                 </div>
 
-                {/* Subcategorías expandidas */}
-                {isExpanded && (
-                  <div className="border-t border-border bg-blue-50/50 px-5 py-3">
-                    <p className="text-xs font-medium text-muted uppercase tracking-wider mb-2">
-                      Subcategorías
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {cat.subcategorias.map((sub) => {
-                        const subCount = productos.filter(
-                          (p) =>
-                            p.categoriaId === cat.id &&
-                            p.subcategoria === sub
-                        ).length;
-                        return (
-                          <span
-                            key={sub}
-                            className="inline-flex items-center gap-1.5 text-xs bg-gray-50 border border-border px-3 py-1.5 rounded-full text-foreground"
-                          >
-                            {sub}
-                            <span className="text-muted flex items-center gap-0.5">
-                              <Package size={10} /> {subCount}
-                            </span>
-                          </span>
-                        );
-                      })}
+                {/* Meta + actions */}
+                <div className="p-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-3 text-xs text-[#737373]">
+                      <span className="flex items-center gap-1">
+                        <Tag size={11} /> {cat.subcategorias.length}
+                      </span>
+                      <span className="w-1 h-1 rounded-full bg-[#A3A3A3]" />
+                      <span className="flex items-center gap-1">
+                        <Package size={11} /> {prodCount} productos
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => { setEditingCat(cat); setShowForm(true); }}
+                        className="p-2 rounded-lg hover:bg-[#0A0A0A]/04 text-[#525252] hover:text-[#0A0A0A] transition-colors"
+                        title="Editar"
+                      >
+                        <Edit2 size={13} />
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (window.confirm(`¿Eliminar "${cat.nombre}"? No se puede deshacer.`)) {
+                            deleteCategoria(cat.id);
+                          }
+                        }}
+                        className="p-2 rounded-lg hover:bg-rose-50 text-[#525252] hover:text-rose-600 transition-colors"
+                        title="Eliminar"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                      <button
+                        onClick={() => setExpandedId(isExpanded ? null : cat.id)}
+                        className="p-2 rounded-lg hover:bg-[#0A0A0A]/04 text-[#525252] hover:text-[#0A0A0A] transition-colors"
+                        title={isExpanded ? "Cerrar" : "Ver subcategorías"}
+                        aria-expanded={isExpanded}
+                      >
+                        <ChevronDown
+                          size={14}
+                          className={`transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                        />
+                      </button>
                     </div>
                   </div>
-                )}
+
+                  {/* Subcategorías expandidas */}
+                  {isExpanded && (
+                    <div className="mt-4 pt-4 border-t border-[#0A0A0A]/06">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373] mb-3">
+                        Subcategorías
+                      </p>
+                      {cat.subcategorias.length === 0 ? (
+                        <p className="text-xs text-[#A3A3A3] italic">Sin subcategorías</p>
+                      ) : (
+                        <div className="flex flex-wrap gap-1.5">
+                          {cat.subcategorias.map((sub) => {
+                            const subCount = productos.filter(
+                              (p) => p.categoriaId === cat.id && p.subcategoria === sub
+                            ).length;
+                            return (
+                              <span
+                                key={sub}
+                                className="inline-flex items-center gap-1.5 text-[11px] bg-[#FAFAF7] border border-[#0A0A0A]/06 px-2.5 py-1 rounded-full text-[#0A0A0A] font-medium"
+                              >
+                                {sub}
+                                <span className="text-[#737373] tabular-nums">· {subCount}</span>
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
         </div>
+
+        {categorias.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-[#0A0A0A]/15 bg-white py-16 text-center">
+            <Tag size={28} className="text-[#A3A3A3] mx-auto mb-3" strokeWidth={1.5} />
+            <p className="font-bold text-[#0A0A0A]">Sin categorías todavía</p>
+            <p className="text-sm text-[#737373] mt-1">Creá la primera para organizar el catálogo</p>
+          </div>
+        )}
       </div>
 
       {/* Modal formulario */}
@@ -175,9 +190,6 @@ export default function CategoriasPage() {
   );
 }
 
-// ==========================================
-// FORMULARIO DE CATEGORÍA (Modal)
-// ==========================================
 function CategoriaForm({
   categoria,
   onClose,
@@ -189,63 +201,64 @@ function CategoriaForm({
   const isEditing = !!categoria;
   const [nombre, setNombre] = useState(categoria?.nombre ?? "");
   const [imagen, setImagen] = useState(categoria?.imagen ?? "");
-  const [subcats, setSubcats] = useState<string[]>(
-    categoria?.subcategorias ?? [""]
-  );
+  const [subcats, setSubcats] = useState<string[]>(categoria?.subcategorias ?? [""]);
 
   const addSubcat = () => setSubcats([...subcats, ""]);
-  const removeSubcat = (idx: number) =>
-    setSubcats(subcats.filter((_, i) => i !== idx));
+  const removeSubcat = (idx: number) => setSubcats(subcats.filter((_, i) => i !== idx));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="relative mx-0 max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-card shadow-2xl sm:mx-4 sm:rounded-2xl">
-        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-border bg-card px-4 py-4 sm:px-6">
-          <h3 className="text-lg font-semibold text-foreground">
-            {isEditing ? "Editar categoría" : "Nueva categoría"}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-50 text-muted hover:text-foreground transition-colors"
-          >
+    <div className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center">
+      <div className="absolute inset-0 bg-[#0A0A0A]/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative mx-0 max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-white shadow-2xl sm:mx-4 sm:rounded-3xl border border-[#0A0A0A]/08">
+
+        {/* Header */}
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#0A0A0A]/06 bg-white/95 backdrop-blur-md px-6 py-5">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">
+              {isEditing ? "Editar" : "Crear"}
+            </span>
+            <h3 className="text-xl font-bold text-[#0A0A0A] tracking-tight mt-0.5">
+              {isEditing ? categoria.nombre : "Nueva categoría"}
+            </h3>
+          </div>
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-[#0A0A0A]/04 text-[#525252]" aria-label="Cerrar">
             <X size={18} />
           </button>
         </div>
 
-        <div className="space-y-6 p-4 sm:p-6">
-          <div>
-            <label className="text-xs font-medium text-muted block mb-1.5">
-              Nombre de la categoría *
-            </label>
+        <div className="space-y-6 p-6">
+
+          <label className="block">
+            <span className="text-xs font-semibold text-[#525252] block mb-1.5">
+              Nombre de la categoría <span className="text-[#3B82F6]">*</span>
+            </span>
             <input
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              placeholder="Ej: Mujer, Calzado, Abrigo..."
-              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-border rounded-lg text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/30"
+              placeholder="Ej: Mujer, Calzado…"
+              className="v3-admin-input"
+            />
+          </label>
+
+          <div>
+            <span className="text-xs font-semibold text-[#525252] block mb-2">
+              Foto de portada
+            </span>
+            <PhotoUploader
+              label=""
+              value={imagen}
+              onChange={setImagen}
+              folder={`categorias/${nombre.trim() || "sin-nombre"}`}
             />
           </div>
 
-          <PhotoUploader
-            label="Foto de portada"
-            value={imagen}
-            onChange={setImagen}
-            folder={`categorias/${nombre.trim() || "sin-nombre"}`}
-          />
-
           <div>
             <div className="flex items-center justify-between mb-3">
-              <label className="text-xs font-medium text-muted">
+              <span className="text-xs font-semibold text-[#525252]">
                 Subcategorías
-              </label>
-              <button
-                onClick={addSubcat}
-                className="text-xs text-accent hover:text-accent-hover font-medium flex items-center gap-1"
-              >
+              </span>
+              <button onClick={addSubcat} className="text-xs text-[#3B82F6] hover:text-[#2F6EE0] font-semibold flex items-center gap-1">
                 <Plus size={12} /> Agregar
               </button>
             </div>
@@ -261,12 +274,13 @@ function CategoriaForm({
                       setSubcats(updated);
                     }}
                     placeholder="Nombre de subcategoría"
-                    className="flex-1 px-3 py-2 text-sm bg-gray-50 border border-border rounded-lg text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/30"
+                    className="v3-admin-input flex-1"
                   />
                   {subcats.length > 1 && (
                     <button
                       onClick={() => removeSubcat(idx)}
-                      className="p-2 text-muted hover:text-danger transition-colors"
+                      className="p-2 text-[#525252] hover:text-rose-600 transition-colors"
+                      aria-label="Quitar"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -277,13 +291,9 @@ function CategoriaForm({
           </div>
         </div>
 
-        <div className="sticky bottom-0 bg-card border-t border-border px-6 py-4 rounded-b-2xl flex items-center justify-end gap-3">
-          <button
-            onClick={onClose}
-            className="px-4 py-2.5 text-sm font-medium text-muted hover:text-foreground border border-border rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            Cancelar
-          </button>
+        {/* Footer */}
+        <div className="sticky bottom-0 bg-white border-t border-[#0A0A0A]/06 px-6 py-4 flex items-center justify-end gap-2 sm:gap-3">
+          <button onClick={onClose} className="v3-admin-btn-ghost">Cancelar</button>
           <button
             onClick={() => {
               const cleanSubs = subcats.filter((s) => s.trim());
@@ -294,7 +304,7 @@ function CategoriaForm({
               }
               onClose();
             }}
-            className="px-6 py-2.5 text-sm font-medium bg-accent hover:bg-accent-hover text-white rounded-lg transition-colors shadow-sm"
+            className="v3-admin-btn"
           >
             {isEditing ? "Guardar cambios" : "Crear categoría"}
           </button>
