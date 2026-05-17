@@ -27,7 +27,7 @@ const steps = [
 export default function HowItWorks() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
-  const [progress, setProgress] = useState(0); // 0 to 1 within the section
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,7 +40,6 @@ export default function HowItWorks() {
       const p = Math.min(1, Math.max(0, scrolled / total));
       setProgress(p);
 
-      // Each step takes 1/3 of the scrollable area
       const stepIdx = p < 0.33 ? 0 : p < 0.66 ? 1 : 2;
       setActiveStep(stepIdx);
     };
@@ -48,6 +47,9 @@ export default function HowItWorks() {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const current = steps[activeStep];
+  const Icon = current.icon;
 
   return (
     <section
@@ -80,8 +82,8 @@ export default function HowItWorks() {
           />
         </div>
 
-        {/* Top progress line */}
-        <div className="absolute top-0 left-0 right-0 h-[3px] bg-white/8">
+        {/* Top progress line — fills as you scroll through the whole section */}
+        <div className="absolute top-0 left-0 right-0 h-[3px] bg-white/8 z-20">
           <div
             className="h-full bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] transition-all duration-300 ease-out"
             style={{ width: `${progress * 100}%` }}
@@ -91,63 +93,48 @@ export default function HowItWorks() {
         <div className="relative max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 z-10 w-full">
 
           {/* Header — always visible */}
-          <div className="grid grid-cols-12 gap-6 lg:gap-12 mb-12 sm:mb-16">
-            <div className="col-span-12 lg:col-span-7">
-              <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#60A5FA]">
-                <span className="w-6 h-px bg-[#60A5FA]" />
-                Cómo funciona
+          <div className="mb-10 sm:mb-12">
+            <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#60A5FA]">
+              <span className="w-6 h-px bg-[#60A5FA]" />
+              Cómo funciona
+            </span>
+            <h2 className="mt-4 text-[36px] sm:text-[56px] lg:text-[72px] font-extrabold tracking-[-0.045em] leading-[0.95]">
+              Tres pasos.{" "}
+              <span className="italic font-light text-[#60A5FA]">Sin vueltas.</span>
+            </h2>
+          </div>
+
+          {/* Active step content — single render, fresh animation on change */}
+          <div
+            key={current.num}
+            className="grid grid-cols-12 gap-6 lg:gap-12 items-center"
+            style={{ animation: "v3-step-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both" }}
+          >
+            {/* Left: Giant number only */}
+            <div className="col-span-12 md:col-span-5 lg:col-span-5">
+              <span className="text-[28vw] sm:text-[180px] lg:text-[240px] font-extrabold tracking-[-0.05em] leading-[0.82] text-[#3B82F6] block">
+                {current.num}
               </span>
-              <h2 className="mt-4 text-[36px] sm:text-[56px] lg:text-[72px] font-extrabold tracking-[-0.045em] leading-[0.95]">
-                Tres pasos.<br />
-                <span className="italic font-light text-[#60A5FA]">Sin vueltas.</span>
-              </h2>
+            </div>
+
+            {/* Right: Icon + Title + Description */}
+            <div className="col-span-12 md:col-span-7 lg:col-span-7 flex flex-col gap-5 sm:gap-6">
+              {/* Icon on top — small, clean */}
+              <div className="inline-flex w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#3B82F6] items-center justify-center shadow-[0_16px_40px_-8px_rgba(59,130,246,0.6)]">
+                <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" strokeWidth={1.7} />
+              </div>
+
+              <h3 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.03em] leading-[1.05]">
+                {current.title}
+              </h3>
+              <p className="text-base sm:text-lg leading-relaxed text-white/70 max-w-xl">
+                {current.desc}
+              </p>
             </div>
           </div>
 
-          {/* Steps stack — only one visible at a time */}
-          <div className="relative min-h-[40vh]">
-            {steps.map((step, idx) => {
-              const Icon = step.icon;
-              const isActive = activeStep === idx;
-              return (
-                <div
-                  key={step.num}
-                  className="absolute inset-0 grid grid-cols-12 gap-6 lg:gap-12 transition-all duration-700 ease-out"
-                  style={{
-                    opacity: isActive ? 1 : 0,
-                    transform: isActive ? "translateY(0)" : (idx < activeStep ? "translateY(-40px)" : "translateY(40px)"),
-                    pointerEvents: isActive ? "auto" : "none",
-                  }}
-                >
-                  {/* Left: big number + icon (visible logo) */}
-                  <div className="col-span-12 md:col-span-5 lg:col-span-5 flex items-start gap-6 md:flex-col md:gap-6">
-                    {/* Big number — solid color, no gradient */}
-                    <span className="text-[20vw] sm:text-[140px] lg:text-[180px] font-extrabold tracking-[-0.05em] leading-[0.85] text-[#3B82F6] block">
-                      {step.num}
-                    </span>
-
-                    {/* Icon box — big and visible */}
-                    <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#3B82F6] flex items-center justify-center shadow-[0_20px_60px_-10px_rgba(59,130,246,0.7)] mt-2 md:mt-0">
-                      <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-white" strokeWidth={1.6} />
-                    </div>
-                  </div>
-
-                  {/* Right: text */}
-                  <div className="col-span-12 md:col-span-7 lg:col-span-7 flex flex-col justify-center">
-                    <h3 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.03em] leading-[1.05] mb-5 sm:mb-6">
-                      {step.title}
-                    </h3>
-                    <p className="text-base sm:text-lg lg:text-xl leading-relaxed text-white/70 max-w-xl">
-                      {step.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Bottom: step dots */}
-          <div className="mt-auto absolute bottom-12 sm:bottom-16 left-5 sm:left-8 lg:left-12 right-5 sm:right-8 lg:right-12">
+          {/* Bottom: clean progress bars (no count number to avoid clutter) */}
+          <div className="absolute bottom-10 sm:bottom-14 left-5 sm:left-8 lg:left-12 right-5 sm:right-8 lg:right-12">
             <div className="flex items-center gap-3">
               {steps.map((_, i) => (
                 <div
@@ -161,14 +148,25 @@ export default function HowItWorks() {
                   }`}
                 />
               ))}
-              <span className="ml-3 text-xs font-semibold tabular-nums text-white/40">
-                {String(activeStep + 1).padStart(2, "0")} <span className="text-white/20">/ {String(steps.length).padStart(2, "0")}</span>
-              </span>
             </div>
           </div>
 
         </div>
       </div>
+
+      {/* Keyframes for step swap animation */}
+      <style jsx>{`
+        @keyframes v3-step-in {
+          from {
+            opacity: 0;
+            transform: translateY(24px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </section>
   );
 }
