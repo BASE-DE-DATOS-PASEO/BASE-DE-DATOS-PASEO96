@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Filter, ChevronDown } from "lucide-react";
+import { useState, useMemo, useCallback } from "react";
+import { Filter, ChevronDown, ChevronRight } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
 import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "./ProductCardSkeleton";
@@ -13,45 +13,62 @@ interface ProductGridProps {
   onCategoriaChange: (cat: string | null) => void;
 }
 
+// Productos visibles por página (≈10 filas × 6 columnas en desktop)
+const PAGE_SIZE = 60;
+
 export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChange }: ProductGridProps) {
   const { productos, categorias, getLocalById } = usePublicStore();
   const [orden, setOrden] = useState("relevantes");
   const [loading] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const headerRef = useScrollReveal<HTMLDivElement>();
   const gridRef = useScrollReveal<HTMLDivElement>(0.05);
 
-  // Filter by category
-  let productosFiltrados = categoriaActiva
-    ? productos.filter((p) => p.categoriaId === categoriaActiva)
-    : productos;
+  // Reset visible count when filters change
+  const handleCategoriaChange = useCallback((cat: string | null) => {
+    setVisibleCount(PAGE_SIZE);
+    onCategoriaChange(cat);
+  }, [onCategoriaChange]);
 
-  // Filter by search query
-  if (busqueda.trim()) {
-    const q = busqueda.toLowerCase().trim();
-    productosFiltrados = productosFiltrados.filter((p) => {
-      const local = getLocalById(p.localId);
-      return (
-        p.nombre.toLowerCase().includes(q) ||
-        (p.descripcion && p.descripcion.toLowerCase().includes(q)) ||
-        (local && local.nombre.toLowerCase().includes(q))
-      );
+  // Filter & sort (memoized for perf with large datasets)
+  const productosOrdenados = useMemo(() => {
+    // Filter by category
+    let filtered = categoriaActiva
+      ? productos.filter((p) => p.categoriaId === categoriaActiva)
+      : productos;
+
+    // Filter by search query
+    if (busqueda.trim()) {
+      const q = busqueda.toLowerCase().trim();
+      filtered = filtered.filter((p) => {
+        const local = getLocalById(p.localId);
+        return (
+          p.nombre.toLowerCase().includes(q) ||
+          (p.descripcion && p.descripcion.toLowerCase().includes(q)) ||
+          (local && local.nombre.toLowerCase().includes(q))
+        );
+      });
+    }
+
+    // Sort: premium first, then by selected order
+    return [...filtered].sort((a, b) => {
+      const localA = getLocalById(a.localId);
+      const localB = getLocalById(b.localId);
+      const planWeight = (plan?: string) => plan === "oro" ? 2 : plan === "plata" ? 1 : 0;
+      const aPremium = planWeight(localA?.plan);
+      const bPremium = planWeight(localB?.plan);
+
+      if (bPremium !== aPremium) return bPremium - aPremium;
+
+      if (orden === "menor") return a.precio - b.precio;
+      if (orden === "mayor") return b.precio - a.precio;
+      return 0;
     });
-  }
+  }, [productos, categoriaActiva, busqueda, orden, getLocalById]);
 
-  // Sort: premium first, then by selected order
-  const productosOrdenados = [...productosFiltrados].sort((a, b) => {
-    const localA = getLocalById(a.localId);
-    const localB = getLocalById(b.localId);
-    const planWeight = (plan?: string) => plan === "oro" ? 2 : plan === "plata" ? 1 : 0;
-    const aPremium = planWeight(localA?.plan);
-    const bPremium = planWeight(localB?.plan);
-
-    if (bPremium !== aPremium) return bPremium - aPremium;
-
-    if (orden === "menor") return a.precio - b.precio;
-    if (orden === "mayor") return b.precio - a.precio;
-    return 0;
-  });
+  const productosVisibles = productosOrdenados.slice(0, visibleCount);
+  const hayMas = visibleCount < productosOrdenados.length;
+  const restantes = productosOrdenados.length - visibleCount;
 
   return (
     <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -63,6 +80,11 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
           </h2>
           <p className="text-pub-text-secondary text-sm mt-0.5">
             {productosOrdenados.length} productos encontrados
+            {hayMas && (
+              <span className="text-blue-500 ml-1">
+                — mostrando {productosVisibles.length}
+              </span>
+            )}
           </p>
         </div>
 
@@ -75,7 +97,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
           <div className="relative">
             <select
               value={orden}
-              onChange={(e) => setOrden(e.target.value)}
+              onChange={(e) => { setOrden(e.target.value); setVisibleCount(PAGE_SIZE); }}
               className="appearance-none bg-white border border-pub-border rounded-xl px-4 py-2 pr-9 text-sm text-pub-text focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer"
             >
               <option value="relevantes">Más relevantes</option>
@@ -90,7 +112,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
       {/* Category filter tabs */}
       <div className="flex flex-wrap gap-2 mb-8">
         <button
-          onClick={() => onCategoriaChange(null)}
+          onClick={() => handleCategoriaChange(null)}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
             categoriaActiva === null
               ? "bg-blue-600 text-white shadow-md"
@@ -102,7 +124,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
         {categorias.map((cat) => (
           <button
             key={cat.id}
-            onClick={() => onCategoriaChange(cat.id)}
+            onClick={() => handleCategoriaChange(cat.id)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
               categoriaActiva === cat.id
                 ? "bg-blue-600 text-white shadow-md"
@@ -114,18 +136,50 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
         ))}
       </div>
 
-      {/* Product grid — fade-in suave al entrar al viewport */}
+      {/* Product grid */}
       <div
         ref={gridRef}
         className="reveal grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4"
       >
         {loading
           ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
-          : productosOrdenados.map((producto) => (
+          : productosVisibles.map((producto) => (
               <ProductCard key={producto.id} producto={producto} />
             ))
         }
       </div>
+
+      {/* Ver más */}
+      {!loading && hayMas && (
+        <div className="mt-10 flex flex-col items-center gap-3">
+          {/* Progress bar */}
+          <div className="w-full max-w-xs bg-gray-100 rounded-full h-1.5 overflow-hidden">
+            <div
+              className="h-full bg-blue-500 rounded-full transition-all duration-500"
+              style={{ width: `${(visibleCount / productosOrdenados.length) * 100}%` }}
+            />
+          </div>
+          <p className="text-xs text-pub-text-secondary">
+            Mostrando {productosVisibles.length} de {productosOrdenados.length} productos
+          </p>
+          <button
+            onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+            className="group flex items-center gap-2 px-8 py-3 bg-white border-2 border-blue-500 text-blue-600 font-semibold rounded-2xl hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md"
+          >
+            Ver más productos
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+      )}
+
+      {/* All loaded message */}
+      {!loading && !hayMas && productosOrdenados.length > PAGE_SIZE && (
+        <div className="mt-8 text-center">
+          <p className="text-sm text-pub-text-secondary">
+            Mostrando todos los {productosOrdenados.length} productos
+          </p>
+        </div>
+      )}
 
       {/* Empty state */}
       {!loading && productosOrdenados.length === 0 && (

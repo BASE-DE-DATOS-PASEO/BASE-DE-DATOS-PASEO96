@@ -273,9 +273,23 @@ export const puesterosRepo = {
 // ─── PRODUCTOS ──────────────────────────────────────────────
 export const productosRepo = {
   async list(): Promise<Producto[]> {
-    const { data, error } = await supabase.from("productos").select("*").order("id", { ascending: true });
-    if (error) throw error;
-    return (data as ProductoRow[]).map(rowToProducto);
+    // Supabase limita a 1000 rows por query — paginamos para traer todo
+    const PAGE = 1000;
+    let all: ProductoRow[] = [];
+    let from = 0;
+    while (true) {
+      const { data, error } = await supabase
+        .from("productos")
+        .select("*")
+        .order("id", { ascending: true })
+        .range(from, from + PAGE - 1);
+      if (error) throw error;
+      if (!data || data.length === 0) break;
+      all = all.concat(data as ProductoRow[]);
+      if (data.length < PAGE) break;
+      from += PAGE;
+    }
+    return all.map(rowToProducto);
   },
   async insert(p: Omit<Producto, "id">): Promise<Producto> {
     const { data, error } = await supabase.from("productos").insert(productoToRow(p)).select().single();
