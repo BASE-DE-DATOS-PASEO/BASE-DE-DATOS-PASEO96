@@ -104,15 +104,33 @@ export default function HowItWorks() {
             </h2>
           </div>
 
+          {/* Top: clean progress bars — placed BEFORE the content to avoid number overlap */}
+          <div className="mb-10 sm:mb-14">
+            <div className="flex items-center gap-3">
+              {steps.map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-[3px] rounded-full transition-all duration-500 ${
+                    i === activeStep
+                      ? "w-16 bg-[#3B82F6]"
+                      : i < activeStep
+                      ? "w-10 bg-white/30"
+                      : "w-10 bg-white/10"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
           {/* Active step content — single render, fresh animation on change */}
           <div
             key={current.num}
             className="grid grid-cols-12 gap-6 lg:gap-12 items-center"
             style={{ animation: "v3-step-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both" }}
           >
-            {/* Left: Giant number only */}
+            {/* Left: Giant number — smaller so it doesn't bleed into other elements */}
             <div className="col-span-12 md:col-span-5 lg:col-span-5">
-              <span className="text-[28vw] sm:text-[180px] lg:text-[240px] font-extrabold tracking-[-0.05em] leading-[0.82] text-[#3B82F6] block">
+              <span className="text-[22vw] sm:text-[150px] lg:text-[200px] font-extrabold tracking-[-0.05em] leading-[0.85] text-[#3B82F6] block">
                 {current.num}
               </span>
             </div>
@@ -130,24 +148,6 @@ export default function HowItWorks() {
               <p className="text-base sm:text-lg leading-relaxed text-white/70 max-w-xl">
                 {current.desc}
               </p>
-            </div>
-          </div>
-
-          {/* Bottom: clean progress bars (no count number to avoid clutter) */}
-          <div className="absolute bottom-10 sm:bottom-14 left-5 sm:left-8 lg:left-12 right-5 sm:right-8 lg:right-12">
-            <div className="flex items-center gap-3">
-              {steps.map((_, i) => (
-                <div
-                  key={i}
-                  className={`h-[3px] rounded-full transition-all duration-500 ${
-                    i === activeStep
-                      ? "w-16 bg-[#3B82F6]"
-                      : i < activeStep
-                      ? "w-10 bg-white/30"
-                      : "w-10 bg-white/10"
-                  }`}
-                />
-              ))}
             </div>
           </div>
 
