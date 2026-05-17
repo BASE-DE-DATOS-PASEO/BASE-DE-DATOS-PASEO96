@@ -94,17 +94,14 @@ export default function MiLocalPage() {
     setEditing(false);
   }
 
-  const inputClass =
-    "w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-colors";
+  const inputClass = "v3-admin-input";
 
   if (!puestero) {
     return (
-      <div className="rounded-2xl border border-dashed border-amber-200 bg-amber-50/60 p-8 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mx-auto mb-4 shadow-sm">
-          <Store size={26} className="text-amber-500" />
-        </div>
-        <h1 className="text-xl font-bold text-gray-900">Sin local activo</h1>
-        <p className="text-sm text-gray-600 mt-2 max-w-xl mx-auto">
+      <div className="rounded-2xl border border-dashed border-amber-200 bg-amber-50/40 p-10 text-center">
+        <Store size={26} className="text-amber-500 mx-auto mb-4" />
+        <h1 className="text-2xl font-bold text-[#0A0A0A] tracking-tight">Sin local activo</h1>
+        <p className="text-sm text-[#525252] mt-2 max-w-xl mx-auto leading-relaxed">
           Cuando una solicitud sea aprobada, acá se van a editar el WhatsApp,
           la información visible del puesto y los servicios que ofrece.
         </p>
@@ -126,34 +123,37 @@ export default function MiLocalPage() {
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-10">
+      {/* Editorial header */}
+      <section className="flex items-end justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">Mi Local</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Información de tu puesto en Paseo 96
+          <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">
+            <span className="w-5 h-px bg-[#3B82F6]" />
+            Configuración
+          </span>
+          <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-[-0.04em] leading-[1.05] text-[#0A0A0A]">
+            Mi local
+          </h1>
+          <p className="text-[#525252] text-sm mt-2">
+            Identidad, contacto y servicios de tu puesto.
           </p>
         </div>
         {!editing && (
-          <button
-            onClick={startEdit}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm"
-          >
+          <button onClick={startEdit} className="v3-admin-btn-accent shrink-0">
             <Edit2 size={14} />
-            Editar datos
+            <span className="hidden sm:inline">Editar datos</span>
           </button>
         )}
-      </div>
+      </section>
 
       {/* ── MODO EDICIÓN ── */}
       {editing && (
-        <div className="rounded-2xl border border-blue-200 bg-blue-50/40 p-6 space-y-5">
+        <div className="rounded-2xl border border-[#3B82F6]/30 bg-blue-50/40 p-6 space-y-5">
           <div className="flex items-center justify-between mb-1">
-            <h2 className="text-sm font-semibold text-blue-900 uppercase tracking-wider">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">
               Editando información
             </h2>
-            <button onClick={cancelEdit} className="p-1.5 rounded-lg hover:bg-blue-100 text-blue-500 transition-colors">
+            <button onClick={cancelEdit} className="p-1.5 rounded-lg hover:bg-blue-100 text-[#3B82F6] transition-colors" aria-label="Cancelar">
               <X size={16} />
             </button>
           </div>
@@ -258,17 +258,9 @@ export default function MiLocalPage() {
           </div>
 
           {/* Acciones */}
-          <div className="flex items-center justify-end gap-3 pt-2 border-t border-blue-100">
-            <button
-              onClick={cancelEdit}
-              className="px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-gray-700 border border-gray-200 bg-white rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              Cancelar
-            </button>
-            <button
-              onClick={saveEdit}
-              className="flex items-center gap-2 px-6 py-2.5 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm"
-            >
+          <div className="flex items-center justify-end gap-2 sm:gap-3 pt-3 border-t border-blue-200/40">
+            <button onClick={cancelEdit} className="v3-admin-btn-ghost">Cancelar</button>
+            <button onClick={saveEdit} className="v3-admin-btn">
               <Save size={14} />
               Guardar cambios
             </button>
@@ -276,12 +268,12 @@ export default function MiLocalPage() {
         </div>
       )}
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-5">
         {/* ── Left ── */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-5">
           {/* Identity */}
-          <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+          <section className="rounded-2xl border border-[#0A0A0A]/06 bg-white p-6">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252] mb-4">
               Identidad del local
             </h2>
             <div className="flex items-start gap-5">
@@ -300,26 +292,20 @@ export default function MiLocalPage() {
               )}
               <div className="flex-1 space-y-3">
                 <div>
-                  <label className="text-xs text-gray-500">Nombre comercial</label>
-                  <p className="font-semibold text-gray-900 text-lg">{puestero.nombreComercial}</p>
+                  <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-[#737373]">Nombre comercial</p>
+                  <p className="font-bold text-[#0A0A0A] text-xl tracking-tight mt-1">{puestero.nombreComercial}</p>
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500">Responsable</label>
-                  <p className="text-sm text-gray-700">{puestero.nombreResponsable}</p>
+                  <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-[#737373]">Responsable</p>
+                  <p className="text-sm text-[#0A0A0A] mt-1">{puestero.nombreResponsable}</p>
                 </div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${planBadge(puestero.plan)}`}>
-                    {puestero.plan === "oro" && <Crown size={12} />}
+                <div className="flex items-center gap-2 flex-wrap pt-1">
+                  <span className={`v3-admin-badge ${(puestero.plan === "oro" || puestero.plan === "plata") ? "v3-admin-badge-premium" : "v3-admin-badge-neutral"}`}>
+                    {puestero.plan === "oro" && <Crown size={11} />}
                     Plan {plan.nombre}
                   </span>
-                  <span
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
-                      puestero.estadoActividad === "activo"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-gray-100 text-gray-500"
-                    }`}
-                  >
-                    <CircleDot size={12} />
+                  <span className={`v3-admin-badge ${puestero.estadoActividad === "activo" ? "v3-admin-badge-success" : "v3-admin-badge-neutral"}`}>
+                    <CircleDot size={11} />
                     {puestero.estadoActividad === "activo" ? "Activo" : "Inactivo"}
                   </span>
                 </div>
@@ -328,19 +314,19 @@ export default function MiLocalPage() {
           </section>
 
           {/* Details grid */}
-          <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+          <section className="rounded-2xl border border-[#0A0A0A]/06 bg-white p-6">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252] mb-4">
               Datos del puesto
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {datosGrid.map((item) => (
                 <div key={item.label} className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center mt-0.5">
-                    <item.icon size={16} className="text-gray-400" />
+                  <div className="w-10 h-10 rounded-xl bg-[#FAFAF7] border border-[#0A0A0A]/06 flex items-center justify-center mt-0.5 shrink-0">
+                    <item.icon size={15} className="text-[#525252]" strokeWidth={1.8} />
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500">{item.label}</p>
-                    <p className="text-sm font-medium text-gray-900">{item.value}</p>
+                  <div className="min-w-0">
+                    <p className="text-[10px] uppercase tracking-[0.15em] font-bold text-[#737373]">{item.label}</p>
+                    <p className="text-sm font-semibold text-[#0A0A0A] mt-0.5 break-words">{item.value}</p>
                   </div>
                 </div>
               ))}
@@ -348,29 +334,22 @@ export default function MiLocalPage() {
           </section>
 
           {/* Services */}
-          <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+          <section className="rounded-2xl border border-[#0A0A0A]/06 bg-white p-6">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252] mb-4">
               Servicios ofrecidos
             </h2>
-            <div className="grid sm:grid-cols-3 gap-3">
+            <div className="grid sm:grid-cols-3 gap-2.5">
               {servicios.map((s) => (
                 <div
                   key={s.label}
-                  className={`flex items-center gap-3 p-3 rounded-xl border ${
+                  className={`flex items-center gap-3 p-3.5 rounded-xl border ${
                     s.active
-                      ? "bg-emerald-50 border-emerald-200"
-                      : "bg-gray-50 border-gray-200"
+                      ? "bg-emerald-50 border-emerald-200/70"
+                      : "bg-[#FAFAF7] border-[#0A0A0A]/06"
                   }`}
                 >
-                  <s.icon
-                    size={18}
-                    className={s.active ? "text-emerald-600" : "text-gray-400"}
-                  />
-                  <span
-                    className={`text-sm font-medium ${
-                      s.active ? "text-emerald-700" : "text-gray-500"
-                    }`}
-                  >
+                  <s.icon size={16} strokeWidth={1.8} className={s.active ? "text-emerald-700" : "text-[#A3A3A3]"} />
+                  <span className={`text-sm font-semibold ${s.active ? "text-emerald-700" : "text-[#737373]"}`}>
                     {s.label}
                   </span>
                 </div>
@@ -380,50 +359,48 @@ export default function MiLocalPage() {
         </div>
 
         {/* ── Right ── */}
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Logo */}
-          <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+          <section className="rounded-2xl border border-[#0A0A0A]/06 bg-white p-6">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252] mb-4">
               Logo del local
             </h2>
             {puestero.logoUrl ? (
-              <div className="w-full aspect-square rounded-2xl overflow-hidden bg-white relative mb-4 shadow-sm">
+              <div className="w-full aspect-square rounded-2xl overflow-hidden bg-white relative mb-3 ring-1 ring-[#0A0A0A]/08">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={puestero.logoUrl} alt={puestero.nombreComercial} className="absolute inset-0 w-full h-full object-cover" />
               </div>
             ) : (
               <div
-                className="w-full aspect-square rounded-2xl flex flex-col items-center justify-center text-white mb-4"
+                className="w-full aspect-square rounded-2xl flex flex-col items-center justify-center text-white mb-3"
                 style={{ backgroundColor: puestero.color }}
               >
-                <span className="text-5xl font-bold">{puestero.logoIniciales}</span>
-                <span className="text-xs text-white/70 mt-2">{puestero.nombreComercial}</span>
+                <span className="text-6xl font-extrabold tracking-tight">{puestero.logoIniciales}</span>
+                <span className="text-xs text-white/70 mt-2 font-medium">{puestero.nombreComercial}</span>
               </div>
             )}
-            <p className="text-xs text-gray-500 text-center">
-              {puestero.logoUrl
-                ? "Para cambiarlo, tocá Editar datos arriba."
-                : "Tocá Editar datos arriba para subir tu logo."}
+            <p className="text-[11px] text-[#737373] text-center">
+              {puestero.logoUrl ? "Para cambiarlo, tocá Editar arriba." : "Tocá Editar arriba para subir tu logo."}
             </p>
           </section>
 
           {/* Next payment */}
-          <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-              Próximo cobro
-            </h2>
-            <p className="text-2xl font-bold text-gray-900">
-              {formatFechaCorta(puestero.fechaProximoCobro)}
-            </p>
-            <p className="text-sm text-gray-500">
-              {new Date(puestero.fechaProximoCobro).getFullYear()}
-            </p>
-            <div className="mt-3 pt-3 border-t border-gray-100">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">Plan {plan.nombre}</span>
-                <span className="text-sm font-bold text-gray-900">
-                  {formatPrecio(plan.precio)}
-                </span>
+          <section className="rounded-2xl bg-[#0A0A0A] text-white p-6 relative overflow-hidden">
+            <div
+              className="absolute inset-0 opacity-40 pointer-events-none"
+              style={{ background: "radial-gradient(circle at 90% 30%, rgba(59,130,246,0.35) 0%, transparent 60%)" }}
+            />
+            <div className="relative">
+              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#60A5FA]">Próximo cobro</span>
+              <p className="text-3xl font-extrabold tracking-tight mt-2 tabular-nums">
+                {formatFechaCorta(puestero.fechaProximoCobro)}
+              </p>
+              <p className="text-sm text-white/60 tabular-nums">
+                {new Date(puestero.fechaProximoCobro).getFullYear()}
+              </p>
+              <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
+                <span className="text-sm text-white/70">Plan {plan.nombre}</span>
+                <span className="text-sm font-bold tabular-nums">{formatPrecio(plan.precio)}</span>
               </div>
             </div>
           </section>

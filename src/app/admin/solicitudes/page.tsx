@@ -247,13 +247,21 @@ export default function SolicitudesPage() {
 
       {/* Modal de detalle */}
       {detalle && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <h3 className="text-lg font-semibold text-foreground">Detalle de la solicitud</h3>
+        <div className="fixed inset-0 bg-[#0A0A0A]/40 z-[100] flex items-end sm:items-center justify-center sm:p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto border border-[#0A0A0A]/08">
+            <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-[#0A0A0A]/06 bg-white/95 backdrop-blur-md">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">
+                  Solicitud
+                </span>
+                <h3 className="text-xl font-bold text-[#0A0A0A] tracking-tight mt-0.5 truncate max-w-xs">
+                  {detalle.nombreComercial}
+                </h3>
+              </div>
               <button
                 onClick={() => setDetalle(null)}
-                className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg hover:bg-[#0A0A0A]/04 text-[#525252] transition-colors"
+                aria-label="Cerrar"
               >
                 <X size={18} />
               </button>
@@ -402,10 +410,10 @@ export default function SolicitudesPage() {
               )}
             </div>
 
-            <div className="flex items-center gap-2 p-6 border-t border-gray-100">
+            <div className="sticky bottom-0 flex items-center gap-2 p-6 border-t border-[#0A0A0A]/06 bg-white">
               <button
                 onClick={() => rechazar(detalle.id)}
-                className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg border border-red-200 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors"
+                className="flex-1 v3-admin-btn-danger"
               >
                 <X size={16} />
                 Rechazar
@@ -419,7 +427,7 @@ export default function SolicitudesPage() {
                     (p) => p.fila.toLowerCase() === detalle.fila.toLowerCase() && p.numeroPuesto === detalle.numeroPuesto
                   )
                 }
-                className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               >
                 <Check size={16} />
                 Aprobar y activar
