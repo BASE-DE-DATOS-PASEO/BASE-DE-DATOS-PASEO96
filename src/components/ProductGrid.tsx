@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
-import { Filter, ChevronDown, ChevronRight } from "lucide-react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { Filter, ChevronDown, ChevronRight, ChevronLeft } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
 import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "./ProductCardSkeleton";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface ProductGridProps {
   busqueda: string;
@@ -21,8 +20,40 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
   const [orden, setOrden] = useState("relevantes");
   const [loading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const headerRef = useScrollReveal<HTMLDivElement>();
-  const gridRef = useScrollReveal<HTMLDivElement>(0.05);
+
+  // ── Slider de categorías ───────────────────────────────────
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScrollButtons = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    checkScrollButtons();
+    el.addEventListener("scroll", checkScrollButtons, { passive: true });
+    const ro = new ResizeObserver(checkScrollButtons);
+    ro.observe(el);
+    window.addEventListener("resize", checkScrollButtons);
+    return () => {
+      el.removeEventListener("scroll", checkScrollButtons);
+      ro.disconnect();
+      window.removeEventListener("resize", checkScrollButtons);
+    };
+  }, [checkScrollButtons, categorias.length]);
+
+  const scrollBy = (dir: "left" | "right") => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const amount = Math.max(240, el.clientWidth * 0.7);
+    el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
+  };
 
   // Reset visible count when filters change
   const handleCategoriaChange = useCallback((cat: string | null) => {
@@ -68,12 +99,11 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
 
   const productosVisibles = productosOrdenados.slice(0, visibleCount);
   const hayMas = visibleCount < productosOrdenados.length;
-  const restantes = productosOrdenados.length - visibleCount;
 
   return (
     <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header with filters */}
-      <div ref={headerRef} className="reveal flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <h2 className="fluid-h2 font-bold text-pub-primary">
             {busqueda ? `Resultados para "${busqueda}"` : "Todos los productos"}
@@ -109,38 +139,82 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
         </div>
       </div>
 
-      {/* Category filter tabs */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      {/* Category filter slider with arrows */}
+      <div className="relative mb-8">
+        {/* Left arrow */}
         <button
-          onClick={() => handleCategoriaChange(null)}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-            categoriaActiva === null
-              ? "bg-blue-600 text-white shadow-md"
-              : "bg-gray-100 text-pub-text-secondary hover:bg-gray-200"
+          type="button"
+          onClick={() => scrollBy("left")}
+          aria-label="Categorías anteriores"
+          className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-pub-text hover:bg-gray-50 transition-all duration-200 ${
+            canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          Todos
+          <ChevronLeft className="w-5 h-5" />
         </button>
-        {categorias.map((cat) => (
+
+        {/* Fade left */}
+        <div
+          className={`absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white via-white to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
+            canScrollLeft ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        {/* Scroller */}
+        <div
+          ref={scrollerRef}
+          className="flex gap-2 overflow-x-auto scroll-smooth px-2 py-1 no-scrollbar"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           <button
-            key={cat.id}
-            onClick={() => handleCategoriaChange(cat.id)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-              categoriaActiva === cat.id
+            type="button"
+            onClick={() => handleCategoriaChange(null)}
+            className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              categoriaActiva === null
                 ? "bg-blue-600 text-white shadow-md"
                 : "bg-gray-100 text-pub-text-secondary hover:bg-gray-200"
             }`}
           >
-            {cat.nombre}
+            Todos
           </button>
-        ))}
+          {categorias.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              onClick={() => handleCategoriaChange(cat.id)}
+              className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                categoriaActiva === cat.id
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "bg-gray-100 text-pub-text-secondary hover:bg-gray-200"
+              }`}
+            >
+              {cat.nombre}
+            </button>
+          ))}
+        </div>
+
+        {/* Fade right */}
+        <div
+          className={`absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white via-white to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
+            canScrollRight ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        {/* Right arrow */}
+        <button
+          type="button"
+          onClick={() => scrollBy("right")}
+          aria-label="Más categorías"
+          className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-pub-text hover:bg-gray-50 transition-all duration-200 ${
+            canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Product grid */}
-      <div
-        ref={gridRef}
-        className="reveal grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4"
-      >
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
         {loading
           ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
           : productosVisibles.map((producto) => (
@@ -152,7 +226,6 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
       {/* Ver más */}
       {!loading && hayMas && (
         <div className="mt-10 flex flex-col items-center gap-3">
-          {/* Progress bar */}
           <div className="w-full max-w-xs bg-gray-100 rounded-full h-1.5 overflow-hidden">
             <div
               className="h-full bg-blue-500 rounded-full transition-all duration-500"

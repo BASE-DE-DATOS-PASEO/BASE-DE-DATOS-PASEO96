@@ -414,6 +414,15 @@ select option {
   outline-offset: 2px;
 }
 
+/* === Slider horizontal sin scrollbar visible === */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* === ACCESIBILIDAD: respetar preferencia de usuario === */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
