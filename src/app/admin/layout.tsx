@@ -16,23 +16,27 @@ export default function AdminLayout({
 
   if (loading) {
     return (
-      <div className="admin-layout min-h-screen flex items-center justify-center">
-        <Loader2 className="w-6 h-6 text-blue-600 animate-spin" />
+      <div className="v3-admin-bg min-h-screen flex items-center justify-center">
+        <Loader2 className="w-6 h-6 text-[#0A0A0A] animate-spin" />
       </div>
     );
   }
 
   if (!isAdmin) {
     return (
-      <div className="admin-layout min-h-screen flex items-center justify-center px-4">
-        <div className="w-full max-w-md rounded-2xl bg-white border border-border p-8 text-center shadow-sm">
-          <h1 className="text-xl font-bold text-foreground">Acceso restringido</h1>
-          <p className="text-sm text-muted mt-2">
-            El panel de administración requiere iniciar sesión con el Gmail autorizado.
+      <div className="v3-admin-bg min-h-screen flex items-center justify-center px-4">
+        <div className="w-full max-w-md rounded-2xl bg-white border border-[#0A0A0A]/06 p-10 text-center">
+          <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">
+            <span className="w-6 h-px bg-[#3B82F6]" />
+            Restringido
+          </span>
+          <h1 className="mt-4 text-2xl font-bold text-[#0A0A0A] tracking-tight">Acceso solo administradores</h1>
+          <p className="text-sm text-[#525252] mt-3">
+            Este panel requiere iniciar sesión con el Gmail autorizado.
           </p>
           <Link
             href="/login"
-            className="mt-6 inline-flex rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover"
+            className="v3-admin-btn-accent mt-6 inline-flex"
           >
             Iniciar sesión
           </Link>
@@ -42,12 +46,12 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="admin-layout min-h-screen pb-20 md:pb-0">
+    <div className="v3-admin-bg pb-20 md:pb-0">
       <Sidebar collapsed={collapsed} onCollapse={setCollapsed} />
       <main
-        className={`sidebar-transition min-h-screen ${
-          collapsed ? "ml-[72px]" : "ml-[260px]"
-        } max-md:ml-0`}
+        className={`transition-[margin] duration-300 ease-out min-h-screen ${
+          collapsed ? "md:ml-[72px]" : "md:ml-[260px]"
+        }`}
       >
         {children}
       </main>
