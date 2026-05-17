@@ -2,17 +2,14 @@
 
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowUpRight, Star } from "lucide-react";
 import { usePublicStore, formatPrecio } from "@/data/mock";
-import { useInView } from "@/hooks/useInView";
 
 export default function FeaturedProducts() {
   const { productos, getLocalById } = usePublicStore();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  const headerRef = useInView<HTMLDivElement>();
-  const stripRef = useInView<HTMLDivElement>({ threshold: 0.05 });
 
   // Top 12 productos: priorizar puestos premium, luego más nuevos
   const featured = useMemo(() => {
@@ -66,7 +63,7 @@ export default function FeaturedProducts() {
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
         {/* Header */}
-        <div ref={headerRef} className="flex items-end justify-between gap-6 mb-10 v3-reveal">
+        <div className="flex items-end justify-between gap-6 mb-10">
           <div>
             <span className="v3-eyebrow mb-4">Edición del día</span>
             <h2 className="mt-3 v3-display text-[40px] sm:text-[56px] lg:text-[68px]">
@@ -98,7 +95,7 @@ export default function FeaturedProducts() {
         </div>
 
         {/* Horizontal scroller */}
-        <div ref={stripRef} className="relative -mx-5 sm:-mx-8 lg:-mx-12 v3-reveal-fade">
+        <div className="relative -mx-5 sm:-mx-8 lg:-mx-12">
           <div
             ref={scrollerRef}
             className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth no-scrollbar snap-x snap-mandatory px-5 sm:px-8 lg:px-12 pb-4"
@@ -134,8 +131,9 @@ export default function FeaturedProducts() {
                     {/* Premium badge top-right */}
                     {isPremium && (
                       <div className="absolute top-4 right-4">
-                        <span className="v3-premium-badge !bg-white/95 !text-[#0A0A0A]">
-                          {local.plan === "oro" ? "Oro" : "Plata"}
+                        <span className="v3-premium-badge">
+                          <Star className="w-3 h-3" />
+                          Destacado
                         </span>
                       </div>
                     )}

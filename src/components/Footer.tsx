@@ -17,18 +17,15 @@ const links = {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#0A0A0A] text-white">
+    <footer className="w-full bg-[#3B82F6] text-white">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
-        {/* Top: PASEO + blue 96 chip */}
-        <div className="py-14 sm:py-16 border-b border-white/08">
-          <h2 className="text-[12vw] sm:text-[80px] lg:text-[104px] font-extrabold tracking-[-0.05em] leading-[0.9] text-white flex items-baseline gap-3 sm:gap-5">
-            PASEO
-            <span className="inline-flex items-center justify-center px-3 sm:px-5 py-1 bg-[#3B82F6] rounded-xl sm:rounded-2xl">
-              96
-            </span>
+        {/* Top: Big wordmark */}
+        <div className="py-14 sm:py-16 border-b border-white/15">
+          <h2 className="text-[14vw] sm:text-[88px] lg:text-[120px] font-extrabold tracking-[-0.05em] leading-[0.9] text-white">
+            PASEO 96
           </h2>
-          <p className="mt-6 text-sm sm:text-base text-white/70 max-w-xl leading-relaxed">
+          <p className="mt-6 text-sm sm:text-base text-white/85 max-w-xl leading-relaxed">
             La vidriera digital de la feria del Paseo del Sur. Productos cargados por
             los puestos. Hablás directo. Comprás como siempre.
           </p>
@@ -39,7 +36,7 @@ export default function Footer() {
 
           {/* Navegar */}
           <div className="sm:col-span-3">
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40 mb-6">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 mb-6">
               Navegar
             </h3>
             <ul className="space-y-3">
@@ -47,7 +44,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[15px] text-white hover:text-white/60 transition-colors"
+                    className="text-[15px] text-white hover:text-white/70 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -58,7 +55,7 @@ export default function Footer() {
 
           {/* Feria */}
           <div className="sm:col-span-3">
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40 mb-6">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 mb-6">
               La feria
             </h3>
             <ul className="space-y-3">
@@ -69,7 +66,7 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-[15px] text-white hover:text-white/60 transition-colors"
+                      className="inline-flex items-center gap-1 text-[15px] text-white hover:text-white/70 transition-colors"
                     >
                       {link.label}
                       <ArrowUpRight className="w-3.5 h-3.5" />
@@ -77,7 +74,7 @@ export default function Footer() {
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-[15px] text-white hover:text-white/60 transition-colors"
+                      className="text-[15px] text-white hover:text-white/70 transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -89,29 +86,29 @@ export default function Footer() {
 
           {/* Horarios */}
           <div className="sm:col-span-3">
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40 mb-6">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 mb-6">
               Horarios
             </h3>
-            <p className="text-[15px] leading-relaxed">
+            <p className="text-[15px] text-white leading-relaxed">
               Jueves<br />
               Sábado<br />
               Domingo
             </p>
-            <p className="text-[15px] text-white/60 mt-3">
+            <p className="text-[15px] text-white/75 mt-3">
               10:30 — 20:30 hs
             </p>
           </div>
 
           {/* Ubicación */}
           <div className="sm:col-span-3">
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40 mb-6">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 mb-6">
               Dónde estamos
             </h3>
             <a
               href="https://maps.app.goo.gl/LYHKp8cYvXCzowhs5"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[15px] hover:text-white/60 transition-colors leading-relaxed"
+              className="text-[15px] text-white hover:text-white/70 transition-colors leading-relaxed"
             >
               Paseo del Sur<br />
               La Plata, Buenos Aires<br />
@@ -122,11 +119,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom: copyright */}
-        <div className="py-8 border-t border-white/08 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-white/40">
+        <div className="py-8 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-white/70">
             © 2026 Paseo 96. Todos los derechos reservados.
           </p>
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/70">
             Hecho con cuidado en La Plata 🇦🇷
           </p>
         </div>

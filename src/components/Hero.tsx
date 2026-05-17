@@ -4,7 +4,6 @@ import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
-import { useInView } from "@/hooks/useInView";
 
 interface HeroProps {
   onExplore: () => void;
@@ -20,8 +19,6 @@ function calcIsOpen(): boolean {
 export default function Hero({ onExplore }: HeroProps) {
   const [isOpen, setIsOpen] = useState(calcIsOpen);
   const { productos } = usePublicStore();
-  const titleRef = useInView<HTMLDivElement>();
-  const mosaicRef = useInView<HTMLDivElement>({ threshold: 0.05 });
 
   useEffect(() => {
     const id = setInterval(() => setIsOpen(calcIsOpen()), 60_000);
@@ -51,7 +48,7 @@ export default function Hero({ onExplore }: HeroProps) {
         <div className="grid grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-end">
 
           {/* ── Left: Statement (7 cols) ── */}
-          <div ref={titleRef} className="col-span-12 lg:col-span-7 v3-reveal">
+          <div className="col-span-12 lg:col-span-7">
             <h1 className="v3-display text-[14vw] sm:text-[88px] lg:text-[112px] xl:text-[128px]">
               La feria
               <br />
@@ -86,7 +83,7 @@ export default function Hero({ onExplore }: HeroProps) {
           </div>
 
           {/* ── Right: Mosaic of 4 products (5 cols) ── */}
-          <div ref={mosaicRef} className="col-span-12 lg:col-span-5 v3-reveal-fade">
+          <div className="col-span-12 lg:col-span-5">
             <div className="relative w-full aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]">
               <div className="grid grid-cols-12 grid-rows-12 gap-3 h-full">
 

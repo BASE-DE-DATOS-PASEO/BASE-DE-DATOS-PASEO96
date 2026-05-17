@@ -5,7 +5,6 @@ import { ChevronDown, ChevronRight, ChevronLeft } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
 import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "./ProductCardSkeleton";
-import { useInView } from "@/hooks/useInView";
 
 interface ProductGridProps {
   busqueda: string;
@@ -95,15 +94,12 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
   const productosVisibles = productosOrdenados.slice(0, visibleCount);
   const hayMas = visibleCount < productosOrdenados.length;
 
-  const headerRef = useInView<HTMLDivElement>();
-  const gridContainerRef = useInView<HTMLDivElement>({ threshold: 0.02 });
-
   return (
     <section className="relative w-full py-16 sm:py-24">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
         {/* Header — eyebrow + display title + sort */}
-        <div ref={headerRef} className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 v3-reveal">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
           <div>
             <span className="v3-eyebrow mb-4">
               {busqueda ? "Búsqueda" : "Catálogo"}
@@ -193,7 +189,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
         </div>
 
         {/* Product grid */}
-        <div ref={gridContainerRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-10 sm:gap-x-5 sm:gap-y-12 v3-reveal-fade">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-10 sm:gap-x-5 sm:gap-y-12">
           {loading
             ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
             : productosVisibles.map((producto) => (

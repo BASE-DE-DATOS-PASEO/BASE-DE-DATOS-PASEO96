@@ -87,12 +87,9 @@ export default function ProductCard({ producto }: ProductCardProps) {
           {/* Premium badge top-left */}
           {isPremium && (
             <div className="absolute top-2.5 left-2.5">
-              <span className={`v3-premium-badge ${
-                local.plan === "oro"
-                  ? "!bg-amber-50/95 !text-amber-900 backdrop-blur-sm"
-                  : "!bg-white/95 !text-slate-700 backdrop-blur-sm"
-              }`}>
-                {local.plan === "oro" ? "Oro" : "Plata"}
+              <span className="v3-premium-badge">
+                <Star className="w-3 h-3" />
+                Destacado
               </span>
             </div>
           )}

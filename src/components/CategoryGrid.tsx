@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
-import { useInView } from "@/hooks/useInView";
 
 interface CategoryGridProps {
   onCategorySelect: (catId: string) => void;
@@ -13,8 +12,6 @@ interface CategoryGridProps {
 // Bento layout: primero un hero card, los siguientes en grilla regular
 export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
   const { categorias } = usePublicStore();
-  const headerRef = useInView<HTMLDivElement>();
-  const gridRef = useInView<HTMLDivElement>({ threshold: 0.05 });
 
   // Mostramos las primeras 7 (1 hero + 6 regulares). Si hay menos, se adapta.
   const heroCat = categorias[0];
@@ -30,7 +27,7 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
         {/* Header */}
-        <div ref={headerRef} className="flex items-end justify-between gap-6 mb-12 v3-reveal">
+        <div className="flex items-end justify-between gap-6 mb-12">
           <div>
             <span className="v3-eyebrow mb-4">Categorías</span>
             <h2 className="mt-3 v3-display text-[40px] sm:text-[56px] lg:text-[68px]">
@@ -45,7 +42,7 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
         </div>
 
         {/* Bento grid: 12 cols total */}
-        <div ref={gridRef} className="grid grid-cols-12 gap-4 sm:gap-5 v3-reveal-stagger">
+        <div className="grid grid-cols-12 gap-4 sm:gap-5">
 
           {/* Hero card — 6 cols, full height */}
           <button
