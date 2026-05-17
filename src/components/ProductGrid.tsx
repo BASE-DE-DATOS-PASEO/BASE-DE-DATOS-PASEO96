@@ -101,26 +101,31 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
   const hayMas = visibleCount < productosOrdenados.length;
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Header with filters */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <section className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
         <div>
-          <h2 className="fluid-h2 font-bold text-pub-primary">
-            {busqueda ? `Resultados para "${busqueda}"` : "Todos los productos"}
+          <span className="v2-section-eyebrow mb-3">{busqueda ? "Búsqueda" : "Catálogo completo"}</span>
+          <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl v2-display">
+            {busqueda ? (
+              <>Resultados <span className="v2-display-accent">para “{busqueda}”</span></>
+            ) : (
+              <>Todos los <span className="v2-display-accent">productos</span></>
+            )}
           </h2>
-          <p className="text-pub-text-secondary text-sm mt-0.5">
-            {productosOrdenados.length} productos encontrados
+          <p className="text-slate-500 text-sm mt-3 font-medium">
+            {productosOrdenados.length.toLocaleString("es-AR")} productos encontrados
             {hayMas && (
-              <span className="text-blue-500 ml-1">
-                — mostrando {productosVisibles.length}
+              <span className="text-blue-600 ml-1">
+                · mostrando {productosVisibles.length}
               </span>
             )}
           </p>
         </div>
 
-        {/* Sort dropdown */}
+        {/* Sort dropdown — glass style */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-sm text-pub-text-secondary">
+          <div className="flex items-center gap-1.5 text-sm text-slate-500 font-medium">
             <Filter className="w-4 h-4" />
             <span>Ordenar:</span>
           </div>
@@ -128,34 +133,34 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
             <select
               value={orden}
               onChange={(e) => { setOrden(e.target.value); setVisibleCount(PAGE_SIZE); }}
-              className="appearance-none bg-white border border-pub-border rounded-xl px-4 py-2 pr-9 text-sm text-pub-text focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer"
+              className="v2-glass-soft appearance-none rounded-full pl-5 pr-10 py-2.5 text-sm font-medium text-slate-800 focus:outline-none cursor-pointer hover:bg-white/80 transition-colors"
             >
               <option value="relevantes">Más relevantes</option>
               <option value="menor">Menor precio</option>
               <option value="mayor">Mayor precio</option>
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pub-text-secondary pointer-events-none" />
+            <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
           </div>
         </div>
       </div>
 
-      {/* Category filter slider with arrows */}
-      <div className="relative mb-8">
+      {/* Category filter slider — glass chips */}
+      <div className="relative mb-10">
         {/* Left arrow */}
         <button
           type="button"
           onClick={() => scrollBy("left")}
           aria-label="Categorías anteriores"
-          className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-pub-text hover:bg-gray-50 transition-all duration-200 ${
+          className={`v2-icon-btn !w-9 !h-9 absolute left-0 top-1/2 -translate-y-1/2 z-10 ${
             canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-4 h-4" />
         </button>
 
         {/* Fade left */}
         <div
-          className={`absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white via-white to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
+          className={`absolute left-0 top-0 bottom-0 w-14 bg-gradient-to-r from-[#F4F7FC] via-[#F4F7FC]/70 to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
             canScrollLeft ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -163,17 +168,12 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
         {/* Scroller */}
         <div
           ref={scrollerRef}
-          className="flex gap-2 overflow-x-auto scroll-smooth px-2 py-1 no-scrollbar"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          className="flex gap-2.5 overflow-x-auto scroll-smooth px-2 py-2 no-scrollbar"
         >
           <button
             type="button"
             onClick={() => handleCategoriaChange(null)}
-            className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-              categoriaActiva === null
-                ? "bg-blue-600 text-white shadow-md"
-                : "bg-gray-100 text-pub-text-secondary hover:bg-gray-200"
-            }`}
+            className={`v2-chip shrink-0 ${categoriaActiva === null ? "v2-chip-active" : ""}`}
           >
             Todos
           </button>
@@ -182,11 +182,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
               key={cat.id}
               type="button"
               onClick={() => handleCategoriaChange(cat.id)}
-              className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                categoriaActiva === cat.id
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-gray-100 text-pub-text-secondary hover:bg-gray-200"
-              }`}
+              className={`v2-chip shrink-0 ${categoriaActiva === cat.id ? "v2-chip-active" : ""}`}
             >
               {cat.nombre}
             </button>
@@ -195,7 +191,7 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
 
         {/* Fade right */}
         <div
-          className={`absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white via-white to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
+          className={`absolute right-0 top-0 bottom-0 w-14 bg-gradient-to-l from-[#F4F7FC] via-[#F4F7FC]/70 to-transparent pointer-events-none z-[5] transition-opacity duration-200 ${
             canScrollRight ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -205,16 +201,16 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
           type="button"
           onClick={() => scrollBy("right")}
           aria-label="Más categorías"
-          className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-pub-text hover:bg-gray-50 transition-all duration-200 ${
+          className={`v2-icon-btn !w-9 !h-9 absolute right-0 top-1/2 -translate-y-1/2 z-10 ${
             canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-4 h-4" />
         </button>
       </div>
 
       {/* Product grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5">
         {loading
           ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
           : productosVisibles.map((producto) => (
@@ -223,43 +219,43 @@ export default function ProductGrid({ busqueda, categoriaActiva, onCategoriaChan
         }
       </div>
 
-      {/* Ver más */}
+      {/* Ver más — glass + progress bar */}
       {!loading && hayMas && (
-        <div className="mt-10 flex flex-col items-center gap-3">
-          <div className="w-full max-w-xs bg-gray-100 rounded-full h-1.5 overflow-hidden">
+        <div className="mt-14 flex flex-col items-center gap-4">
+          <div className="w-full max-w-sm h-2 rounded-full overflow-hidden bg-white/60 backdrop-blur-sm border border-white/80 shadow-inner">
             <div
-              className="h-full bg-blue-500 rounded-full transition-all duration-500"
+              className="h-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full transition-all duration-700 shadow-[0_0_12px_rgba(59,130,246,0.5)]"
               style={{ width: `${(visibleCount / productosOrdenados.length) * 100}%` }}
             />
           </div>
-          <p className="text-xs text-pub-text-secondary">
-            Mostrando {productosVisibles.length} de {productosOrdenados.length} productos
+          <p className="text-xs text-slate-500 font-medium">
+            Mostrando <span className="font-bold text-slate-700">{productosVisibles.length}</span> de <span className="font-bold text-slate-700">{productosOrdenados.length}</span>
           </p>
           <button
             onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
-            className="group flex items-center gap-2 px-8 py-3 bg-white border-2 border-blue-500 text-blue-600 font-semibold rounded-2xl hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md"
+            className="v2-btn-primary group !py-3.5 !px-8 !text-sm"
           >
             Ver más productos
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       )}
 
       {/* All loaded message */}
       {!loading && !hayMas && productosOrdenados.length > PAGE_SIZE && (
-        <div className="mt-8 text-center">
-          <p className="text-sm text-pub-text-secondary">
-            Mostrando todos los {productosOrdenados.length} productos
+        <div className="mt-10 text-center">
+          <p className="text-sm text-slate-400 font-medium">
+            Mostrando todos los {productosOrdenados.length} productos ✨
           </p>
         </div>
       )}
 
       {/* Empty state */}
       {!loading && productosOrdenados.length === 0 && (
-        <div className="text-center py-16">
-          <p className="text-pub-text-secondary text-lg">
+        <div className="text-center py-20 v2-glass rounded-3xl">
+          <p className="text-slate-500 text-lg">
             {busqueda
-              ? `No se encontraron productos para "${busqueda}"`
+              ? `No se encontraron productos para “${busqueda}”`
               : "No hay productos en esta categoría"}
           </p>
         </div>

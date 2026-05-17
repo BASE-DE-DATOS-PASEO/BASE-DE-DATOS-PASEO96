@@ -58,14 +58,19 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
   return (
     <section
       id="categorias"
-      className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16"
+      className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 v2-mesh-section"
     >
       {/* Section header */}
-      <div className="mb-8 flex items-center justify-between">
-        <h2 className="fluid-h2 font-bold text-gray-900">Explorá por categorías</h2>
+      <div className="mb-10 flex items-end justify-between gap-4">
+        <div>
+          <span className="v2-section-eyebrow mb-3">Catálogo curado</span>
+          <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl v2-display">
+            Explorá por <span className="v2-display-accent">categorías</span>
+          </h2>
+        </div>
         <Link
           href="/categorias"
-          className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+          className="v2-btn-ghost !py-2 !px-4 !text-sm hidden sm:inline-flex"
         >
           Ver todas
           <ArrowRight className="w-4 h-4" />
@@ -79,16 +84,16 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
           type="button"
           onClick={() => scrollBy("left")}
           aria-label="Categorías anteriores"
-          className={`hidden sm:flex absolute -left-2 lg:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white shadow-lg border border-gray-200 items-center justify-center text-gray-700 hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all duration-200 ${
+          className={`v2-icon-btn hidden sm:flex absolute -left-3 lg:-left-6 top-1/2 -translate-y-1/2 z-20 ${
             canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5" />
         </button>
 
         {/* Fade left */}
         <div
-          className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity duration-200 ${
+          className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#F4F7FC] via-[#F4F7FC]/70 to-transparent pointer-events-none z-10 transition-opacity duration-200 ${
             canScrollLeft ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -96,7 +101,7 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
         {/* Scroller */}
         <div
           ref={scrollerRef}
-          className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-2 no-scrollbar snap-x snap-mandatory"
+          className="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth pb-4 pt-2 no-scrollbar snap-x snap-mandatory"
         >
           {categorias.map((cat) => {
             const catInfo = catIconMap[cat.nombre] ?? fallbackIcon;
@@ -105,40 +110,39 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
                 key={cat.id}
                 onClick={() => onCategorySelect(cat.id)}
                 aria-label={`Ver categoría ${cat.nombre}`}
-                className="btn-press group relative shrink-0 snap-start overflow-hidden rounded-2xl bg-gray-100 cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-500 w-[44vw] sm:w-[230px] aspect-[3/4]"
+                className="group relative shrink-0 snap-start overflow-hidden rounded-[1.75rem] cursor-pointer w-[48vw] sm:w-[240px] aspect-[3/4] border border-white/60 shadow-[0_8px_30px_-8px_rgba(15,52,96,0.18),0_2px_4px_rgba(15,52,96,0.04)] hover:shadow-[0_24px_60px_-14px_rgba(59,130,246,0.35),0_8px_16px_rgba(59,130,246,0.12)] hover:-translate-y-2 transition-all duration-500 ease-out bg-gradient-to-br from-slate-100 via-white to-blue-50"
               >
-                {cat.imagen ? (
+                {cat.imagen && (
                   <Image
                     src={cat.imagen}
                     alt={cat.nombre}
                     fill
-                    sizes="(max-width: 640px) 44vw, 230px"
-                    className="object-cover transition-transform duration-[700ms] ease-out group-hover:scale-[1.12]"
+                    sizes="(max-width: 640px) 48vw, 240px"
+                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-110"
                   />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-white to-blue-50" />
                 )}
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500 group-hover:from-black/85" />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/30 to-transparent transition-opacity duration-500 group-hover:from-slate-950/90" />
 
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                  <div className="flex items-end justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div
-                        className={`shrink-0 w-8 h-8 rounded-full ${catInfo.bg} flex items-center justify-center shadow-sm`}
-                      >
+                {/* Inner glass highlight */}
+                <div className="absolute inset-0 rounded-[1.75rem] ring-1 ring-inset ring-white/20 pointer-events-none" />
+
+                {/* Glass info panel at bottom */}
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="v2-glass-strong rounded-2xl px-3.5 py-3 flex items-center justify-between gap-2 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className={`shrink-0 w-9 h-9 rounded-xl ${catInfo.bg} flex items-center justify-center shadow-md`}>
                         {catInfo.icon}
                       </div>
                       <div className="min-w-0 text-left">
-                        <h3 className="text-white font-semibold text-sm leading-tight truncate drop-shadow">
+                        <h3 className="text-slate-900 font-bold text-sm leading-tight truncate">
                           {cat.nombre}
                         </h3>
-                        <p className="text-white/70 text-xs">{cat.cantidadLocales} locales</p>
+                        <p className="text-slate-500 text-[11px] font-medium">{cat.cantidadLocales} locales</p>
                       </div>
                     </div>
-                    <div className="shrink-0 w-7 h-7 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform shadow-md shadow-blue-500/30">
                       <ArrowRight className="w-3.5 h-3.5 text-white" />
                     </div>
                   </div>
@@ -150,7 +154,7 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
 
         {/* Fade right */}
         <div
-          className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity duration-200 ${
+          className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#F4F7FC] via-[#F4F7FC]/70 to-transparent pointer-events-none z-10 transition-opacity duration-200 ${
             canScrollRight ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -160,11 +164,11 @@ export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
           type="button"
           onClick={() => scrollBy("right")}
           aria-label="Más categorías"
-          className={`hidden sm:flex absolute -right-2 lg:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white shadow-lg border border-gray-200 items-center justify-center text-gray-700 hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all duration-200 ${
+          className={`v2-icon-btn hidden sm:flex absolute -right-3 lg:-right-6 top-1/2 -translate-y-1/2 z-20 ${
             canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-5 h-5" />
         </button>
       </div>
     </section>
