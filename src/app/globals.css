@@ -423,6 +423,338 @@ select option {
   scrollbar-width: none;
 }
 
+/* ============================================================
+   ESTÉTICA V3 — EDITORIAL MINIMAL
+   Confident restraint. Hairlines. Big type. Magazine layout.
+   Color used sparingly. Whitespace is a feature.
+   ============================================================ */
+
+/* --- Page background (warm off-white, no mesh) --- */
+.v3-bg {
+  background: #FAFAF7;
+  color: #0A0A0A;
+}
+
+/* --- Hairlines (1px, 8% black) --- */
+.v3-hairline { border-color: rgba(10, 10, 10, 0.08); }
+.v3-border-b { border-bottom: 1px solid rgba(10, 10, 10, 0.08); }
+.v3-border-t { border-top: 1px solid rgba(10, 10, 10, 0.08); }
+
+/* --- Cards: flat with hairline + subtle hover --- */
+.v3-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease,
+              box-shadow 0.4s ease;
+}
+.v3-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(10, 10, 10, 0.14);
+  box-shadow: 0 12px 36px -12px rgba(10, 10, 10, 0.12), 0 2px 4px rgba(10, 10, 10, 0.04);
+}
+
+.v3-card-bare {
+  background: transparent;
+  border-radius: 0;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Premium accent (gold-leaning, not blue) --- */
+.v3-premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #92692E;
+  background: #FAF3E5;
+  border-radius: 4px;
+}
+
+/* --- Buttons --- */
+.v3-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: white;
+  background: #0A0A0A;
+  border-radius: 999px;
+  border: 1px solid #0A0A0A;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.v3-btn-primary:hover {
+  background: #1F1F1F;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.25);
+}
+
+.v3-btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: white;
+  background: #3B82F6;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.v3-btn-accent:hover {
+  background: #2F6EE0;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -6px rgba(59, 130, 246, 0.45);
+}
+
+.v3-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #0A0A0A;
+  background: transparent;
+  border-radius: 999px;
+  border: 1px solid rgba(10, 10, 10, 0.18);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.v3-btn-ghost:hover {
+  background: #0A0A0A;
+  color: white;
+  border-color: #0A0A0A;
+}
+
+.v3-btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #0A0A0A;
+  position: relative;
+  transition: gap 0.25s ease;
+}
+.v3-btn-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transform: scaleX(1);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v3-btn-link:hover { gap: 0.6rem; }
+.v3-btn-link:hover::after { transform-origin: left; }
+
+/* --- Chip / filter pill (minimal flat) --- */
+.v3-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #525252;
+  background: #FFFFFF;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.v3-chip:hover {
+  border-color: rgba(10, 10, 10, 0.3);
+  color: #0A0A0A;
+}
+.v3-chip-active {
+  background: #0A0A0A;
+  color: white;
+  border-color: #0A0A0A;
+}
+.v3-chip-active:hover { color: white; }
+
+/* --- Icon button (circular, hairline) --- */
+.v3-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: #FFFFFF;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  color: #0A0A0A;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.v3-icon-btn:hover {
+  background: #0A0A0A;
+  color: white;
+  border-color: #0A0A0A;
+  transform: scale(1.05);
+}
+.v3-icon-btn:active { transform: scale(0.96); }
+
+/* --- Eyebrow (small caps editorial) --- */
+.v3-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #525252;
+}
+.v3-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+}
+.v3-eyebrow-center { justify-content: center; }
+.v3-eyebrow-center::before { width: 36px; }
+
+/* --- Display typography --- */
+.v3-display {
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  color: #0A0A0A;
+}
+.v3-display-italic {
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: #0A0A0A;
+}
+
+/* --- Section number (large display number) --- */
+.v3-section-num {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: rgba(10, 10, 10, 0.08);
+}
+
+/* --- Search bar (persistent in nav) --- */
+.v3-search {
+  display: flex;
+  align-items: center;
+  background: #F2F2EE;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  transition: all 0.25s ease;
+}
+.v3-search:focus-within {
+  background: #FFFFFF;
+  border-color: rgba(10, 10, 10, 0.14);
+  box-shadow: 0 0 0 4px rgba(10, 10, 10, 0.04);
+}
+
+/* --- Navbar (solid, hairline bottom) --- */
+.v3-navbar {
+  background: rgba(250, 250, 247, 0.85);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.06);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v3-navbar.scrolled {
+  background: rgba(250, 250, 247, 0.95);
+  border-bottom-color: rgba(10, 10, 10, 0.10);
+}
+.v3-navbar.nav-hidden { transform: translateY(-100%); }
+
+/* --- Live pulse dot --- */
+.v3-pulse-dot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #16A34A;
+}
+.v3-pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  background: #16A34A;
+  opacity: 0.3;
+  animation: v3-pulse 2s ease-out infinite;
+}
+@keyframes v3-pulse {
+  0%   { transform: scale(0.6); opacity: 0.4; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* --- Floating decoration (small accent) --- */
+.v3-floater {
+  position: absolute;
+  pointer-events: none;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.4);
+}
+
+/* --- Ticker / marquee --- */
+.v3-ticker {
+  display: flex;
+  gap: 3rem;
+  animation: v3-ticker-scroll 28s linear infinite;
+  white-space: nowrap;
+}
+@keyframes v3-ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* --- Subtle product card V3 --- */
+.v3-product-card {
+  background: transparent;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+.v3-product-card .v3-product-image {
+  background: #F2F2EE;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v3-product-card:hover .v3-product-image {
+  border-radius: 16px;
+}
+.v3-product-card:hover .v3-product-image-inner {
+  transform: scale(1.04);
+}
+.v3-product-image-inner {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* === ACCESIBILIDAD: respetar preferencia de usuario === */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

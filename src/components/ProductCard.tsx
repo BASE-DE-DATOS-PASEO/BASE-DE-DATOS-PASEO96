@@ -60,92 +60,105 @@ export default function ProductCard({ producto }: ProductCardProps) {
 
   return (
     <>
-      {/* Card */}
+      {/* Card V3 — Editorial Minimal */}
       <div
         onClick={() => { setModalOpen(true); setActiveImg(0); }}
-        className={`product-card-animate group cursor-pointer rounded-xl overflow-hidden ${
-          isPremium
-            ? local.plan === "oro"
-              ? "premium-card-glow bg-gradient-to-b from-amber-50/80 to-white border border-amber-300/60"
-              : "premium-card-glow bg-gradient-to-b from-slate-50/80 to-white border border-slate-300/60"
-            : "bg-white border border-pub-border hover:shadow-lg hover:border-gray-200"
-        }`}
+        className="v3-product-card group"
       >
-        {/* Local name header */}
-        <div className={`px-3 py-2 flex items-center gap-2 ${isPremium ? (local.plan === "oro" ? "border-b border-amber-100" : "border-b border-slate-100") : "border-b border-gray-50"}`}>
-          {local.logoUrl ? (
-            <div className="w-5 h-5 rounded-full overflow-hidden bg-white shrink-0 relative">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={local.logoUrl} alt={local.nombre} className="absolute inset-0 w-full h-full object-cover" />
-            </div>
-          ) : (
-            <div
-              className="w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white shrink-0"
-              style={{ backgroundColor: local.color }}
-            >
-              {local.logo}
-            </div>
-          )}
-          <span className="text-xs font-medium text-pub-text-secondary truncate">
-            {local.nombre}
-          </span>
-          {isPremium && (
-            <div className={`ml-auto flex items-center gap-1 px-1.5 py-0.5 rounded-full ${
-              local.plan === "oro"
-                ? "bg-amber-100 text-amber-700"
-                : "bg-slate-100 text-slate-600"
-            }`}>
-              <Star className={`w-2.5 h-2.5 ${local.plan === "oro" ? "fill-amber-500" : "fill-slate-400"}`} />
-              <span className="text-[9px] font-semibold">Destacado</span>
-            </div>
-          )}
-        </div>
+        {/* Image with bg + radius animation */}
+        <div className="v3-product-image relative aspect-[4/5]">
+          <div className="v3-product-image-inner absolute inset-0">
+            {producto.imagenes[0] ? (
+              <Image
+                src={producto.imagenes[0]}
+                alt={producto.nombre}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 20vw, 16vw"
+                className="object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-[#A3A3A3] text-xs font-medium">
+                Sin foto
+              </div>
+            )}
+          </div>
 
-        {/* Product image */}
-        <div className="relative aspect-square bg-gray-50 overflow-hidden flex items-center justify-center">
-          {producto.imagenes[0] ? (
-            <Image
-              src={producto.imagenes[0]}
-              alt={producto.nombre}
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 20vw, 16vw"
-              className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.08]"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-            />
-          ) : (
-            <div className="text-gray-300 text-xs font-medium">Sin foto</div>
+          {/* Premium badge top-left */}
+          {isPremium && (
+            <div className="absolute top-2.5 left-2.5">
+              <span className={`v3-premium-badge ${
+                local.plan === "oro"
+                  ? "!bg-amber-50/95 !text-amber-900 backdrop-blur-sm"
+                  : "!bg-white/95 !text-slate-700 backdrop-blur-sm"
+              }`}>
+                {local.plan === "oro" ? "Oro" : "Plata"}
+              </span>
+            </div>
           )}
-          {/* Sutil gradient al hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+          {/* Discount badge top-right */}
+          {producto.precioAnterior && (
+            <div className="absolute top-2.5 right-2.5">
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-bold tracking-tight text-white bg-[#0A0A0A]">
+                -{Math.round((1 - producto.precio / producto.precioAnterior) * 100)}%
+              </span>
+            </div>
+          )}
+
+          {/* Heart button — appears on hover */}
           <button
             onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
             aria-label="Me gusta"
-            className={`btn-press absolute bottom-2 right-2 w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-250 hover:bg-white hover:scale-110 ${
-              liked ? "bg-white opacity-100 scale-100" : "bg-white/80 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0"
+            className={`absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+              liked ? "opacity-100 scale-100" : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
             }`}
           >
-            <Heart className={`w-4 h-4 transition-colors ${liked ? "fill-red-500 text-red-500" : "text-pub-text-secondary"}`} />
+            <Heart className={`w-4 h-4 transition-colors ${liked ? "fill-rose-500 text-rose-500" : "text-[#0A0A0A]"}`} />
           </button>
         </div>
 
-        {/* Product info */}
-        <div className="px-3 py-2.5">
-          <h3 className="text-sm font-medium text-pub-text leading-tight line-clamp-2 min-h-[2.5rem]">
+        {/* Info */}
+        <div className="mt-3 px-0.5">
+          {/* Store name (small caps) */}
+          <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#737373] mb-1.5">
+            {local.logoUrl ? (
+              <div className="w-3.5 h-3.5 rounded-full overflow-hidden bg-white shrink-0 relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={local.logoUrl} alt={local.nombre} className="absolute inset-0 w-full h-full object-cover" />
+              </div>
+            ) : (
+              <div
+                className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[7px] font-bold text-white shrink-0"
+                style={{ backgroundColor: local.color }}
+              >
+                {local.logo}
+              </div>
+            )}
+            <span className="truncate">{local.nombre}</span>
+          </div>
+
+          {/* Product name */}
+          <h3 className="text-[13px] font-semibold text-[#0A0A0A] leading-snug line-clamp-2 min-h-[2.4rem]">
             {producto.nombre}
           </h3>
-          <div className="mt-1.5 flex items-baseline gap-2">
-            <span className="text-base font-bold text-pub-primary">
-              {formatPrecio(producto.precio)}
-            </span>
-            {producto.precioAnterior && (
-              <span className="text-xs text-pub-text-secondary line-through">
-                {formatPrecio(producto.precioAnterior)}
+
+          {/* Price + location */}
+          <div className="mt-2 flex items-end justify-between gap-2">
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="text-[15px] font-bold text-[#0A0A0A] tracking-tight tabular-nums">
+                {formatPrecio(producto.precio)}
               </span>
-            )}
-          </div>
-          <div className="mt-1.5 flex items-center gap-1 text-pub-text-secondary">
-            <MapPin className="w-3 h-3" />
-            <span className="text-[11px]">{local.ubicacion}</span>
+              {producto.precioAnterior && (
+                <span className="text-[11px] text-[#A3A3A3] line-through tabular-nums">
+                  {formatPrecio(producto.precioAnterior)}
+                </span>
+              )}
+            </div>
+            <span className="text-[10px] text-[#737373] flex items-center gap-0.5 shrink-0">
+              <MapPin className="w-3 h-3" />
+              <span className="truncate max-w-[80px]">{local.ubicacion}</span>
+            </span>
           </div>
         </div>
       </div>

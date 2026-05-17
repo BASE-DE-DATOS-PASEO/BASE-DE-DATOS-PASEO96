@@ -1,171 +1,130 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, User, Sparkles, MoreHorizontal, Tag, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
 
 interface CategoryGridProps {
   onCategorySelect: (catId: string) => void;
 }
 
-const catIconMap: Record<string, { icon: React.ReactNode; bg: string }> = {
-  Mujer: { icon: <User className="w-3.5 h-3.5 text-white" />, bg: "bg-blue-500" },
-  Hombre: { icon: <User className="w-3.5 h-3.5 text-white" />, bg: "bg-blue-600" },
-  Niños: { icon: <Sparkles className="w-3.5 h-3.5 text-white" />, bg: "bg-blue-400" },
-  Otros: { icon: <MoreHorizontal className="w-3.5 h-3.5 text-white" />, bg: "bg-blue-700" },
-};
-
-const fallbackIcon = { icon: <Tag className="w-3.5 h-3.5 text-white" />, bg: "bg-gray-500" };
-
+// Bento layout: primero un hero card, los siguientes en grilla regular
 export default function CategoryGrid({ onCategorySelect }: CategoryGridProps) {
   const { categorias } = usePublicStore();
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
 
-  const checkScrollButtons = useCallback(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 4);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
-  }, []);
+  // Mostramos las primeras 7 (1 hero + 6 regulares). Si hay menos, se adapta.
+  const heroCat = categorias[0];
+  const regularCats = categorias.slice(1, 7);
 
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    checkScrollButtons();
-    el.addEventListener("scroll", checkScrollButtons, { passive: true });
-    const ro = new ResizeObserver(checkScrollButtons);
-    ro.observe(el);
-    window.addEventListener("resize", checkScrollButtons);
-    return () => {
-      el.removeEventListener("scroll", checkScrollButtons);
-      ro.disconnect();
-      window.removeEventListener("resize", checkScrollButtons);
-    };
-  }, [checkScrollButtons, categorias.length]);
-
-  const scrollBy = (dir: "left" | "right") => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    // Scrollea aprox. el ancho visible (1 página de tarjetas)
-    const amount = Math.max(280, el.clientWidth * 0.85);
-    el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
-  };
+  if (!heroCat) return null;
 
   return (
     <section
       id="categorias"
-      className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16"
+      className="relative w-full py-16 sm:py-24 v3-border-b"
     >
-      {/* Section header */}
-      <div className="mb-8 flex items-center justify-between">
-        <h2 className="fluid-h2 font-bold text-gray-900">Explorá por categorías</h2>
-        <Link
-          href="/categorias"
-          className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          Ver todas
-          <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
-      {/* Horizontal slider */}
-      <div className="relative">
-        {/* Left arrow */}
-        <button
-          type="button"
-          onClick={() => scrollBy("left")}
-          aria-label="Categorías anteriores"
-          className={`hidden sm:flex absolute -left-2 lg:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white shadow-lg border border-gray-200 items-center justify-center text-gray-700 hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all duration-200 ${
-            canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-
-        {/* Fade left */}
-        <div
-          className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity duration-200 ${
-            canScrollLeft ? "opacity-100" : "opacity-0"
-          }`}
-        />
-
-        {/* Scroller */}
-        <div
-          ref={scrollerRef}
-          className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-2 no-scrollbar snap-x snap-mandatory"
-        >
-          {categorias.map((cat) => {
-            const catInfo = catIconMap[cat.nombre] ?? fallbackIcon;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => onCategorySelect(cat.id)}
-                aria-label={`Ver categoría ${cat.nombre}`}
-                className="btn-press group relative shrink-0 snap-start overflow-hidden rounded-2xl bg-gray-100 cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-500 w-[44vw] sm:w-[230px] aspect-[3/4]"
-              >
-                {cat.imagen ? (
-                  <Image
-                    src={cat.imagen}
-                    alt={cat.nombre}
-                    fill
-                    sizes="(max-width: 640px) 44vw, 230px"
-                    className="object-cover transition-transform duration-[700ms] ease-out group-hover:scale-[1.12]"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-white to-blue-50" />
-                )}
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500 group-hover:from-black/85" />
-
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                  <div className="flex items-end justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div
-                        className={`shrink-0 w-8 h-8 rounded-full ${catInfo.bg} flex items-center justify-center shadow-sm`}
-                      >
-                        {catInfo.icon}
-                      </div>
-                      <div className="min-w-0 text-left">
-                        <h3 className="text-white font-semibold text-sm leading-tight truncate drop-shadow">
-                          {cat.nombre}
-                        </h3>
-                        <p className="text-white/70 text-xs">{cat.cantidadLocales} locales</p>
-                      </div>
-                    </div>
-                    <div className="shrink-0 w-7 h-7 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-colors">
-                      <ArrowRight className="w-3.5 h-3.5 text-white" />
-                    </div>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+        {/* Header */}
+        <div className="flex items-end justify-between gap-6 mb-12">
+          <div>
+            <span className="v3-eyebrow mb-4">Categorías</span>
+            <h2 className="mt-3 v3-display text-[40px] sm:text-[56px] lg:text-[68px]">
+              Encontrá<br />
+              <span className="v3-display-italic text-[#737373]">por rubro.</span>
+            </h2>
+          </div>
+          <Link href="/categorias" className="v3-btn-link hidden sm:inline-flex mb-4">
+            Ver todas las categorías
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
         </div>
 
-        {/* Fade right */}
-        <div
-          className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity duration-200 ${
-            canScrollRight ? "opacity-100" : "opacity-0"
-          }`}
-        />
+        {/* Bento grid: 12 cols total */}
+        <div className="grid grid-cols-12 gap-4 sm:gap-5">
 
-        {/* Right arrow */}
-        <button
-          type="button"
-          onClick={() => scrollBy("right")}
-          aria-label="Más categorías"
-          className={`hidden sm:flex absolute -right-2 lg:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white shadow-lg border border-gray-200 items-center justify-center text-gray-700 hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all duration-200 ${
-            canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
+          {/* Hero card — 6 cols, full height */}
+          <button
+            onClick={() => onCategorySelect(heroCat.id)}
+            className="col-span-12 md:col-span-6 md:row-span-2 group relative overflow-hidden rounded-2xl aspect-[4/5] md:aspect-auto bg-[#F2F2EE] text-left"
+          >
+            {heroCat.imagen && (
+              <Image
+                src={heroCat.imagen}
+                alt={heroCat.nombre}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-[800ms] ease-out"
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+
+            <div className="absolute top-6 left-6">
+              <span className="px-2.5 py-1 bg-white text-[10px] font-bold uppercase tracking-[0.15em] text-[#0A0A0A] rounded-full">
+                Destacada
+              </span>
+            </div>
+
+            <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-3">
+              <div className="min-w-0">
+                <h3 className="text-white text-3xl sm:text-5xl font-bold tracking-tight leading-tight">
+                  {heroCat.nombre}
+                </h3>
+                <p className="text-white/80 text-sm mt-2 font-medium">
+                  {heroCat.cantidadLocales} locales · Explorar
+                </p>
+              </div>
+              <div className="shrink-0 w-12 h-12 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                <ArrowUpRight className="w-5 h-5 text-[#0A0A0A]" />
+              </div>
+            </div>
+          </button>
+
+          {/* Regular cards — 6 cards in 3x2 grid (within the other 6 cols on desktop) */}
+          {regularCats.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => onCategorySelect(cat.id)}
+              className="col-span-6 md:col-span-3 group relative overflow-hidden rounded-2xl aspect-[3/4] md:aspect-square bg-[#F2F2EE] text-left"
+            >
+              {cat.imagen && (
+                <Image
+                  src={cat.imagen}
+                  alt={cat.nombre}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 17vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-[800ms] ease-out"
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+
+              <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-2">
+                <div className="min-w-0">
+                  <h3 className="text-white text-base sm:text-lg font-bold tracking-tight leading-tight truncate">
+                    {cat.nombre}
+                  </h3>
+                  <p className="text-white/70 text-[10px] sm:text-xs font-medium mt-0.5">
+                    {cat.cantidadLocales} {cat.cantidadLocales === 1 ? "local" : "locales"}
+                  </p>
+                </div>
+                <div className="shrink-0 w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all">
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#0A0A0A]" />
+                </div>
+              </div>
+            </button>
+          ))}
+
+        </div>
+
+        {/* Mobile "Ver todas" link */}
+        <div className="mt-8 sm:hidden">
+          <Link href="/categorias" className="v3-btn-link">
+            Ver todas las categorías
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
+        </div>
+
       </div>
     </section>
   );

@@ -3,25 +3,33 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ShoppingBag, User } from "lucide-react";
+import { Menu, X, Search, UserCircle2 } from "lucide-react";
+
+interface NavbarProps {
+  /** Optional persistent search (only shown when wired up from a page) */
+  searchValue?: string;
+  onSearchChange?: (q: string) => void;
+  onSearchSubmit?: () => void;
+}
 
 const navLinks = [
   { label: "Inicio", href: "/" },
   { label: "Categorías", href: "/categorias" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ searchValue, onSearchChange, onSearchSubmit }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const lastScrollY = useRef(0);
   const pathname = usePathname();
+  const hasSearch = onSearchChange !== undefined;
 
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 20);
-      if (y > 120 && y > lastScrollY.current + 8) {
+      if (y > 200 && y > lastScrollY.current + 8) {
         setHidden(true);
       } else if (y < lastScrollY.current - 4 || y < 80) {
         setHidden(false);
@@ -49,70 +57,96 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 navbar-glass ${
-          scrolled ? "scrolled" : ""
-        } ${hidden && !mobileOpen ? "nav-hidden" : ""}`}
+        aria-label="Navegación principal"
+        className={`v3-navbar fixed top-0 left-0 right-0 z-50 ${scrolled ? "scrolled" : ""} ${hidden && !mobileOpen ? "nav-hidden" : ""}`}
       >
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-18">
-            {/* Logo */}
-            <Link href="/" className="group flex items-center gap-2 shrink-0 btn-press">
-              <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center shadow-sm">
-                <ShoppingBag className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-gray-900">
-                PASEO <span className="text-blue-600">96</span>
+        <div className="max-w-[1440px] mx-auto px-5 sm:px-8">
+          <div className="flex items-center gap-4 sm:gap-8 h-16">
+            {/* Logo — pure wordmark */}
+            <Link href="/" className="flex items-center shrink-0">
+              <span className="text-[15px] font-extrabold tracking-[-0.02em] text-[#0A0A0A]">
+                PASEO<span className="font-light italic text-[#525252]">/</span>96
               </span>
             </Link>
 
-            {/* Desktop nav links */}
-            <div className="hidden md:flex items-center gap-7">
+            {/* Desktop: nav links */}
+            <div className="hidden md:flex items-center gap-1 shrink-0">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`relative text-sm font-medium transition-colors duration-200 group ${
-                      isActive ? "text-gray-900" : "text-gray-500 hover:text-gray-900"
+                    className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors duration-200 ${
+                      isActive
+                        ? "text-[#0A0A0A]"
+                        : "text-[#737373] hover:text-[#0A0A0A]"
                     }`}
                   >
                     {link.label}
-                    <span
-                      className={`absolute left-0 -bottom-1 w-full h-[2px] bg-blue-600 rounded-full transition-transform duration-300 origin-left ${
-                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                      }`}
-                    />
                   </Link>
                 );
               })}
             </div>
 
-            {/* Desktop actions */}
-            <div className="hidden md:flex items-center gap-2.5">
+            {/* Persistent search (center, takes remaining space) */}
+            {hasSearch ? (
+              <div className="flex-1 max-w-md mx-auto hidden sm:block">
+                <form
+                  onSubmit={(e) => { e.preventDefault(); onSearchSubmit?.(); }}
+                  className="v3-search"
+                >
+                  <Search className="w-4 h-4 text-[#737373] shrink-0" />
+                  <input
+                    type="text"
+                    value={searchValue ?? ""}
+                    onChange={(e) => onSearchChange?.(e.target.value)}
+                    placeholder="Buscar productos…"
+                    aria-label="Buscar productos"
+                    className="flex-1 ml-2.5 text-sm text-[#0A0A0A] placeholder:text-[#737373] bg-transparent outline-none"
+                  />
+                  {searchValue && (
+                    <button
+                      type="button"
+                      onClick={() => onSearchChange?.("")}
+                      className="ml-2 text-[#737373] hover:text-[#0A0A0A] text-xs"
+                      aria-label="Limpiar búsqueda"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </form>
+              </div>
+            ) : (
+              <div className="flex-1" />
+            )}
+
+            {/* Desktop right actions */}
+            <div className="hidden md:flex items-center gap-3 shrink-0">
               <Link
                 href="/planes"
-                className="btn-press px-4 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200"
+                className="text-sm font-medium text-[#737373] hover:text-[#0A0A0A] transition-colors"
               >
-                Vender en Paseo 96
+                Vender
               </Link>
+              <span className="w-px h-4 bg-[#0A0A0A]/10" />
               <Link
                 href="/login"
-                className="btn-press flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-blue-600/20"
+                className="flex items-center gap-1.5 text-sm font-semibold text-[#0A0A0A] hover:opacity-70 transition-opacity"
               >
-                <User className="w-4 h-4" />
-                Iniciar sesión
+                <UserCircle2 className="w-4 h-4" />
+                Ingresar
               </Link>
             </div>
 
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="md:hidden p-2 rounded-xl hover:bg-black/5 transition-colors btn-press"
+              className="md:hidden w-9 h-9 -mr-1 flex items-center justify-center rounded-full hover:bg-[#0A0A0A]/5 transition-colors"
               aria-label="Abrir menú"
               aria-expanded={mobileOpen}
             >
-              <Menu className="w-6 h-6 text-gray-700" />
+              <Menu className="w-5 h-5 text-[#0A0A0A]" />
             </button>
           </div>
         </div>
@@ -121,7 +155,7 @@ export default function Navbar() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-[60] mobile-menu-overlay"
+          className="fixed inset-0 z-[60] bg-[#0A0A0A]/30 backdrop-blur-sm"
           onClick={() => setMobileOpen(false)}
         />
       )}
@@ -131,57 +165,52 @@ export default function Navbar() {
         role="dialog"
         aria-label="Menú de navegación"
         aria-hidden={!mobileOpen}
-        className={`fixed top-0 right-0 bottom-0 z-[70] w-[280px] mobile-menu-panel transform transition-transform duration-350 ease-out ${
+        className={`fixed top-0 right-0 bottom-0 z-[70] w-[300px] bg-[#FAFAF7] border-l border-[#0A0A0A]/10 transform transition-transform duration-350 ease-out ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
         style={{ transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)" }}
       >
-        <div className="flex items-center justify-between p-5 border-b border-pub-border">
-          <span className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center">
-              <ShoppingBag className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span className="text-lg font-bold text-gray-900">
-              PASEO <span className="text-blue-600">96</span>
-            </span>
+        <div className="flex items-center justify-between p-6 border-b border-[#0A0A0A]/10">
+          <span className="text-[15px] font-extrabold tracking-[-0.02em] text-[#0A0A0A]">
+            PASEO<span className="font-light italic text-[#525252]">/</span>96
           </span>
           <button
             onClick={() => setMobileOpen(false)}
-            className="p-2 rounded-xl hover:bg-gray-100 transition-colors btn-press"
+            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[#0A0A0A]/5 transition-colors"
             aria-label="Cerrar menú"
           >
-            <X className="w-5 h-5 text-gray-500" />
+            <X className="w-5 h-5 text-[#0A0A0A]" />
           </button>
         </div>
 
-        <div className="px-3 pt-4 flex flex-col h-[calc(100%-65px)]">
+        <div className="px-3 pt-4 flex flex-col h-[calc(100%-81px)]">
           <div>
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center px-4 py-3.5 rounded-xl text-[15px] font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+                className="flex items-center px-5 py-3.5 text-[15px] font-medium text-[#0A0A0A] hover:bg-[#0A0A0A]/5 rounded-lg transition-colors duration-200"
               >
                 {link.label}
               </Link>
             ))}
-          </div>
-          <div className="mt-auto pb-6 px-3 flex flex-col gap-2">
             <Link
               href="/planes"
               onClick={() => setMobileOpen(false)}
-              className="btn-press flex items-center justify-center w-full border border-gray-200 text-gray-700 px-4 py-3 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+              className="flex items-center px-5 py-3.5 text-[15px] font-medium text-[#737373] hover:bg-[#0A0A0A]/5 rounded-lg transition-colors duration-200"
             >
               Vender en Paseo 96
             </Link>
+          </div>
+          <div className="mt-auto pb-6 px-3">
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="btn-press flex items-center justify-center gap-2 w-full bg-blue-600 text-white px-4 py-3 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm"
+              className="v3-btn-primary w-full"
             >
-              <User className="w-4 h-4" />
-              Iniciar sesión
+              <UserCircle2 className="w-4 h-4" />
+              Ingresar
             </Link>
           </div>
         </div>
