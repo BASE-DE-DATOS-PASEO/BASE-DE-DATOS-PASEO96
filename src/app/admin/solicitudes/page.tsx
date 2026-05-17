@@ -63,59 +63,63 @@ export default function SolicitudesPage() {
 
   return (
     <>
-      <Header title="Solicitudes de alta" />
-      <div className="p-4 sm:p-6 lg:p-8">
+      <Header
+        eyebrow="Aprobaciones"
+        title="Solicitudes"
+        subtitle="Aprobá nuevos puesteros que quieren sumarse a la feria."
+      />
+      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10">
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="stat-card p-5 relative z-10">
+          <div className="v3-stat-card">
             <div className="flex items-center gap-2 mb-2">
-              <Clock size={14} className="text-amber-500" />
-              <p className="text-xs text-muted font-medium uppercase tracking-wider">Pendientes</p>
+              <Clock size={13} className="text-amber-600" />
+              <p className="text-[10px] text-[#737373] font-bold uppercase tracking-[0.15em]">Pendientes</p>
             </div>
-            <p className="text-3xl font-bold text-amber-500">{pendientes.length}</p>
-            <p className="text-xs text-muted mt-2">esperando tu aprobación</p>
+            <p className="text-3xl font-extrabold text-amber-600 tabular-nums">{pendientes.length}</p>
+            <p className="text-xs text-[#737373] mt-1">esperando tu aprobación</p>
           </div>
-          <div className="stat-card p-5 relative z-10">
+          <div className="v3-stat-card">
             <div className="flex items-center gap-2 mb-2">
-              <Check size={14} className="text-emerald-500" />
-              <p className="text-xs text-muted font-medium uppercase tracking-wider">Aprobadas</p>
+              <Check size={13} className="text-emerald-600" />
+              <p className="text-[10px] text-[#737373] font-bold uppercase tracking-[0.15em]">Aprobadas</p>
             </div>
-            <p className="text-3xl font-bold text-emerald-500">{aprobadas}</p>
-            <p className="text-xs text-muted mt-2">este mes</p>
+            <p className="text-3xl font-extrabold text-emerald-600 tabular-nums">{aprobadas}</p>
+            <p className="text-xs text-[#737373] mt-1">este mes</p>
           </div>
-          <div className="stat-card p-5 relative z-10">
+          <div className="v3-stat-card">
             <div className="flex items-center gap-2 mb-2">
-              <X size={14} className="text-red-500" />
-              <p className="text-xs text-muted font-medium uppercase tracking-wider">Rechazadas</p>
+              <X size={13} className="text-rose-600" />
+              <p className="text-[10px] text-[#737373] font-bold uppercase tracking-[0.15em]">Rechazadas</p>
             </div>
-            <p className="text-3xl font-bold text-red-500">{rechazadas}</p>
-            <p className="text-xs text-muted mt-2">este mes</p>
+            <p className="text-3xl font-extrabold text-rose-600 tabular-nums">{rechazadas}</p>
+            <p className="text-xs text-[#737373] mt-1">este mes</p>
           </div>
         </div>
 
         {/* Aviso informativo */}
-        <div className="mb-6 flex items-start gap-3 rounded-xl bg-blue-50 border border-blue-100 p-4">
-          <AlertCircle size={18} className="text-blue-600 shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-900">
-            <p className="font-semibold">Cómo funciona</p>
-            <p className="mt-0.5 text-blue-800">
+        <div className="mb-8 flex items-start gap-3 rounded-2xl bg-white border border-[#0A0A0A]/06 p-5">
+          <AlertCircle size={18} className="text-[#3B82F6] shrink-0 mt-0.5" />
+          <div className="text-sm text-[#0A0A0A]">
+            <p className="font-bold">Cómo funciona</p>
+            <p className="mt-1 text-[#525252]">
               Cuando alguien se anota y te transfiere, aparece acá. Revisás el comprobante, verificás que la plata entró, y aprobás. Recién ahí el puestero puede subir productos.
             </p>
           </div>
         </div>
 
         {/* Listado */}
-        <h2 className="text-lg font-semibold text-foreground mb-4">
+        <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 tracking-tight">
           Solicitudes pendientes
         </h2>
 
         {pendientes.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center sm:p-12">
+          <div className="rounded-2xl border border-dashed border-[#0A0A0A]/15 bg-white p-12 text-center">
             <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-3">
               <Check size={24} className="text-emerald-500" />
             </div>
-            <p className="font-semibold text-foreground">¡Estás al día!</p>
-            <p className="text-sm text-muted mt-1">No hay solicitudes pendientes por ahora.</p>
+            <p className="font-bold text-[#0A0A0A]">¡Estás al día!</p>
+            <p className="text-sm text-[#525252] mt-1">No hay solicitudes pendientes por ahora.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -134,7 +138,7 @@ export default function SolicitudesPage() {
                 return (
               <div
                 key={s.id}
-                className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+                className="v3-admin-card p-5"
               >
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
                   {/* Avatar + datos principales */}
@@ -209,10 +213,10 @@ export default function SolicitudesPage() {
                 )}
 
                 {/* Botones de acción */}
-                <div className="mt-4 flex flex-col gap-2 border-t border-gray-100 pt-4 sm:flex-row sm:items-center">
+                <div className="mt-4 flex flex-col gap-2 border-t border-[#0A0A0A]/06 pt-4 sm:flex-row sm:items-center">
                   <button
                     onClick={() => setDetalle(s)}
-                    className="flex items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+                    className="v3-admin-btn-ghost"
                   >
                     <FileText size={14} />
                     Ver detalle + comprobante
@@ -220,14 +224,14 @@ export default function SolicitudesPage() {
                   <button
                     onClick={() => aprobar(s.id)}
                     disabled={requiereRevision}
-                    className="flex items-center justify-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-40 sm:ml-auto"
+                    className="flex items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-emerald-700 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 sm:ml-auto"
                   >
                     <Check size={14} />
                     Aprobar
                   </button>
                   <button
                     onClick={() => rechazar(s.id)}
-                    className="flex items-center justify-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+                    className="v3-admin-btn-danger"
                   >
                     <X size={14} />
                     Rechazar

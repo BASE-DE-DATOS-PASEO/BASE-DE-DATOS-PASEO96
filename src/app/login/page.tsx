@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ShieldCheck, ArrowRight } from "lucide-react";
+import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
@@ -29,33 +29,54 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen v3-bg flex items-center justify-center px-5 py-12 relative overflow-hidden">
+
+      {/* Subtle decorative orbs */}
+      <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-blue-200/30 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-sky-200/30 blur-3xl pointer-events-none" />
+
+      <div className="relative w-full max-w-md">
+
+        {/* Top: back to home */}
+        <div className="mb-8 flex items-center justify-between">
+          <Link
+            href="/"
+            className="flex items-center text-[15px] font-extrabold tracking-[-0.02em] text-[#0A0A0A]"
+          >
+            PASEO <span className="text-[#3B82F6] ml-1">96</span>
+          </Link>
+          <Link
+            href="/"
+            className="text-xs font-semibold text-[#737373] hover:text-[#0A0A0A] transition-colors flex items-center gap-1"
+          >
+            Volver a la feria
+            <ArrowUpRight size={12} />
+          </Link>
+        </div>
+
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-xl shadow-blue-900/5 border border-slate-100 p-8 sm:p-10">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <Link href="/" className="inline-block">
-              <span className="text-3xl font-extrabold tracking-tight">
-                <span className="text-slate-800">PASEO</span>
-                <span className="text-blue-600">&nbsp;96</span>
-              </span>
-            </Link>
-          </div>
+        <div className="bg-white border border-[#0A0A0A]/06 rounded-3xl p-8 sm:p-10 shadow-[0_24px_60px_-20px_rgba(15,52,96,0.18),0_4px_8px_rgba(15,52,96,0.04)]">
+
+          {/* Eyebrow */}
+          <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">
+            <span className="w-5 h-px bg-[#3B82F6]" />
+            Acceso
+          </span>
 
           {/* Heading */}
-          <h1 className="text-xl font-bold text-slate-800 text-center">
+          <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-[-0.03em] text-[#0A0A0A] leading-tight">
             Iniciá sesión
           </h1>
-          <p className="text-sm text-slate-500 text-center mt-2 mb-8">
-            Accedé a tu puesto para gestionar productos
+          <p className="text-sm text-[#525252] mt-3 leading-relaxed">
+            Accedé a tu puesto en Paseo 96 para cargar productos, ver
+            estadísticas y gestionar tu plan.
           </p>
 
           {/* Google button */}
           <button
             onClick={loginConGoogle}
             disabled={loadingGoogle}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+            className="mt-8 w-full flex items-center justify-center gap-3 bg-white border border-[#0A0A0A]/12 rounded-2xl px-4 py-3.5 text-[15px] font-semibold text-[#0A0A0A] hover:border-[#0A0A0A]/30 hover:bg-[#FAFAF7] transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-wait"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -67,32 +88,32 @@ export default function LoginPage() {
           </button>
 
           {loginError && (
-            <p role="alert" aria-live="polite" className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+            <p role="alert" aria-live="polite" className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs text-rose-800">
               {loginError}
             </p>
           )}
 
           {/* Primera vez CTA */}
-          <div className="mt-8 pt-6 border-t border-slate-100 text-center">
-            <p className="text-sm text-slate-500 mb-3">
+          <div className="mt-10 pt-6 border-t border-[#0A0A0A]/06 text-center">
+            <p className="text-sm text-[#525252] mb-3">
               ¿Todavía no tenés puesto en Paseo 96?
             </p>
             <Link
               href="/planes"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#3B82F6] hover:text-[#2F6EE0] transition-colors group"
             >
               Ver planes y sumate
-              <ArrowRight size={14} />
+              <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>
         </div>
 
         {/* Admin footer */}
         <div className="flex items-center justify-center gap-1.5 mt-6">
-          <ShieldCheck className="w-4 h-4 text-slate-400" />
-          <p className="text-sm text-slate-400">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#A3A3A3]" />
+          <p className="text-xs text-[#A3A3A3]">
             ¿Sos administrador?{" "}
-            <span className="text-slate-500 font-medium">
+            <span className="text-[#525252] font-semibold">
               Usá el Gmail admin configurado
             </span>
           </p>
