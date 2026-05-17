@@ -1,31 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
-import {
-  Search,
-  LayoutGrid,
-  User,
-  Sparkles,
-  MoreHorizontal,
-  MessageCircle,
-  Shield,
-  Users,
-  HeartHandshake,
-  Tag,
-} from "lucide-react";
-import { useStore } from "@/store/useStore";
-import { slugify } from "@/data/mock";
+import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { usePublicStore } from "@/data/mock";
 
 interface HeroProps {
-  busqueda: string;
-  onSearch: (query: string) => void;
-  onCategorySelect: (catId: string | null) => void;
-  activeCategoryId?: string | null;
-  searchInputRef?: React.RefObject<HTMLInputElement | null>;
+  onExplore: () => void;
 }
 
-// Días y horario de apertura: Jueves(4), Sábado(6), Domingo(0) — 10:30 a 20:30
 function calcIsOpen(): boolean {
   const now = new Date();
   const day = now.getDay();
@@ -33,171 +16,145 @@ function calcIsOpen(): boolean {
   return [0, 4, 6].includes(day) && mins >= 630 && mins < 1230;
 }
 
-// Íconos para los chips de categoría — se asignan por nombre exacto,
-// y cualquier categoría nueva que no esté acá obtiene el ícono genérico Tag.
-const chipIconMap: Record<string, React.ReactNode> = {
-  Mujer: <User className="w-3.5 h-3.5" />,
-  Hombre: <User className="w-3.5 h-3.5" />,
-  Niños: <Sparkles className="w-3.5 h-3.5" />,
-  Otros: <MoreHorizontal className="w-3.5 h-3.5" />,
-};
-
-const featurePills = [
-  {
-    icon: <MessageCircle className="w-4 h-4" />,
-    title: "Contacto directo",
-    desc: "Hablá directamente con el vendedor",
-  },
-  {
-    icon: <Shield className="w-4 h-4" />,
-    title: "Compras seguras",
-    desc: "Consejos para una compra protegida",
-  },
-  {
-    icon: <Users className="w-4 h-4" />,
-    title: "Feria conectada",
-    desc: "Productos cargados por cada puesto",
-  },
-  {
-    icon: <HeartHandshake className="w-4 h-4" />,
-    title: "Apoyá local",
-    desc: "Comprá a vendedores de tu comunidad",
-  },
-];
-
-export default function Hero({
-  busqueda,
-  onSearch,
-  onCategorySelect,
-  activeCategoryId,
-  searchInputRef,
-}: HeroProps) {
+export default function Hero({ onExplore }: HeroProps) {
   const [isOpen, setIsOpen] = useState(calcIsOpen);
-  // Categorías dinámicas desde el store — se actualizan cuando Jere crea/edita categorías
-  const adminCategorias = useStore((s) => s.categorias);
+  const { productos } = usePublicStore();
 
   useEffect(() => {
     const id = setInterval(() => setIsOpen(calcIsOpen()), 60_000);
     return () => clearInterval(id);
   }, []);
 
+  // 4 productos para el mosaico — los más nuevos con foto
+  const mosaicProducts = useMemo(() => {
+    return productos
+      .filter((p) => p.imagenes && p.imagenes[0])
+      .slice(0, 4);
+  }, [productos]);
+
   return (
-    <section className="relative w-full overflow-hidden bg-white pt-16 sm:pt-18">
-      <div className="relative mx-auto grid max-w-[1280px] items-center gap-8 px-4 py-8 sm:px-6 sm:py-10 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-14">
+    <section className="relative w-full pt-24 sm:pt-28 pb-12 sm:pb-20 overflow-hidden">
+      <div className="relative max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
 
-        {/* ── Left column ── */}
-        <div className="flex flex-col">
-          {/* Badge dinámico */}
-          <div className="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-white border border-gray-200 shadow-sm mb-6">
-            <span className="relative flex w-2.5 h-2.5 shrink-0">
-              {isOpen && (
-                <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
-              )}
-              <span className={`relative rounded-full w-2.5 h-2.5 ${isOpen ? "bg-green-500" : "bg-red-400"}`} />
-            </span>
-            <span className="text-sm font-medium text-gray-700">
-              Paseo 96 — {isOpen ? "Feria abierta" : "Feria cerrada"}
-            </span>
-          </div>
-
-          {/* Title */}
-          <h1 className="mb-4 text-3xl font-extrabold leading-[1.08] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-            Todo lo que buscás,
-            <br />
-            <span className="text-blue-600">está en Paseo 96</span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="mb-6 max-w-2xl text-base leading-relaxed text-gray-500 sm:mb-8 sm:text-lg">
-            Explorá productos únicos, contactá directamente con vendedores por WhatsApp y más.
-          </p>
-
-          {/* Search bar */}
-          <div className="mb-4 flex items-center rounded-2xl border border-gray-200 bg-white px-3 py-3 shadow-sm transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-md sm:px-4 sm:py-3.5">
-            <Search className="w-5 h-5 text-gray-400 shrink-0" />
-            <input
-              ref={searchInputRef}
-              type="text"
-              value={busqueda}
-              onChange={(e) => onSearch(e.target.value)}
-              placeholder="¿Qué buscás? Ej: zapatillas, camperas, carteras..."
-              aria-label="Buscar productos"
-              className="flex-1 ml-3 text-sm text-gray-800 placeholder:text-gray-400 bg-transparent outline-none"
-            />
-            {busqueda && (
-              <button
-                onClick={() => onSearch("")}
-                className="shrink-0 ml-2 text-gray-400 hover:text-gray-600 text-sm btn-press"
-              >
-                ✕
-              </button>
-            )}
-          </div>
-
-          {/* Category chips — dinámicos: se generan desde el store */}
-          <div className="-mx-4 mb-6 flex items-center gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:mb-8 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
-            <button
-              onClick={() => onCategorySelect(null)}
-              className={`btn-press flex shrink-0 items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                !activeCategoryId && !busqueda
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600"
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              Todos
-            </button>
-            {adminCategorias.map((cat) => {
-              const catSlug = slugify(cat.nombre);
-              const isActive = activeCategoryId === catSlug;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => onCategorySelect(catSlug)}
-                  className={`btn-press flex shrink-0 items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    isActive
-                      ? "bg-blue-600 text-white shadow-sm"
-                      : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600"
-                  }`}
-                >
-                  {chipIconMap[cat.nombre] ?? <Tag className="w-3.5 h-3.5" />}
-                  {cat.nombre}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Feature pills */}
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-            {featurePills.map((pill) => (
-              <div
-                key={pill.title}
-                className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100"
-              >
-                <div className="shrink-0 w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-blue-600 shadow-sm mt-0.5">
-                  {pill.icon}
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-gray-800">{pill.title}</p>
-                  <p className="text-xs text-gray-400 mt-0.5 leading-snug">{pill.desc}</p>
-                </div>
-              </div>
-            ))}
+        {/* Top: status badge */}
+        <div className="mb-8 sm:mb-12">
+          <div className={`v3-status-badge ${isOpen ? "v3-status-open" : "v3-status-closed"}`}>
+            <span className="v3-pulse-dot" aria-hidden />
+            <span>{isOpen ? "Feria abierta ahora" : "Feria cerrada"}</span>
           </div>
         </div>
 
-        {/* ── Right column — image ── */}
-        <div className="hidden lg:block relative">
-          <div className="relative rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl shadow-blue-100/60">
-            <Image
-              src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&h=1100&fit=crop&q=85"
-              alt="Ropa en Paseo 96"
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 1280px) 50vw, 600px"
-            />
+        {/* Main hero grid — asymmetric 7/5 split */}
+        <div className="grid grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-end">
+
+          {/* ── Left: Statement (7 cols) ── */}
+          <div className="col-span-12 lg:col-span-7">
+            <h1 className="v3-display text-[14vw] sm:text-[88px] lg:text-[112px] xl:text-[128px]">
+              La feria
+              <br />
+              <span className="text-[#3B82F6]">de siempre,</span>
+              <br />
+              <span className="v3-display-italic text-[#737373]">a un clic.</span>
+            </h1>
+
+            <div className="mt-8 sm:mt-10 max-w-[460px] flex flex-col gap-7">
+              <p className="text-[15px] sm:text-base leading-relaxed text-[#525252]">
+                Recorré los puestos del Paseo 96 desde tu pantalla.
+                Encontrá lo que buscás, escribile al vendedor por WhatsApp y
+                pasá a retirar. Sin intermediarios, sin envíos, sin esperas.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={onExplore}
+                  className="v3-btn-accent"
+                >
+                  Explorar feria
+                  <ArrowDownRight className="w-4 h-4" />
+                </button>
+                <a
+                  href="#puesteros"
+                  className="v3-btn-ghost"
+                >
+                  Ver puestos destacados
+                </a>
+              </div>
+            </div>
           </div>
+
+          {/* ── Right: Mosaic of 4 products (5 cols) ── */}
+          <div className="col-span-12 lg:col-span-5">
+            <div className="relative w-full aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]">
+              <div className="grid grid-cols-12 grid-rows-12 gap-3 h-full">
+
+                {/* Card 1 — big (top-left) */}
+                {mosaicProducts[0] && (
+                  <div className="col-span-7 row-span-7 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
+                    <Image
+                      src={mosaicProducts[0].imagenes[0]}
+                      alt={mosaicProducts[0].nombre}
+                      fill
+                      sizes="(max-width: 1024px) 60vw, 30vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      priority
+                    />
+                    <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-bold uppercase tracking-wider text-[#0A0A0A]">
+                      Lo último
+                    </div>
+                  </div>
+                )}
+
+                {/* Card 2 — small (top-right) */}
+                {mosaicProducts[1] && (
+                  <div className="col-span-5 row-span-5 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
+                    <Image
+                      src={mosaicProducts[1].imagenes[0]}
+                      alt={mosaicProducts[1].nombre}
+                      fill
+                      sizes="(max-width: 1024px) 40vw, 20vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                )}
+
+                {/* Card 3 — small (bottom-right top) */}
+                {mosaicProducts[2] && (
+                  <div className="col-span-5 row-span-7 col-start-8 row-start-6 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
+                    <Image
+                      src={mosaicProducts[2].imagenes[0]}
+                      alt={mosaicProducts[2].nombre}
+                      fill
+                      sizes="(max-width: 1024px) 40vw, 20vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                )}
+
+                {/* Card 4 — small (bottom-left) */}
+                {mosaicProducts[3] && (
+                  <div className="col-span-7 row-span-5 col-start-1 row-start-8 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
+                    <Image
+                      src={mosaicProducts[3].imagenes[0]}
+                      alt={mosaicProducts[3].nombre}
+                      fill
+                      sizes="(max-width: 1024px) 60vw, 30vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                )}
+
+                {/* Floating CTA on mosaic */}
+                <button
+                  onClick={onExplore}
+                  aria-label="Explorar productos"
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#3B82F6] shadow-xl shadow-blue-500/40 flex items-center justify-center text-white hover:scale-110 hover:bg-[#2F6EE0] active:scale-95 transition-all z-10 group"
+                >
+                  <ArrowUpRight className="w-7 h-7 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
