@@ -43,34 +43,46 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
 
   return (
     <>
+      {/* ── DESKTOP — dark editorial sidebar ── */}
       <aside
         className={clsx(
-          "fixed left-0 top-0 hidden h-screen bg-white md:flex flex-col z-50 sidebar-transition border-r border-border",
+          "v3-admin-sidebar fixed left-0 top-0 hidden h-screen md:flex flex-col z-50 transition-[width] duration-300 ease-out",
           collapsed ? "w-[72px]" : "w-[260px]"
         )}
       >
         {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-border shrink-0">
-          {!collapsed && (
-            <span className="text-xl font-bold tracking-tight text-foreground">
-              PASEO <span className="text-accent blue-glow">96</span>
-            </span>
-          )}
-          {collapsed && (
-            <span className="text-lg font-bold tracking-tight text-accent blue-glow mx-auto">96</span>
+        <div className="h-16 flex items-center justify-between px-5 shrink-0 border-b border-white/06">
+          {!collapsed ? (
+            <Link href="/admin" className="text-[15px] font-extrabold tracking-[-0.02em] text-white">
+              PASEO <span className="text-[#3B82F6]">96</span>
+            </Link>
+          ) : (
+            <Link href="/admin" className="text-[15px] font-extrabold tracking-[-0.02em] text-[#3B82F6] mx-auto">
+              96
+            </Link>
           )}
           {!collapsed && (
             <button
               onClick={() => onCollapse(true)}
-              className="p-1.5 rounded-lg hover:bg-blue-50 text-muted transition-colors"
+              className="p-1.5 rounded-lg hover:bg-white/8 text-white/40 hover:text-white/80 transition-colors"
+              aria-label="Colapsar"
             >
-              <ChevronLeft size={18} />
+              <ChevronLeft size={16} />
             </button>
           )}
         </div>
 
+        {/* Admin label */}
+        {!collapsed && (
+          <div className="px-5 pt-5 pb-2">
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">
+              Panel
+            </span>
+          </div>
+        )}
+
         {/* Navigation */}
-        <nav className="flex-1 px-3 pt-4 space-y-0.5 overflow-y-auto">
+        <nav className="flex-1 px-3 pt-2 space-y-0.5 overflow-y-auto">
           {menuItems.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -83,54 +95,53 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
                 href={item.href}
                 title={collapsed ? item.label : undefined}
                 className={clsx(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200",
-                  collapsed && "justify-center",
-                  isActive
-                    ? "bg-accent text-white font-semibold shadow-lg shadow-accent/20"
-                    : "text-gray-500 hover:text-foreground hover:bg-blue-50"
+                  "v3-admin-sidebar-item",
+                  collapsed && "justify-center !px-0 !py-3",
+                  isActive && "is-active"
                 )}
               >
-                <Icon size={18} strokeWidth={isActive ? 2.5 : 1.5} />
-                {!collapsed && <span className="text-sm">{item.label}</span>}
+                <Icon size={17} strokeWidth={isActive ? 2 : 1.6} className="shrink-0" />
+                {!collapsed && <span>{item.label}</span>}
               </Link>
             );
           })}
         </nav>
 
-        {/* Footer */}
-        <div className={clsx("px-4 py-4 border-t border-border shrink-0", collapsed && "px-2")}>
+        {/* Footer — user + logout */}
+        <div className={clsx("px-3 py-4 shrink-0 border-t border-white/06", collapsed && "px-2")}>
           {collapsed ? (
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-1">
               <button
                 onClick={() => onCollapse(false)}
-                className="w-full flex items-center justify-center p-2 rounded-xl hover:bg-blue-50 text-muted transition-colors"
+                className="w-full flex items-center justify-center p-2 rounded-lg hover:bg-white/8 text-white/40 hover:text-white/80 transition-colors"
+                aria-label="Expandir"
               >
-                <ChevronRight size={18} />
+                <ChevronRight size={16} />
               </button>
               <button
                 onClick={() => signOut()}
                 title="Cerrar sesión"
-                className="w-full flex items-center justify-center p-2 rounded-xl hover:bg-blue-50 text-muted hover:text-red-500 transition-colors"
+                className="w-full flex items-center justify-center p-2 rounded-lg hover:bg-white/8 text-white/40 hover:text-rose-400 transition-colors"
               >
-                <LogOut size={18} />
+                <LogOut size={16} />
               </button>
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-blue-500/20 shrink-0">
+              <div className="flex items-center gap-3 px-1">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2F6EE0] flex items-center justify-center text-white text-sm font-bold shadow-md shadow-blue-500/30 shrink-0">
                   {initial}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground">{displayName}</p>
-                  <p className="text-[11px] text-muted truncate">Administrador</p>
+                  <p className="text-sm font-semibold text-white truncate">{displayName}</p>
+                  <p className="text-[11px] text-white/45 truncate">Administrador</p>
                 </div>
               </div>
               <button
                 onClick={() => signOut()}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-muted hover:text-red-500 hover:bg-blue-50 transition-colors"
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/55 hover:text-rose-300 hover:bg-white/06 transition-colors"
               >
-                <LogOut size={16} />
+                <LogOut size={15} />
                 <span>Cerrar sesión</span>
               </button>
             </div>
@@ -138,7 +149,8 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
         </div>
       </aside>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-white/95 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl md:hidden">
+      {/* ── MOBILE — bottom nav (dark) ── */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0A0A0A]/95 backdrop-blur-xl border-t border-white/06 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 md:hidden">
         <div className="mx-auto grid max-w-md grid-cols-6 gap-1">
           {menuItems.map((item) => {
             const isActive =
@@ -153,11 +165,11 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
                 className={clsx(
                   "flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[10px] font-medium transition-colors",
                   isActive
-                    ? "bg-accent text-white"
-                    : "text-gray-500 hover:bg-blue-50 hover:text-foreground"
+                    ? "bg-[#3B82F6]/15 text-white"
+                    : "text-white/50 hover:text-white"
                 )}
               >
-                <Icon size={17} strokeWidth={isActive ? 2.4 : 1.7} />
+                <Icon size={17} strokeWidth={isActive ? 2.2 : 1.7} />
                 <span className="w-full truncate text-center">{item.label}</span>
               </Link>
             );
