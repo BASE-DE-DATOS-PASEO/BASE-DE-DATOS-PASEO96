@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import StoreInit from "@/components/StoreInit";
 
-const BASE_URL = "https://base-de-datos-paseo-96.vercel.app";
+const BASE_URL = "https://paseo96.com";
 
 export const viewport: Viewport = {
   width: "device-width",
