@@ -65,7 +65,7 @@ export default function PuesteroDetalle() {
         </button>
 
         {/* Header card */}
-        <div className="mb-6 rounded-xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
+        <div className="mb-6 rounded-xl border border-[#0A0A0A]/06 bg-white p-4 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3 sm:items-center sm:gap-4">
               <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center">
@@ -82,7 +82,7 @@ export default function PuesteroDetalle() {
                       "flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full",
                       puesto.estadoActividad === "activo"
                         ? "bg-emerald-400/10 text-emerald-400"
-                        : "bg-gray-50 text-muted"
+                        : "bg-[#FAFAF7] text-muted"
                     )}
                   >
                     {puesto.estadoActividad === "activo" ? (
@@ -132,7 +132,7 @@ export default function PuesteroDetalle() {
         {/* Info grid */}
         <div className="grid grid-cols-1 gap-4 mb-6 lg:grid-cols-3 lg:gap-6">
           {/* Datos */}
-          <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
+          <div className="bg-white border border-[#0A0A0A]/06 rounded-xl p-6 shadow-sm">
             <h3 className="font-semibold text-foreground mb-4">Información</h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-sm text-foreground">
@@ -159,7 +159,7 @@ export default function PuesteroDetalle() {
           </div>
 
           {/* Servicios */}
-          <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
+          <div className="bg-white border border-[#0A0A0A]/06 rounded-xl p-6 shadow-sm">
             <h3 className="font-semibold text-foreground mb-4">Servicios</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
@@ -171,7 +171,7 @@ export default function PuesteroDetalle() {
                     <Check size={14} /> Sí
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 text-gray-400">
+                  <span className="flex items-center gap-1 text-[#A3A3A3]">
                     <X size={14} /> No
                   </span>
                 )}
@@ -185,7 +185,7 @@ export default function PuesteroDetalle() {
                     <Check size={14} /> Sí
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 text-gray-400">
+                  <span className="flex items-center gap-1 text-[#A3A3A3]">
                     <X size={14} /> No
                   </span>
                 )}
@@ -199,7 +199,7 @@ export default function PuesteroDetalle() {
                     <Check size={14} /> Sí
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 text-gray-400">
+                  <span className="flex items-center gap-1 text-[#A3A3A3]">
                     <X size={14} /> No
                   </span>
                 )}
@@ -208,7 +208,7 @@ export default function PuesteroDetalle() {
           </div>
 
           {/* Productos resumen */}
-          <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
+          <div className="bg-white border border-[#0A0A0A]/06 rounded-xl p-6 shadow-sm">
             <h3 className="font-semibold text-foreground mb-4">Productos</h3>
             <div className="text-center">
               <p className="text-4xl font-bold text-foreground">
@@ -217,7 +217,7 @@ export default function PuesteroDetalle() {
               <p className="text-sm text-muted mt-1">
                 de {puesto.limiteProductos} disponibles
               </p>
-              <div className="w-full bg-gray-50 rounded-full h-3 mt-3">
+              <div className="w-full bg-[#FAFAF7] rounded-full h-3 mt-3">
                 <div
                   className={clsx(
                     "h-3 rounded-full transition-all",
@@ -250,7 +250,7 @@ export default function PuesteroDetalle() {
         )}
 
         {/* Productos del puesto */}
-        <div className="bg-white border border-gray-100 rounded-xl shadow-sm">
+        <div className="bg-white border border-[#0A0A0A]/06 rounded-xl shadow-sm">
           <div className="px-6 py-4 border-b border-border flex items-center justify-between">
             <h3 className="font-semibold text-foreground">
               Productos de este puesto
@@ -270,7 +270,7 @@ export default function PuesteroDetalle() {
                   className="px-6 py-4 flex items-center justify-between hover:bg-blue-50/50 transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="relative w-12 h-12 rounded-lg bg-gray-50 overflow-hidden flex items-center justify-center shrink-0">
+                    <div className="relative w-12 h-12 rounded-lg bg-[#FAFAF7] overflow-hidden flex items-center justify-center shrink-0">
                       {prod.imagenes[0] ? (
                         <Image
                           src={prod.imagenes[0]}
@@ -382,17 +382,17 @@ function EditPuesteroModal({
   }
 
   const inputClass =
-    "w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-lg text-foreground placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/30";
-  const labelClass = "text-xs font-medium text-gray-500 block mb-1.5";
+    "w-full px-3 py-2.5 text-sm bg-[#FAFAF7] border border-[#0A0A0A]/12 rounded-lg text-foreground placeholder:text-[#A3A3A3] focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/30";
+  const labelClass = "text-xs font-medium text-[#737373] block mb-1.5";
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
       <div className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-2xl bg-white shadow-2xl sm:rounded-2xl">
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-gray-100 bg-white px-4 py-4 sm:px-6">
-          <h3 className="text-lg font-semibold text-gray-900">Editar puesto</h3>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors">
+        <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-[#0A0A0A]/06 bg-white px-4 py-4 sm:px-6">
+          <h3 className="text-lg font-semibold text-[#0A0A0A]">Editar puesto</h3>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100 text-[#A3A3A3] transition-colors">
             <X size={18} />
           </button>
         </div>
@@ -478,7 +478,7 @@ function EditPuesteroModal({
                     "flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-medium transition-colors",
                     val
                       ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-                      : "bg-gray-50 border-gray-200 text-gray-500"
+                      : "bg-[#FAFAF7] border-[#0A0A0A]/12 text-[#737373]"
                   )}
                 >
                   {val ? <Check size={14} /> : <X size={14} />}
@@ -502,8 +502,8 @@ function EditPuesteroModal({
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 flex flex-col gap-2 rounded-b-2xl border-t border-gray-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-end sm:gap-3 sm:px-6">
-          <button onClick={onClose} className="px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+        <div className="sticky bottom-0 flex flex-col gap-2 rounded-b-2xl border-t border-[#0A0A0A]/06 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-end sm:gap-3 sm:px-6">
+          <button onClick={onClose} className="px-4 py-2.5 text-sm font-medium text-[#737373] hover:text-[#525252] border border-[#0A0A0A]/12 rounded-lg hover:bg-[#FAFAF7] transition-colors">
             Cancelar
           </button>
           <button

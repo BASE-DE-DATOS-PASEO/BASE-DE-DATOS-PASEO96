@@ -18,7 +18,7 @@ export default function AdminError({ error, reset }: { error: Error & { digest?:
           <button onClick={reset} className="inline-flex rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
             Reintentar
           </button>
-          <Link href="/admin" className="inline-flex rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+          <Link href="/admin" className="inline-flex rounded-xl border border-[#0A0A0A]/12 px-5 py-2.5 text-sm font-semibold text-[#525252] hover:bg-[#FAFAF7] transition-colors">
             Volver al panel
           </Link>
         </div>

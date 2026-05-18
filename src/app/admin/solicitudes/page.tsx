@@ -324,7 +324,7 @@ export default function SolicitudesPage() {
               </div>
 
               {/* Plan y monto */}
-              <div className="rounded-xl bg-gray-50 p-4">
+              <div className="rounded-xl bg-[#FAFAF7] p-4">
                 <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">
                   Plan y pago
                 </p>
@@ -467,8 +467,8 @@ function ComprobanteBox({ path }: { path: string | null }) {
   const displayUrl = directUrl ?? url;
 
   return (
-    <div className="rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 p-8 text-center">
-      <CreditCard size={32} className="text-gray-400 mx-auto mb-2" />
+    <div className="rounded-xl border-2 border-dashed border-[#0A0A0A]/12 bg-[#FAFAF7] p-8 text-center">
+      <CreditCard size={32} className="text-[#A3A3A3] mx-auto mb-2" />
       {!path ? (
         <p className="text-sm font-medium text-foreground">Sin comprobante</p>
       ) : displayUrl ? (

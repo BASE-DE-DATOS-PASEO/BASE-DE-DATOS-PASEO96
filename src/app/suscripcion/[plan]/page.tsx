@@ -91,11 +91,11 @@ export default function SuscripcionPage() {
 
   if (!validPlan) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-6">
-        <div className="w-full max-w-md rounded-2xl bg-white border border-gray-100 p-8 text-center shadow-xl">
+      <div className="min-h-screen v3-bg flex items-center justify-center p-6">
+        <div className="w-full max-w-md rounded-2xl bg-white border border-[#0A0A0A]/06 p-8 text-center shadow-xl">
           <AlertCircle className="w-10 h-10 text-amber-500 mx-auto mb-4" />
-          <h1 className="text-xl font-bold text-gray-900">Plan no encontrado</h1>
-          <p className="text-sm text-gray-500 mt-2">Elegí uno de los planes disponibles para iniciar la solicitud.</p>
+          <h1 className="text-xl font-bold text-[#0A0A0A]">Plan no encontrado</h1>
+          <p className="text-sm text-[#737373] mt-2">Elegí uno de los planes disponibles para iniciar la solicitud.</p>
           <Link href="/planes" className="mt-5 inline-flex rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white">
             Volver a planes
           </Link>
@@ -216,15 +216,15 @@ export default function SuscripcionPage() {
 
   if (enviado) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-6">
-        <div className="w-full max-w-xl bg-white rounded-3xl border border-gray-100 shadow-xl p-10 text-center">
+      <div className="min-h-screen v3-bg flex items-center justify-center p-6">
+        <div className="w-full max-w-xl bg-white rounded-3xl border border-[#0A0A0A]/06 shadow-xl p-10 text-center">
           <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-6">
             <Check size={40} className="text-emerald-600" strokeWidth={3} />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">
+          <h1 className="text-3xl font-bold text-[#0A0A0A] mb-3">
             ¡Solicitud enviada!
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-[#525252] mb-6">
             {metodo === "efectivo" ? (
               <>
                 Le llegó tu solicitud a <strong>Jere</strong>. Coordiná la entrega del efectivo por WhatsApp y, una vez que la reciba, te aprueba el acceso al puesto.
@@ -273,8 +273,8 @@ export default function SuscripcionPage() {
             {metodo === "efectivo" ? "Coordinar con Jere por WhatsApp" : "Avisar a Jere por WhatsApp"}
           </a>
 
-          <div className="mt-6 pt-6 border-t border-gray-100">
-            <Link href="/" className="text-sm text-gray-500 hover:text-gray-900">
+          <div className="mt-6 pt-6 border-t border-[#0A0A0A]/06">
+            <Link href="/" className="text-sm text-[#737373] hover:text-[#0A0A0A]">
               ← Volver al inicio
             </Link>
           </div>
@@ -287,15 +287,15 @@ export default function SuscripcionPage() {
 
   if (!metodo) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="min-h-screen v3-bg">
         {/* Navbar */}
-        <header className="sticky top-0 z-40 border-b border-gray-100 bg-white/80 backdrop-blur-md">
+        <header className="sticky top-0 z-40 border-b border-[#0A0A0A]/06 bg-white/80 backdrop-blur-md">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <Link href="/planes" className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors">
+            <Link href="/planes" className="flex items-center gap-2 text-sm text-[#737373] hover:text-[#0A0A0A] transition-colors">
               <ArrowLeft size={16} />
               Volver a planes
             </Link>
-            <Link href="/" className="text-lg font-bold tracking-tight text-gray-900">
+            <Link href="/" className="text-lg font-bold tracking-tight text-[#0A0A0A]">
               PASEO 96
             </Link>
           </div>
@@ -308,10 +308,10 @@ export default function SuscripcionPage() {
               {planParam === "oro" && <Crown size={14} />}
               Plan {plan.nombre} elegido
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0A0A0A]">
               ¿Cómo querés pagar?
             </h1>
-            <p className="mt-3 text-gray-500 max-w-xl mx-auto">
+            <p className="mt-3 text-[#737373] max-w-xl mx-auto">
               Elegí el método de pago. Jere recibe tu solicitud y la confirma cuando recibe la plata.
             </p>
           </div>
@@ -322,7 +322,7 @@ export default function SuscripcionPage() {
             <button
               type="button"
               onClick={() => setMetodo("transferencia")}
-              className="text-left rounded-2xl border-2 border-gray-200 bg-white p-6 hover:border-blue-500 hover:shadow-lg transition-all group"
+              className="text-left rounded-2xl border-2 border-[#0A0A0A]/12 bg-white p-6 hover:border-blue-500 hover:shadow-lg transition-all group"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center">
@@ -332,14 +332,14 @@ export default function SuscripcionPage() {
                   Más rápido
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">Transferencia</h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <h3 className="text-xl font-bold text-[#0A0A0A] mb-1">Transferencia</h3>
+              <p className="text-sm text-[#737373] mb-4">
                 Transferí desde tu app de banco o billetera virtual.
               </p>
-              <div className="rounded-xl bg-gray-50 border border-gray-100 p-3 mb-4">
+              <div className="rounded-xl bg-[#FAFAF7] border border-[#0A0A0A]/06 p-3 mb-4">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">Plan {plan.nombre}</span>
-                  <span className="text-gray-700">{formatPrecio(precioBase)}</span>
+                  <span className="text-[#737373]">Plan {plan.nombre}</span>
+                  <span className="text-[#525252]">{formatPrecio(precioBase)}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm mt-1">
                   <span className="text-amber-700 font-medium">+ IVA 21%</span>
@@ -347,9 +347,9 @@ export default function SuscripcionPage() {
                     {formatPrecio(precioTransferencia - precioBase)}
                   </span>
                 </div>
-                <div className="border-t border-gray-200 mt-2 pt-2 flex items-center justify-between">
-                  <span className="font-semibold text-gray-900">Total</span>
-                  <span className="font-bold text-gray-900 text-lg">
+                <div className="border-t border-[#0A0A0A]/12 mt-2 pt-2 flex items-center justify-between">
+                  <span className="font-semibold text-[#0A0A0A]">Total</span>
+                  <span className="font-bold text-[#0A0A0A] text-lg">
                     {formatPrecio(precioTransferencia)}
                   </span>
                 </div>
@@ -364,7 +364,7 @@ export default function SuscripcionPage() {
             <button
               type="button"
               onClick={() => setMetodo("efectivo")}
-              className="text-left rounded-2xl border-2 border-gray-200 bg-white p-6 hover:border-emerald-500 hover:shadow-lg transition-all group"
+              className="text-left rounded-2xl border-2 border-[#0A0A0A]/12 bg-white p-6 hover:border-emerald-500 hover:shadow-lg transition-all group"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
@@ -374,22 +374,22 @@ export default function SuscripcionPage() {
                   Sin recargo
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">Efectivo</h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <h3 className="text-xl font-bold text-[#0A0A0A] mb-1">Efectivo</h3>
+              <p className="text-sm text-[#737373] mb-4">
                 Coordinás con Jere y le entregás la plata en mano.
               </p>
-              <div className="rounded-xl bg-gray-50 border border-gray-100 p-3 mb-4">
+              <div className="rounded-xl bg-[#FAFAF7] border border-[#0A0A0A]/06 p-3 mb-4">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">Plan {plan.nombre}</span>
-                  <span className="text-gray-700">{formatPrecio(precioBase)}</span>
+                  <span className="text-[#737373]">Plan {plan.nombre}</span>
+                  <span className="text-[#525252]">{formatPrecio(precioBase)}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm mt-1">
                   <span className="text-emerald-700 font-medium">Sin IVA</span>
                   <span className="text-emerald-700 font-medium">— —</span>
                 </div>
-                <div className="border-t border-gray-200 mt-2 pt-2 flex items-center justify-between">
-                  <span className="font-semibold text-gray-900">Total</span>
-                  <span className="font-bold text-gray-900 text-lg">
+                <div className="border-t border-[#0A0A0A]/12 mt-2 pt-2 flex items-center justify-between">
+                  <span className="font-semibold text-[#0A0A0A]">Total</span>
+                  <span className="font-bold text-[#0A0A0A] text-lg">
                     {formatPrecio(precioBase)}
                   </span>
                 </div>
@@ -415,18 +415,18 @@ export default function SuscripcionPage() {
   /* ── Pantalla principal (pago + formulario) ────────── */
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen v3-bg">
       {/* Navbar */}
-      <header className="sticky top-0 z-40 border-b border-gray-100 bg-white/80 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-[#0A0A0A]/06 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <button
             onClick={() => setMetodo(null)}
-            className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-sm text-[#737373] hover:text-[#0A0A0A] transition-colors"
           >
             <ArrowLeft size={16} />
             Cambiar método de pago
           </button>
-          <Link href="/" className="text-lg font-bold tracking-tight text-gray-900">
+          <Link href="/" className="text-lg font-bold tracking-tight text-[#0A0A0A]">
             PASEO 96
           </Link>
         </div>
@@ -440,12 +440,12 @@ export default function SuscripcionPage() {
             Plan {plan.nombre} ·{" "}
             {metodo === "transferencia" ? "Transferencia" : "Efectivo"}
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+          <h1 className="text-2xl font-extrabold tracking-tight text-[#0A0A0A] sm:text-4xl">
             {metodo === "transferencia"
               ? "Último paso: transferí y listo"
               : "Último paso: completá tus datos"}
           </h1>
-          <p className="mt-3 text-gray-500 max-w-xl mx-auto">
+          <p className="mt-3 text-[#737373] max-w-xl mx-auto">
             {metodo === "transferencia"
               ? "Hacé la transferencia, completá tus datos y subí el comprobante. Jere te confirma por WhatsApp en unas horas."
               : "Completá tus datos y coordinás con Jere la entrega del efectivo por WhatsApp."}
@@ -456,12 +456,12 @@ export default function SuscripcionPage() {
           {/* ── COLUMNA IZQUIERDA: Instrucciones de pago ── */}
           <div className="lg:col-span-3 space-y-5">
             {/* Paso 1: Monto */}
-            <section className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
+            <section className="rounded-2xl border border-[#0A0A0A]/06 bg-white p-4 shadow-sm sm:p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">
                   1
                 </div>
-                <h2 className="font-semibold text-gray-900">
+                <h2 className="font-semibold text-[#0A0A0A]">
                   {metodo === "transferencia" ? "Monto a transferir" : "Monto a entregar en efectivo"}
                 </h2>
               </div>
@@ -490,12 +490,12 @@ export default function SuscripcionPage() {
             </section>
 
             {/* Paso 2: Datos bancarios o instrucciones efectivo */}
-            <section className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
+            <section className="rounded-2xl border border-[#0A0A0A]/06 bg-white p-4 shadow-sm sm:p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">
                   2
                 </div>
-                <h2 className="font-semibold text-gray-900">
+                <h2 className="font-semibold text-[#0A0A0A]">
                   {metodo === "transferencia"
                     ? "Transferí a esta cuenta"
                     : "Coordinar la entrega"}
@@ -589,13 +589,13 @@ export default function SuscripcionPage() {
           <div className="lg:col-span-2">
             <form
               onSubmit={enviarSolicitud}
-              className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-24"
+              className="rounded-2xl border border-[#0A0A0A]/06 bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-24"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">
                   3
                 </div>
-                <h2 className="font-semibold text-gray-900">Tus datos</h2>
+                <h2 className="font-semibold text-[#0A0A0A]">Tus datos</h2>
               </div>
 
               <div className="space-y-3">
@@ -655,10 +655,10 @@ export default function SuscripcionPage() {
                 {/* Upload comprobante (solo transferencia) */}
                 {metodo === "transferencia" && (
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                    <label className="block text-xs font-medium text-[#525252] mb-1.5">
                       Comprobante de transferencia <span className="text-red-500">*</span>
                     </label>
-                    <label className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed border-gray-300 text-sm text-gray-500 hover:border-blue-400 hover:text-blue-600 transition-colors cursor-pointer">
+                    <label className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed border-gray-300 text-sm text-[#737373] hover:border-blue-400 hover:text-blue-600 transition-colors cursor-pointer">
                       <Upload size={16} />
                       {archivoSubido ? (
                         <span className="text-emerald-600 font-medium">✓ {archivoSubido.name}</span>
@@ -692,7 +692,7 @@ export default function SuscripcionPage() {
                 <Check size={18} />
               </button>
 
-              <p className="text-xs text-gray-400 text-center mt-3">
+              <p className="text-xs text-[#A3A3A3] text-center mt-3">
                 {metodo === "transferencia"
                   ? "Jere verifica que la plata entró y te da el acceso por WhatsApp en unas horas."
                   : "Jere te contacta por WhatsApp para coordinar la entrega del efectivo."}
@@ -723,14 +723,14 @@ function DatoBancario({
   return (
     <div
       className={`flex items-center justify-between rounded-xl p-3 border ${
-        destacado ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-100"
+        destacado ? "bg-blue-50 border-blue-200" : "bg-[#FAFAF7] border-[#0A0A0A]/06"
       }`}
     >
       <div className="min-w-0 flex-1">
-        <p className="text-xs text-gray-500">{label}</p>
+        <p className="text-xs text-[#737373]">{label}</p>
         <p
           className={`font-mono font-semibold truncate ${
-            destacado ? "text-blue-900 text-lg" : "text-gray-900 text-sm"
+            destacado ? "text-blue-900 text-lg" : "text-[#0A0A0A] text-sm"
           }`}
         >
           {valor}
@@ -744,7 +744,7 @@ function DatoBancario({
             ? "bg-emerald-500 text-white"
             : destacado
             ? "bg-blue-600 text-white hover:bg-blue-700"
-            : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+            : "bg-white border border-[#0A0A0A]/12 text-[#525252] hover:bg-[#FAFAF7]"
         }`}
       >
         {copied ? (
@@ -780,7 +780,7 @@ function Campo({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-600 mb-1.5">
+      <label className="block text-xs font-medium text-[#525252] mb-1.5">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <input
@@ -790,7 +790,7 @@ function Campo({
         placeholder={placeholder}
         required={required}
         maxLength={type === "email" ? 100 : 200}
-        className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-colors"
+        className="w-full px-3 py-2.5 rounded-lg border border-[#0A0A0A]/12 text-sm text-[#0A0A0A] placeholder:text-[#A3A3A3] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-colors"
       />
     </div>
   );

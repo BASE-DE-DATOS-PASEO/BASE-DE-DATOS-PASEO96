@@ -62,7 +62,7 @@ export function PhotoUploader({ value, onChange, folder, label, className }: Pho
       />
 
       {value ? (
-        <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 border border-gray-200">
+        <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#FAFAF7] border border-[#0A0A0A]/12">
           <Image src={value} alt="preview" fill sizes="400px" className="object-cover" />
           <button
             type="button"
@@ -75,7 +75,7 @@ export function PhotoUploader({ value, onChange, folder, label, className }: Pho
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="absolute bottom-2 right-2 px-3 py-1.5 rounded-full bg-white/90 text-xs font-medium text-gray-800 border border-gray-200 hover:bg-white shadow-sm"
+            className="absolute bottom-2 right-2 px-3 py-1.5 rounded-full bg-white/90 text-xs font-medium text-[#0A0A0A] border border-[#0A0A0A]/12 hover:bg-white shadow-sm"
           >
             Cambiar
           </button>
@@ -85,7 +85,7 @@ export function PhotoUploader({ value, onChange, folder, label, className }: Pho
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="w-full aspect-[4/3] rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-2 text-gray-500 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-colors disabled:opacity-50"
+          className="w-full aspect-[4/3] rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-2 text-[#737373] hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-colors disabled:opacity-50"
         >
           {uploading ? (
             <>
@@ -96,7 +96,7 @@ export function PhotoUploader({ value, onChange, folder, label, className }: Pho
             <>
               <Camera className="w-7 h-7" />
               <span className="text-sm font-medium">Tocá para subir foto</span>
-              <span className="text-xs text-gray-400">JPG, PNG o WEBP · máx 10 MB</span>
+              <span className="text-xs text-[#A3A3A3]">JPG, PNG o WEBP · máx 10 MB</span>
             </>
           )}
         </button>
@@ -171,7 +171,7 @@ export function PhotosUploader({ values, onChange, folder, max = 5, label }: Pho
 
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {fotos.map((url, i) => (
-          <div key={url + i} className="relative aspect-square rounded-lg overflow-hidden bg-gray-50 border border-gray-200 group">
+          <div key={url + i} className="relative aspect-square rounded-lg overflow-hidden bg-[#FAFAF7] border border-[#0A0A0A]/12 group">
             <Image src={url} alt={`foto ${i + 1}`} fill sizes="120px" className="object-cover" />
             <button
               type="button"
@@ -194,7 +194,7 @@ export function PhotosUploader({ values, onChange, folder, max = 5, label }: Pho
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={uploading}
-            className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-500 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-colors disabled:opacity-50"
+            className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-[#737373] hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-colors disabled:opacity-50"
           >
             {uploading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -209,7 +209,7 @@ export function PhotosUploader({ values, onChange, folder, max = 5, label }: Pho
       </div>
 
       {error && <p className="text-xs text-red-600 mt-2">{error}</p>}
-      {fotos.length === 0 && <p className="text-xs text-gray-400 mt-2 text-center">Subí hasta {max} fotos. La primera será la portada.</p>}
+      {fotos.length === 0 && <p className="text-xs text-[#A3A3A3] mt-2 text-center">Subí hasta {max} fotos. La primera será la portada.</p>}
     </div>
   );
 }

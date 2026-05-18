@@ -49,11 +49,13 @@ export default function ProductCard({ producto }: ProductCardProps) {
     setMounted(true);
   }, []);
 
+  // Hooks DEBEN llamarse antes de cualquier early return (rules-of-hooks).
+  const moreFromSeller = useMemo(() => getProductosByLocal(producto.localId).filter(p => p.id !== producto.id).slice(0, 6), [producto.localId, producto.id]);
+  const related = useMemo(() => getRelatedProducts(producto, 6), [producto]);
+
   if (!local) return null;
 
   const isPremium = local.plan === "plata" || local.plan === "oro";
-  const moreFromSeller = useMemo(() => getProductosByLocal(producto.localId).filter(p => p.id !== producto.id).slice(0, 6), [producto.localId, producto.id]);
-  const related = useMemo(() => getRelatedProducts(producto, 6), [producto]);
 
   const waMessage = encodeURIComponent(`Hola! Vi "${producto.nombre}" en Paseo 96 y quería consultar si está disponible.`);
   const waLink = `https://wa.me/${local.telefono}?text=${waMessage}`;
@@ -181,7 +183,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
             <div className="overflow-y-auto flex-1">
               {/* Image gallery */}
               <div className="relative">
-                <div className="relative aspect-[4/3] sm:aspect-[3/2] bg-gray-50 overflow-hidden flex items-center justify-center">
+                <div className="relative aspect-[4/3] sm:aspect-[3/2] bg-[#FAFAF7] overflow-hidden flex items-center justify-center">
                   {producto.imagenes[activeImg] ? (
                     <Image
                       src={producto.imagenes[activeImg]}
@@ -192,7 +194,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
                       priority
                     />
                   ) : (
-                    <div className="text-gray-300 text-sm font-medium">Sin foto</div>
+                    <div className="text-[#A3A3A3] text-sm font-medium">Sin foto</div>
                   )}
                 </div>
                 {/* Image nav arrows */}
@@ -312,7 +314,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
                 </p>
 
                 {/* Divider */}
-                <div className="border-t border-gray-100 my-5" />
+                <div className="border-t border-[#0A0A0A]/06 my-5" />
 
                 {/* Product details */}
                 <h3 className="text-base font-bold text-pub-text mb-3">Detalle de producto</h3>
@@ -334,17 +336,17 @@ export default function ProductCard({ producto }: ProductCardProps) {
                 {/* Store services */}
                 <div className="mt-4 flex flex-wrap gap-2">
                   {local.aceptaTransferencia && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 border border-gray-100 text-xs text-pub-text-secondary">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FAFAF7] border border-[#0A0A0A]/06 text-xs text-pub-text-secondary">
                       <CreditCard className="w-3.5 h-3.5" /> Acepta transferencia
                     </span>
                   )}
                   {local.aceptaCambios && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 border border-gray-100 text-xs text-pub-text-secondary">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FAFAF7] border border-[#0A0A0A]/06 text-xs text-pub-text-secondary">
                       <RefreshCw className="w-3.5 h-3.5" /> Acepta cambios
                     </span>
                   )}
                   {local.realizaEnvios && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 border border-gray-100 text-xs text-pub-text-secondary">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FAFAF7] border border-[#0A0A0A]/06 text-xs text-pub-text-secondary">
                       <Truck className="w-3.5 h-3.5" /> Realiza envíos
                     </span>
                   )}
@@ -353,7 +355,7 @@ export default function ProductCard({ producto }: ProductCardProps) {
                 {/* More from this seller */}
                 {moreFromSeller.length > 0 && (
                   <>
-                    <div className="border-t border-gray-100 my-5" />
+                    <div className="border-t border-[#0A0A0A]/06 my-5" />
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-base font-bold text-pub-text">Más de {local.nombre}</h3>
                       <Link
@@ -371,11 +373,11 @@ export default function ProductCard({ producto }: ProductCardProps) {
                           onClick={() => { setActiveImg(0); /* scroll to top */ }}
                           className="shrink-0 w-24"
                         >
-                          <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center">
+                          <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-[#FAFAF7] flex items-center justify-center">
                             {p.imagenes[0] ? (
                               <Image src={p.imagenes[0]} alt={p.nombre} fill sizes="96px" className="object-cover" />
                             ) : (
-                              <span className="text-[10px] text-gray-300">Sin foto</span>
+                              <span className="text-[10px] text-[#A3A3A3]">Sin foto</span>
                             )}
                           </div>
                           <p className="mt-1 text-[11px] text-pub-text leading-tight line-clamp-2">{p.nombre}</p>
@@ -389,16 +391,16 @@ export default function ProductCard({ producto }: ProductCardProps) {
                 {/* Related products */}
                 {related.length > 0 && (
                   <>
-                    <div className="border-t border-gray-100 my-5" />
+                    <div className="border-t border-[#0A0A0A]/06 my-5" />
                     <h3 className="text-base font-bold text-pub-text mb-3">También te puede interesar</h3>
                     <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
                       {related.map(p => (
                         <div key={p.id} className="shrink-0 w-24">
-                          <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center">
+                          <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-[#FAFAF7] flex items-center justify-center">
                             {p.imagenes[0] ? (
                               <Image src={p.imagenes[0]} alt={p.nombre} fill sizes="96px" className="object-cover" />
                             ) : (
-                              <span className="text-[10px] text-gray-300">Sin foto</span>
+                              <span className="text-[10px] text-[#A3A3A3]">Sin foto</span>
                             )}
                           </div>
                           <p className="mt-1 text-[11px] text-pub-text leading-tight line-clamp-2">{p.nombre}</p>
