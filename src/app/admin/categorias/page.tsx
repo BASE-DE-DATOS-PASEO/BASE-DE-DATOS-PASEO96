@@ -11,6 +11,7 @@ import {
   ChevronDown,
   X,
   Package,
+  Store,
 } from "lucide-react";
 import type { Categoria } from "@/lib/mock-data";
 import { useStore } from "@/store/useStore";
@@ -27,7 +28,8 @@ export default function CategoriasPage() {
       <Header
         eyebrow="Taxonomía"
         title="Categorías"
-        subtitle="Cómo se organiza el catálogo. Cada categoría tiene su foto y subcategorías."
+        titleAccent="del catálogo."
+        subtitle="Cómo se organiza la feria. Cada categoría tiene su foto y subcategorías."
         action={
           <button
             onClick={() => { setEditingCat(null); setShowForm(true); }}
@@ -39,28 +41,56 @@ export default function CategoriasPage() {
         }
       />
 
-      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10">
+      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10 space-y-8">
 
-        {/* KPIs */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-10">
-          <div className="v3-stat-card">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Categorías</p>
-            <p className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] mt-2 tabular-nums tracking-tight">
+        {/* KPIs editorial */}
+        <div className="grid grid-cols-3 gap-3 sm:gap-4">
+          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(10,10,10,0.10)] hover:-translate-y-0.5 transition-all duration-300 group">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Categorías</span>
+              <Tag size={14} className="text-[#A3A3A3] group-hover:text-[#0A0A0A] transition-colors" strokeWidth={1.8} />
+            </div>
+            <p className="text-4xl font-extrabold text-[#0A0A0A] tabular-nums tracking-tight">
               {categorias.length}
             </p>
+            <p className="text-[11px] text-[#737373] mt-2">rubros principales</p>
           </div>
-          <div className="v3-stat-card">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Subcategorías</p>
-            <p className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] mt-2 tabular-nums tracking-tight">
+          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(10,10,10,0.10)] hover:-translate-y-0.5 transition-all duration-300 group">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Subcategorías</span>
+              <ChevronDown size={14} className="text-[#A3A3A3] group-hover:text-[#0A0A0A] transition-colors" strokeWidth={1.8} />
+            </div>
+            <p className="text-4xl font-extrabold text-[#0A0A0A] tabular-nums tracking-tight">
               {categorias.reduce((sum, c) => sum + c.subcategorias.length, 0)}
             </p>
+            <p className="text-[11px] text-[#737373] mt-2">en total</p>
           </div>
-          <div className="v3-stat-card">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Productos</p>
-            <p className="text-3xl sm:text-4xl font-extrabold text-[#3B82F6] mt-2 tabular-nums tracking-tight">
+          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(59,130,246,0.18)] hover:border-blue-200 hover:-translate-y-0.5 transition-all duration-300 group">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Productos</span>
+              <Package size={14} className="text-[#3B82F6]" strokeWidth={1.8} />
+            </div>
+            <p className="text-4xl font-extrabold text-[#3B82F6] tabular-nums tracking-tight">
               {productos.length}
             </p>
+            <p className="text-[11px] text-[#737373] mt-2">categorizados</p>
           </div>
+        </div>
+
+        {/* Section header */}
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252]">
+              <span className="w-5 h-px bg-[#525252]" />
+              Rubros
+            </span>
+            <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] text-[#0A0A0A]">
+              Todas las categorías
+            </h2>
+          </div>
+          <span className="text-[11px] font-semibold text-[#737373] tabular-nums shrink-0">
+            {categorias.length} {categorias.length === 1 ? "rubro" : "rubros"}
+          </span>
         </div>
 
         {/* Category cards — bento-style with photos */}

@@ -77,38 +77,71 @@ export default function CobrosPage() {
     <>
       <Header
         eyebrow={`${MESES[today.getMonth()]} ${today.getFullYear()}`}
-        title="Cobros del mes"
+        title="Cobros"
+        titleAccent="del mes."
         subtitle="Quién pagó, quién te debe, y cuánto falta entrar."
       />
 
-      <div className="max-w-5xl px-5 sm:px-8 lg:px-12 py-8 sm:py-10">
+      <div className="max-w-5xl px-5 sm:px-8 lg:px-12 py-8 sm:py-10 space-y-10">
 
-        {/* ── Hero: Cobrado este mes (dark editorial) ── */}
-        <div className="mb-6 rounded-2xl bg-[#0A0A0A] text-white p-6 sm:p-8 relative overflow-hidden">
+        {/* ── Hero: Cobrado este mes — rico ── */}
+        <div className="rounded-3xl bg-[#0A0A0A] text-white p-8 sm:p-10 relative overflow-hidden">
+          {/* Glow background */}
           <div
-            className="absolute inset-0 opacity-50 pointer-events-none"
+            className="absolute inset-0 opacity-60 pointer-events-none"
             style={{
-              background: "radial-gradient(circle at 85% 25%, rgba(16,185,129,0.45) 0%, transparent 55%)",
+              background:
+                "radial-gradient(ellipse 80% 60% at 85% 20%, rgba(16,185,129,0.42) 0%, transparent 60%), " +
+                "radial-gradient(ellipse 60% 50% at 0% 100%, rgba(59,130,246,0.15) 0%, transparent 60%)",
             }}
           />
-          <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
+          {/* Grid pattern */}
+          <div
+            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+            style={{
+              backgroundImage: "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
+            }}
+          />
+
+          <div className="relative grid grid-cols-1 lg:grid-cols-5 gap-8 items-end">
+            <div className="lg:col-span-3">
               <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-300">
-                Cobrado este mes
+                Cobrado este mes · {MESES[today.getMonth()]}
               </span>
-              <p className="mt-3 text-5xl sm:text-6xl font-extrabold tracking-[-0.04em] tabular-nums leading-none">
-                <Counter value={ingresosDelMes} duration={1400} prefix="$ " />
+              <p className="mt-3 text-[64px] sm:text-[80px] lg:text-[96px] font-extrabold tracking-[-0.045em] tabular-nums leading-[0.9]">
+                {ingresosDelMes > 0 ? (
+                  <Counter value={ingresosDelMes} duration={1600} prefix="$ " />
+                ) : (
+                  <span className="text-white/30">$ 0</span>
+                )}
               </p>
-              <p className="mt-3 text-sm text-white/60">
-                Suma de los planes pagados al día
+              <p className="mt-4 text-sm text-white/60 max-w-md leading-relaxed">
+                Suma de los planes pagados al día. Se actualiza cuando marcás
+                pagado a un puestero.
               </p>
             </div>
-            <div className="sm:text-right flex flex-col justify-end gap-2">
-              <div className="inline-flex items-center gap-2 text-sm text-white/80 sm:justify-end">
-                <TrendingUp size={15} className="text-emerald-300" />
-                <span className="font-semibold tabular-nums">
-                  {pagados.length} de {puestosConCobro.length} pagaron
-                </span>
+            <div className="lg:col-span-2 flex flex-col gap-3">
+              <div className="rounded-2xl bg-white/06 border border-white/08 p-4 backdrop-blur-sm">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/60">Pagaron</span>
+                </div>
+                <p className="text-3xl font-extrabold tabular-nums tracking-tight">
+                  <Counter value={pagados.length} duration={1000} />
+                  <span className="text-white/40 ml-2 text-2xl">/ {puestosConCobro.length}</span>
+                </p>
+                <p className="text-[10px] text-white/50 mt-1">puesteros</p>
+              </div>
+              <div className="rounded-2xl bg-white/06 border border-white/08 p-4 backdrop-blur-sm">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <TrendingUp size={11} className="text-emerald-300" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/60">Faltan entrar</span>
+                </div>
+                <p className="text-2xl font-extrabold tabular-nums tracking-tight">
+                  {formatPrecio(porCobrar)}
+                </p>
+                <p className="text-[10px] text-white/50 mt-1">si cobrás todo</p>
               </div>
             </div>
           </div>
