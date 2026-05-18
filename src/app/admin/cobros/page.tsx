@@ -9,6 +9,7 @@ import {
   MessageCircle,
   TrendingUp,
   EyeOff,
+  Clock,
 } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import { preciosPlanes, formatPrecio } from "@/lib/mock-data";
@@ -76,113 +77,69 @@ export default function CobrosPage() {
   return (
     <>
       <Header
-        eyebrow={`${MESES[today.getMonth()]} ${today.getFullYear()}`}
         title="Cobros"
-        titleAccent="del mes."
-        subtitle="Quién pagó, quién te debe, y cuánto falta entrar."
+        subtitle={`${MESES[today.getMonth()]} ${today.getFullYear()} — quién pagó, quién te debe, cuánto falta entrar.`}
       />
 
-      <div className="max-w-5xl px-5 sm:px-8 lg:px-12 py-8 sm:py-10 space-y-10">
+      <div className="max-w-5xl px-6 sm:px-8 lg:px-10 py-6 sm:py-8 space-y-6">
 
-        {/* ── Hero: Cobrado este mes — rico ── */}
-        <div className="rounded-3xl bg-[#0A0A0A] text-white p-8 sm:p-10 relative overflow-hidden">
-          {/* Glow background */}
-          <div
-            className="absolute inset-0 opacity-60 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 80% 60% at 85% 20%, rgba(16,185,129,0.42) 0%, transparent 60%), " +
-                "radial-gradient(ellipse 60% 50% at 0% 100%, rgba(59,130,246,0.15) 0%, transparent 60%)",
-            }}
-          />
-          {/* Grid pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.04] pointer-events-none"
-            style={{
-              backgroundImage: "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
-
-          <div className="relative grid grid-cols-1 lg:grid-cols-5 gap-8 items-end">
-            <div className="lg:col-span-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-300">
-                Cobrado este mes · {MESES[today.getMonth()]}
-              </span>
-              <p className="mt-3 text-[64px] sm:text-[80px] lg:text-[96px] font-extrabold tracking-[-0.045em] tabular-nums leading-[0.9]">
-                {ingresosDelMes > 0 ? (
-                  <Counter value={ingresosDelMes} duration={1600} prefix="$ " />
-                ) : (
-                  <span className="text-white/30">$ 0</span>
-                )}
-              </p>
-              <p className="mt-4 text-sm text-white/60 max-w-md leading-relaxed">
-                Suma de los planes pagados al día. Se actualiza cuando marcás
-                pagado a un puestero.
-              </p>
+        {/* KPIs — 4 simples */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="bg-white border border-[#E5E7EB] rounded-lg p-4 hover:border-[#CBD5E1] transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11.5px] font-medium text-[#64748B]">Cobrado este mes</p>
+              <TrendingUp size={13} className="text-emerald-500" strokeWidth={1.8} />
             </div>
-            <div className="lg:col-span-2 flex flex-col gap-3">
-              <div className="rounded-2xl bg-white/06 border border-white/08 p-4 backdrop-blur-sm">
-                <div className="flex items-center gap-1.5 mb-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/60">Pagaron</span>
-                </div>
-                <p className="text-3xl font-extrabold tabular-nums tracking-tight">
-                  <Counter value={pagados.length} duration={1000} />
-                  <span className="text-white/40 ml-2 text-2xl">/ {puestosConCobro.length}</span>
-                </p>
-                <p className="text-[10px] text-white/50 mt-1">puesteros</p>
-              </div>
-              <div className="rounded-2xl bg-white/06 border border-white/08 p-4 backdrop-blur-sm">
-                <div className="flex items-center gap-1.5 mb-2">
-                  <TrendingUp size={11} className="text-emerald-300" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/60">Faltan entrar</span>
-                </div>
-                <p className="text-2xl font-extrabold tabular-nums tracking-tight">
-                  {formatPrecio(porCobrar)}
-                </p>
-                <p className="text-[10px] text-white/50 mt-1">si cobrás todo</p>
-              </div>
-            </div>
+            <p className="text-[22px] font-semibold text-[#0F172A] tabular-nums tracking-tight">
+              {formatPrecio(ingresosDelMes)}
+            </p>
+            <p className="text-[11.5px] text-[#94A3B8] mt-1">
+              {pagados.length} de {puestosConCobro.length} pagaron
+            </p>
           </div>
-        </div>
-
-        {/* ── Mini stats ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-10">
-          <div className="v3-stat-card">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Por cobrar</p>
-            <p className="text-3xl sm:text-4xl font-extrabold text-amber-600 mt-2 tabular-nums tracking-tight">
+          <div className="bg-white border border-[#E5E7EB] rounded-lg p-4 hover:border-[#CBD5E1] transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11.5px] font-medium text-[#64748B]">Por cobrar</p>
+              <Clock size={13} className="text-amber-500" strokeWidth={1.8} />
+            </div>
+            <p className="text-[22px] font-semibold text-amber-600 tabular-nums tracking-tight">
               {pendientes.length}
             </p>
-            <p className="text-xs text-[#737373] mt-1">aún no pagaron</p>
+            <p className="text-[11.5px] text-[#94A3B8] mt-1">aún no pagaron</p>
           </div>
-          <div className="v3-stat-card">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Vencidos</p>
-            <p className="text-3xl sm:text-4xl font-extrabold text-rose-600 mt-2 tabular-nums tracking-tight">
+          <div className="bg-white border border-[#E5E7EB] rounded-lg p-4 hover:border-[#CBD5E1] transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11.5px] font-medium text-[#64748B]">Vencidos</p>
+              <span className="w-2 h-2 rounded-full bg-rose-500" />
+            </div>
+            <p className="text-[22px] font-semibold text-rose-600 tabular-nums tracking-tight">
               {vencidos.length}
             </p>
-            <p className="text-xs text-[#737373] mt-1">deben hace tiempo</p>
+            <p className="text-[11.5px] text-[#94A3B8] mt-1">deben hace tiempo</p>
           </div>
-          <div className="v3-stat-card">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Faltan entrar</p>
-            <p className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A] mt-2 tabular-nums tracking-tight">
+          <div className="bg-white border border-[#E5E7EB] rounded-lg p-4 hover:border-[#CBD5E1] transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11.5px] font-medium text-[#64748B]">Faltan entrar</p>
+              <TrendingUp size={13} className="text-[#94A3B8]" strokeWidth={1.8} />
+            </div>
+            <p className="text-[22px] font-semibold text-[#0F172A] tabular-nums tracking-tight">
               {formatPrecio(porCobrar)}
             </p>
-            <p className="text-xs text-[#737373] mt-1">si cobrás todo</p>
+            <p className="text-[11.5px] text-[#94A3B8] mt-1">si cobrás todo</p>
           </div>
         </div>
 
         {/* ── Filter tabs ── */}
-        <div className="mb-6 flex gap-2 overflow-x-auto no-scrollbar">
+        <div className="flex gap-1.5 overflow-x-auto no-scrollbar bg-[#F1F5F9] p-1 rounded-md w-fit">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setFiltro(tab.key)}
               className={clsx(
-                "shrink-0 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.08em] rounded-full transition-all",
+                "shrink-0 px-3 py-1.5 text-[12.5px] font-medium rounded transition-all",
                 filtro === tab.key
-                  ? "bg-[#0A0A0A] text-white"
-                  : "bg-white border border-[#0A0A0A]/08 text-[#525252] hover:text-[#0A0A0A] hover:border-[#0A0A0A]/25"
+                  ? "bg-white text-[#0F172A] shadow-[0_1px_2px_rgba(15,23,42,0.06)]"
+                  : "text-[#64748B] hover:text-[#0F172A]"
               )}
             >
               {tab.label} <span className="ml-1 opacity-60 tabular-nums">{tab.count}</span>

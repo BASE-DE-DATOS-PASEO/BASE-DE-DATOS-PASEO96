@@ -64,88 +64,52 @@ export default function SolicitudesPage() {
   return (
     <>
       <Header
-        eyebrow="Aprobaciones"
         title="Solicitudes"
-        titleAccent="pendientes."
-        subtitle="Aprobá los puesteros nuevos que quieren sumarse a la feria."
+        subtitle="Puesteros nuevos que quieren sumarse a la feria."
       />
-      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10 space-y-10">
+      <div className="px-6 sm:px-8 lg:px-10 py-6 sm:py-8 space-y-6">
 
-        {/* Stats — 3 KPIs editorial */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(245,158,11,0.18)] hover:border-amber-200 hover:-translate-y-0.5 transition-all duration-300 group relative overflow-hidden">
-            {pendientes.length > 0 && <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-amber-500" />}
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Pendientes</span>
-              <Clock size={14} className="text-amber-500" strokeWidth={1.8} />
-            </div>
-            <p className="text-4xl font-extrabold text-amber-600 tabular-nums tracking-tight">{pendientes.length}</p>
-            <p className="text-xs text-[#737373] mt-2">esperando tu aprobación</p>
-          </div>
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(16,185,129,0.18)] hover:border-emerald-200 hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Aprobadas</span>
-              <Check size={14} className="text-emerald-500" strokeWidth={1.8} />
-            </div>
-            <p className="text-4xl font-extrabold text-emerald-600 tabular-nums tracking-tight">{aprobadas}</p>
-            <p className="text-xs text-[#737373] mt-2">este mes</p>
-          </div>
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(244,63,94,0.12)] hover:border-rose-200 hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Rechazadas</span>
-              <X size={14} className="text-rose-500" strokeWidth={1.8} />
-            </div>
-            <p className="text-4xl font-extrabold text-rose-600 tabular-nums tracking-tight">{rechazadas}</p>
-            <p className="text-xs text-[#737373] mt-2">este mes</p>
-          </div>
+        {/* KPIs simples */}
+        <div className="grid grid-cols-3 gap-3">
+          <KpiSmall label="Pendientes" value={pendientes.length} hint="esperan aprobación" icon={Clock} valueColor="text-amber-600" />
+          <KpiSmall label="Aprobadas" value={aprobadas} hint="este mes" icon={Check} valueColor="text-emerald-600" />
+          <KpiSmall label="Rechazadas" value={rechazadas} hint="este mes" icon={X} valueColor="text-rose-600" />
         </div>
 
-        {/* Aviso informativo — más editorial */}
-        <div className="rounded-2xl bg-gradient-to-br from-blue-50/60 to-white border border-blue-100/60 p-5 sm:p-6 flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-[#3B82F6] flex items-center justify-center shrink-0 shadow-md shadow-blue-500/20">
-            <AlertCircle size={18} className="text-white" strokeWidth={2} />
-          </div>
-          <div className="flex-1">
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6]">Cómo funciona</p>
-            <p className="mt-2 text-sm text-[#0A0A0A] font-semibold leading-snug">
-              Cuando alguien se anota y te transfiere, aparece acá.
-            </p>
-            <p className="mt-1 text-sm text-[#525252] leading-relaxed">
-              Revisás el comprobante, verificás que la plata entró en Lemon Cash,
-              y aprobás. Recién ahí el puestero puede subir productos.
+        {/* Aviso info */}
+        <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-lg p-4 flex items-start gap-3">
+          <AlertCircle size={16} className="text-[#3B82F6] shrink-0 mt-0.5" strokeWidth={2} />
+          <div className="flex-1 text-[13px]">
+            <p className="font-semibold text-[#0F172A]">Cómo funciona</p>
+            <p className="text-[#475569] mt-0.5 leading-relaxed">
+              Cuando alguien se anota y te transfiere, aparece acá. Revisás el comprobante,
+              verificás que la plata entró en Lemon Cash, y aprobás. Recién ahí el puestero puede subir productos.
             </p>
           </div>
         </div>
 
         {/* Listado header */}
         <div className="flex items-center justify-between gap-3">
-          <div>
-            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252]">
-              <span className="w-5 h-px bg-[#525252]" />
-              Bandeja
-            </span>
-            <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] text-[#0A0A0A]">
-              Solicitudes pendientes
-            </h2>
-          </div>
+          <h2 className="text-[15px] font-semibold text-[#0F172A]">
+            Solicitudes pendientes
+          </h2>
           {pendientes.length > 0 && (
-            <span className="text-[11px] font-semibold text-[#737373] tabular-nums shrink-0">
+            <span className="text-[12px] text-[#64748B] tabular-nums shrink-0">
               {pendientes.length} {pendientes.length === 1 ? "ítem" : "ítems"}
             </span>
           )}
         </div>
 
         {pendientes.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-emerald-200 bg-emerald-50/30 p-12 sm:p-16 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-500 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-emerald-500/30">
-              <Check size={28} className="text-white" strokeWidth={2.5} />
+          <div className="bg-white border border-[#E5E7EB] rounded-lg p-12 text-center">
+            <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-3">
+              <Check size={20} className="text-emerald-600" strokeWidth={2.2} />
             </div>
-            <h3 className="text-2xl font-extrabold text-[#0A0A0A] tracking-tight">
-              ¡Estás al día!
-            </h3>
-            <p className="text-sm text-[#525252] mt-2 max-w-md mx-auto leading-relaxed">
-              No hay solicitudes pendientes por ahora. Cuando alguien se sume
-              a la feria, vas a verlo acá primero.
+            <p className="text-[14px] font-semibold text-[#0F172A]">
+              Estás al día
+            </p>
+            <p className="text-[12.5px] text-[#64748B] mt-1 max-w-sm mx-auto">
+              No hay solicitudes pendientes por ahora.
             </p>
           </div>
         ) : (
@@ -464,6 +428,34 @@ export default function SolicitudesPage() {
         </div>
       )}
     </>
+  );
+}
+
+/* ── KPI helper ── */
+function KpiSmall({
+  label,
+  value,
+  hint,
+  icon: Icon,
+  valueColor,
+}: {
+  label: string;
+  value: number;
+  hint: string;
+  icon: React.ElementType;
+  valueColor: string;
+}) {
+  return (
+    <div className="bg-white border border-[#E5E7EB] rounded-lg p-4 hover:border-[#CBD5E1] transition-colors">
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[11.5px] font-medium text-[#64748B]">{label}</p>
+        <Icon size={13} className="text-[#94A3B8]" strokeWidth={1.8} />
+      </div>
+      <p className={`text-[22px] font-semibold tabular-nums tracking-tight ${valueColor}`}>
+        {value}
+      </p>
+      <p className="text-[11.5px] text-[#94A3B8] mt-1">{hint}</p>
+    </div>
   );
 }
 

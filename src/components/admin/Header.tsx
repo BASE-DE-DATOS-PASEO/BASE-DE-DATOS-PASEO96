@@ -1,45 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 interface HeaderProps {
   title: string;
   subtitle?: string;
+  /** Optional kept for backwards compat — ignored */
   eyebrow?: string;
-  action?: React.ReactNode;
-  /** Optional accent: an italic gray word at the end of the title for editorial feel */
+  /** Optional kept for backwards compat — ignored */
   titleAccent?: string;
+  action?: React.ReactNode;
 }
 
-export default function Header({ title, subtitle, eyebrow, action, titleAccent }: HeaderProps) {
+export default function Header({ title, subtitle, action }: HeaderProps) {
   return (
-    <header className="border-b border-[#0A0A0A]/06 bg-[#FAFAF7]/85 backdrop-blur-md sticky top-0 z-30">
-      <div className="px-5 sm:px-8 lg:px-12 py-6 sm:py-8 flex items-end justify-between gap-6">
+    <header className="border-b border-[#E5E7EB] bg-white sticky top-0 z-30">
+      <div className="px-6 sm:px-8 lg:px-10 py-5 sm:py-6 flex items-center justify-between gap-4">
         <div className="min-w-0">
-          {eyebrow && (
-            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6] mb-3">
-              <span className="w-5 h-px bg-[#3B82F6]" />
-              {eyebrow}
-            </span>
-          )}
-          <h1 className="v3-admin-page-title truncate">
+          <h1 className="text-[22px] sm:text-[24px] font-semibold text-[#0F172A] tracking-[-0.01em] truncate">
             {title}
-            {titleAccent && (
-              <span className="italic font-light text-[#737373] ml-2">{titleAccent}</span>
-            )}
           </h1>
-          {subtitle && <p className="v3-admin-page-subtitle">{subtitle}</p>}
+          {subtitle && (
+            <p className="text-[13px] text-[#64748B] mt-0.5">{subtitle}</p>
+          )}
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {action}
           <Link
             href="/"
             target="_blank"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-[#525252] hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/04 transition-colors"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-[13px] font-medium text-[#475569] hover:text-[#0F172A] hover:bg-[#F8FAFC] transition-colors"
           >
+            <ExternalLink size={13} />
             Ver sitio
-            <ArrowUpRight size={13} />
           </Link>
         </div>
       </div>

@@ -49,8 +49,8 @@ export default function AdminLayout({
     <div className="v3-admin-bg pb-20 md:pb-0">
       <Sidebar collapsed={collapsed} onCollapse={setCollapsed} />
       <main
-        className={`transition-[margin] duration-300 ease-out min-h-screen ${
-          collapsed ? "md:ml-[72px]" : "md:ml-[260px]"
+        className={`transition-[margin] duration-200 ease-out min-h-screen ${
+          collapsed ? "md:ml-[64px]" : "md:ml-[240px]"
         }`}
       >
         {children}
