@@ -420,13 +420,14 @@ select option {
 }
 
 /* ============================================================
-   V3 ADMIN SYSTEM — editorial dashboard
-   Sidebar oscuro + área de trabajo warm + cards con hairlines
+   V3 ADMIN SYSTEM — professional SaaS dashboard
+   Sidebar oscuro + área de trabajo neutro + cards limpios
+   Inspirado en Linear / Stripe / Notion
    ============================================================ */
 
 .v3-admin-bg {
-  background: #FAFAF7;
-  color: #0A0A0A;
+  background: #F8FAFC;
+  color: #0F172A;
   min-height: 100vh;
 }
 
@@ -469,27 +470,23 @@ select option {
   border-radius: 0 3px 3px 0;
 }
 
-/* Stat card — editorial style for KPIs */
+/* Stat card — clean SaaS style */
 .v3-stat-card {
   background: #FFFFFF;
-  border: 1px solid rgba(10, 10, 10, 0.06);
-  border-radius: 16px;
-  padding: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  position: relative;
-  overflow: hidden;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 1.25rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .v3-stat-card:hover {
-  border-color: rgba(10, 10, 10, 0.14);
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px -12px rgba(10, 10, 10, 0.10), 0 2px 4px rgba(10, 10, 10, 0.04);
+  border-color: #CBD5E1;
 }
 
 /* Admin "data card" — table/list container */
 .v3-admin-card {
   background: #FFFFFF;
-  border: 1px solid rgba(10, 10, 10, 0.06);
-  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -517,73 +514,61 @@ select option {
   border: 1px solid rgba(202, 138, 4, 0.3);
 }
 
-/* Admin button — primary black */
+/* Admin buttons — SaaS clean */
 .v3-admin-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.625rem 1.15rem;
-  font-weight: 600;
+  padding: 0.55rem 1rem;
+  font-weight: 500;
   font-size: 0.8125rem;
   color: white;
-  background: #0A0A0A;
-  border-radius: 10px;
-  border: 1px solid #0A0A0A;
-  transition: all 0.2s ease;
+  background: #0F172A;
+  border-radius: 6px;
+  border: 1px solid #0F172A;
+  transition: background 0.15s ease;
   cursor: pointer;
 }
-.v3-admin-btn:hover {
-  background: #1F1F1F;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.25);
-}
-.v3-admin-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
+.v3-admin-btn:hover { background: #1E293B; }
+.v3-admin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .v3-admin-btn-accent {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.625rem 1.15rem;
-  font-weight: 600;
+  padding: 0.55rem 1rem;
+  font-weight: 500;
   font-size: 0.8125rem;
   color: white;
   background: #3B82F6;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid transparent;
-  transition: all 0.2s ease;
+  transition: background 0.15s ease;
   cursor: pointer;
 }
-.v3-admin-btn-accent:hover {
-  background: #2F6EE0;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 20px -6px rgba(59, 130, 246, 0.4);
-}
+.v3-admin-btn-accent:hover { background: #2563EB; }
 
 .v3-admin-btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.625rem 1.15rem;
-  font-weight: 600;
+  padding: 0.55rem 1rem;
+  font-weight: 500;
   font-size: 0.8125rem;
-  color: #0A0A0A;
-  background: transparent;
-  border-radius: 10px;
-  border: 1px solid rgba(10, 10, 10, 0.12);
-  transition: all 0.2s ease;
+  color: #334155;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #E2E8F0;
+  transition: all 0.15s ease;
   cursor: pointer;
 }
 .v3-admin-btn-ghost:hover {
-  background: #0A0A0A;
-  color: white;
-  border-color: #0A0A0A;
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  color: #0F172A;
 }
 
 .v3-admin-btn-danger {
@@ -591,38 +576,38 @@ select option {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.625rem 1.15rem;
-  font-weight: 600;
+  padding: 0.55rem 1rem;
+  font-weight: 500;
   font-size: 0.8125rem;
-  color: #991B1B;
-  background: transparent;
-  border-radius: 10px;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  transition: all 0.2s ease;
+  color: #B91C1C;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #FCA5A5;
+  transition: all 0.15s ease;
   cursor: pointer;
 }
 .v3-admin-btn-danger:hover {
-  background: #FEE2E2;
-  border-color: rgba(239, 68, 68, 0.5);
+  background: #FEF2F2;
+  border-color: #EF4444;
 }
 
-/* Admin input */
+/* Admin input — SaaS clean */
 .v3-admin-input {
   width: 100%;
   background: #FFFFFF;
-  border: 1px solid rgba(10, 10, 10, 0.12);
-  border-radius: 10px;
-  padding: 0.625rem 0.875rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  padding: 0.55rem 0.85rem;
   font-size: 0.875rem;
-  color: #0A0A0A;
-  transition: all 0.2s ease;
+  color: #0F172A;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .v3-admin-input:focus {
   outline: none;
-  border-color: #0A0A0A;
-  box-shadow: 0 0 0 4px rgba(10, 10, 10, 0.04);
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
-.v3-admin-input::placeholder { color: #A3A3A3; }
+.v3-admin-input::placeholder { color: #94A3B8; }
 
 /* Admin table */
 .v3-admin-table {
@@ -651,18 +636,18 @@ select option {
 }
 .v3-admin-table tr:last-child td { border-bottom: none; }
 
-/* Editorial admin page header */
+/* Page header (legacy class kept for any leftover usage) */
 .v3-admin-page-title {
-  font-size: clamp(2rem, 1.5rem + 1.8vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-  color: #0A0A0A;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: #0F172A;
 }
 .v3-admin-page-subtitle {
-  font-size: 0.9375rem;
-  color: #525252;
-  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: #64748B;
+  margin-top: 0.125rem;
 }
 
 /* --- Hairlines (1px, 8% black) --- */

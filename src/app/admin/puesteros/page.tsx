@@ -52,95 +52,54 @@ export default function PuesterosPage() {
   return (
     <>
       <Header
-        eyebrow="Vendedores"
         title="Puesteros"
-        titleAccent="de la feria."
-        subtitle="Cada local activo en Paseo 96. Gestionás plan, pago y datos de contacto."
+        subtitle="Cada local activo en la feria. Gestionás plan, pago y datos."
         action={
           <button onClick={openNew} className="v3-admin-btn-accent">
-            <Plus size={15} />
+            <Plus size={14} />
             <span className="hidden sm:inline">Nuevo puestero</span>
           </button>
         }
       />
 
-      <div className="max-w-6xl px-5 sm:px-8 lg:px-12 py-8 sm:py-10 space-y-8">
+      <div className="max-w-6xl px-6 sm:px-8 lg:px-10 py-6 sm:py-8 space-y-6">
 
-        {/* KPIs editorial con depth */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4">
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(10,10,10,0.10)] hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Totales</span>
-              <Store size={14} className="text-[#A3A3A3] group-hover:text-[#0A0A0A] transition-colors" strokeWidth={1.8} />
-            </div>
-            <p className="text-4xl font-extrabold text-[#0A0A0A] tabular-nums tracking-tight">
-              {puesteros.length}
-            </p>
-            <p className="text-[11px] text-[#737373] mt-2">en la feria</p>
-          </div>
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(16,185,129,0.18)] hover:border-emerald-200 hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Activos</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            </div>
-            <p className="text-4xl font-extrabold text-emerald-600 tabular-nums tracking-tight">
-              {totalActivos}
-            </p>
-            <p className="text-[11px] text-[#737373] mt-2">visibles en la web</p>
-          </div>
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(245,158,11,0.18)] hover:border-amber-200 hover:-translate-y-0.5 transition-all duration-300 group relative overflow-hidden">
-            {totalPendientes > 0 && <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-amber-500" />}
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Pendientes</span>
-              <AlertCircle size={14} className="text-amber-500" strokeWidth={1.8} />
-            </div>
-            <p className="text-4xl font-extrabold text-amber-600 tabular-nums tracking-tight">
-              {totalPendientes}
-            </p>
-            <p className="text-[11px] text-[#737373] mt-2">deben el mes</p>
-          </div>
+        {/* KPIs simples */}
+        <div className="grid grid-cols-3 gap-3">
+          <KpiCard label="Totales" value={puesteros.length} hint="en la feria" icon={Store} />
+          <KpiCard label="Activos" value={totalActivos} hint="visibles en la web" icon={CheckCircle2} valueColor="text-emerald-600" />
+          <KpiCard label="Pendientes" value={totalPendientes} hint="deben el mes" icon={AlertCircle} valueColor={totalPendientes > 0 ? "text-amber-600" : "text-[#0F172A]"} />
         </div>
 
-        {/* Search bar prominent */}
-        <div>
-          <div className="relative">
-            <Search size={17} className="absolute left-5 top-1/2 -translate-y-1/2 text-[#737373]" strokeWidth={1.8} />
-            <input
-              type="text"
-              placeholder="Buscar por nombre comercial, responsable, fila o número de puesto…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-13 pr-4 py-4 text-[15px] bg-white border border-[#0A0A0A]/08 rounded-2xl text-[#0A0A0A] placeholder:text-[#A3A3A3] focus:outline-none focus:border-[#0A0A0A] focus:shadow-[0_0_0_4px_rgba(10,10,10,0.04)] transition-all"
-              style={{ paddingLeft: "3.25rem" }}
-            />
-          </div>
+        {/* Search bar */}
+        <div className="relative">
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+          <input
+            type="text"
+            placeholder="Buscar por nombre, responsable, fila o número…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-2.5 text-[13.5px] bg-white border border-[#E2E8F0] rounded-md text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] focus:shadow-[0_0_0_3px_rgba(59,130,246,0.1)] transition-all"
+          />
         </div>
 
         {/* List header */}
         <div className="flex items-center justify-between gap-3">
-          <div>
-            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252]">
-              <span className="w-5 h-px bg-[#525252]" />
-              Listado
-            </span>
-            <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] text-[#0A0A0A]">
-              Todos los puesteros
-            </h2>
-          </div>
-          <span className="text-[11px] font-semibold text-[#737373] tabular-nums shrink-0">
+          <h2 className="text-[15px] font-semibold text-[#0F172A]">
+            Todos los puesteros
+          </h2>
+          <span className="text-[12px] text-[#64748B] tabular-nums shrink-0">
             {filtered.length} {filtered.length === 1 ? "resultado" : "resultados"}
           </span>
         </div>
 
         {/* Listado puesteros */}
         {filtered.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-[#0A0A0A]/15 bg-white p-12 sm:p-16 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-[#FAFAF7] border border-[#0A0A0A]/06 flex items-center justify-center mx-auto mb-4">
-              <Store size={26} className="text-[#A3A3A3]" strokeWidth={1.5} />
-            </div>
-            <p className="text-xl font-bold text-[#0A0A0A] tracking-tight">No se encontraron puesteros</p>
-            <p className="text-sm text-[#737373] mt-2 max-w-sm mx-auto">
-              Probá con otro nombre o número, o creá uno nuevo desde el botón de arriba.
+          <div className="bg-white border border-[#E5E7EB] rounded-lg p-12 text-center">
+            <Store size={20} className="text-[#94A3B8] mx-auto mb-3" strokeWidth={1.5} />
+            <p className="text-[14px] font-semibold text-[#0F172A]">No se encontraron puesteros</p>
+            <p className="text-[12.5px] text-[#64748B] mt-1">
+              Probá con otro término o creá uno nuevo.
             </p>
           </div>
         ) : (
@@ -241,6 +200,34 @@ export default function PuesterosPage() {
         />
       )}
     </>
+  );
+}
+
+/* ── KPI helper ── */
+function KpiCard({
+  label,
+  value,
+  hint,
+  icon: Icon,
+  valueColor = "text-[#0F172A]",
+}: {
+  label: string;
+  value: number;
+  hint: string;
+  icon: React.ElementType;
+  valueColor?: string;
+}) {
+  return (
+    <div className="bg-white border border-[#E5E7EB] rounded-lg p-4 hover:border-[#CBD5E1] transition-colors">
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[11.5px] font-medium text-[#64748B]">{label}</p>
+        <Icon size={13} className="text-[#94A3B8]" strokeWidth={1.8} />
+      </div>
+      <p className={`text-[22px] font-semibold tabular-nums tracking-tight ${valueColor}`}>
+        {value}
+      </p>
+      <p className="text-[11.5px] text-[#94A3B8] mt-1">{hint}</p>
+    </div>
   );
 }
 

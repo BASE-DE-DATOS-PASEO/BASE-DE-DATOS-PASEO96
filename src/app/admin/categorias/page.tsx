@@ -26,69 +26,34 @@ export default function CategoriasPage() {
   return (
     <>
       <Header
-        eyebrow="Taxonomía"
         title="Categorías"
-        titleAccent="del catálogo."
         subtitle="Cómo se organiza la feria. Cada categoría tiene su foto y subcategorías."
         action={
           <button
             onClick={() => { setEditingCat(null); setShowForm(true); }}
             className="v3-admin-btn-accent"
           >
-            <Plus size={15} />
+            <Plus size={14} />
             <span className="hidden sm:inline">Nueva categoría</span>
           </button>
         }
       />
 
-      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10 space-y-8">
+      <div className="px-6 sm:px-8 lg:px-10 py-6 sm:py-8 space-y-6">
 
-        {/* KPIs editorial */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4">
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(10,10,10,0.10)] hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Categorías</span>
-              <Tag size={14} className="text-[#A3A3A3] group-hover:text-[#0A0A0A] transition-colors" strokeWidth={1.8} />
-            </div>
-            <p className="text-4xl font-extrabold text-[#0A0A0A] tabular-nums tracking-tight">
-              {categorias.length}
-            </p>
-            <p className="text-[11px] text-[#737373] mt-2">rubros principales</p>
-          </div>
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(10,10,10,0.10)] hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Subcategorías</span>
-              <ChevronDown size={14} className="text-[#A3A3A3] group-hover:text-[#0A0A0A] transition-colors" strokeWidth={1.8} />
-            </div>
-            <p className="text-4xl font-extrabold text-[#0A0A0A] tabular-nums tracking-tight">
-              {categorias.reduce((sum, c) => sum + c.subcategorias.length, 0)}
-            </p>
-            <p className="text-[11px] text-[#737373] mt-2">en total</p>
-          </div>
-          <div className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(59,130,246,0.18)] hover:border-blue-200 hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">Productos</span>
-              <Package size={14} className="text-[#3B82F6]" strokeWidth={1.8} />
-            </div>
-            <p className="text-4xl font-extrabold text-[#3B82F6] tabular-nums tracking-tight">
-              {productos.length}
-            </p>
-            <p className="text-[11px] text-[#737373] mt-2">categorizados</p>
-          </div>
+        {/* KPIs simples */}
+        <div className="grid grid-cols-3 gap-3">
+          <KpiSimple label="Categorías" value={categorias.length} hint="rubros principales" icon={Tag} />
+          <KpiSimple label="Subcategorías" value={categorias.reduce((sum, c) => sum + c.subcategorias.length, 0)} hint="en total" icon={ChevronDown} />
+          <KpiSimple label="Productos" value={productos.length} hint="categorizados" icon={Package} valueColor="text-emerald-600" />
         </div>
 
         {/* Section header */}
         <div className="flex items-center justify-between gap-3">
-          <div>
-            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252]">
-              <span className="w-5 h-px bg-[#525252]" />
-              Rubros
-            </span>
-            <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] text-[#0A0A0A]">
-              Todas las categorías
-            </h2>
-          </div>
-          <span className="text-[11px] font-semibold text-[#737373] tabular-nums shrink-0">
+          <h2 className="text-[15px] font-semibold text-[#0F172A]">
+            Todas las categorías
+          </h2>
+          <span className="text-[12px] text-[#64748B] tabular-nums shrink-0">
             {categorias.length} {categorias.length === 1 ? "rubro" : "rubros"}
           </span>
         </div>
@@ -217,6 +182,34 @@ export default function CategoriasPage() {
         />
       )}
     </>
+  );
+}
+
+/* ── KPI helper ── */
+function KpiSimple({
+  label,
+  value,
+  hint,
+  icon: Icon,
+  valueColor = "text-[#0F172A]",
+}: {
+  label: string;
+  value: number;
+  hint: string;
+  icon: React.ElementType;
+  valueColor?: string;
+}) {
+  return (
+    <div className="bg-white border border-[#E5E7EB] rounded-lg p-4 hover:border-[#CBD5E1] transition-colors">
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[11.5px] font-medium text-[#64748B]">{label}</p>
+        <Icon size={13} className="text-[#94A3B8]" strokeWidth={1.8} />
+      </div>
+      <p className={`text-[22px] font-semibold tabular-nums tracking-tight ${valueColor}`}>
+        {value}
+      </p>
+      <p className="text-[11.5px] text-[#94A3B8] mt-1">{hint}</p>
+    </div>
   );
 }
 
