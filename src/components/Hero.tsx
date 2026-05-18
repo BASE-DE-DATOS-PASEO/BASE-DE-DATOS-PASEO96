@@ -25,11 +25,32 @@ export default function Hero({ onExplore }: HeroProps) {
     return () => clearInterval(id);
   }, []);
 
-  // 4 productos para el mosaico — los más nuevos con foto
-  const mosaicProducts = useMemo(() => {
-    return productos
+  // Imágenes fallback para el hero — siempre se muestran aunque la
+  // DB esté vacía. Cuando hay productos reales con foto, se usan ellos.
+  const HERO_FALLBACK_IMAGES = [
+    "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=85",
+    "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&q=85",
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=85",
+    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=85",
+  ];
+
+  // 4 imágenes para el mosaico (productos reales primero, fallback si vacío)
+  const mosaicImages = useMemo(() => {
+    const realImages = productos
       .filter((p) => p.imagenes && p.imagenes[0])
-      .slice(0, 4);
+      .slice(0, 4)
+      .map((p) => ({ src: p.imagenes[0], alt: p.nombre }));
+
+    if (realImages.length >= 4) return realImages;
+
+    // Completar con fallback si faltan
+    return [
+      ...realImages,
+      ...HERO_FALLBACK_IMAGES.slice(realImages.length, 4).map((src, i) => ({
+        src,
+        alt: `Paseo 96 — feria ${i + 1}`,
+      })),
+    ];
   }, [productos]);
 
   return (
@@ -88,60 +109,52 @@ export default function Hero({ onExplore }: HeroProps) {
               <div className="grid grid-cols-12 grid-rows-12 gap-3 h-full">
 
                 {/* Card 1 — big (top-left) */}
-                {mosaicProducts[0] && (
-                  <div className="col-span-7 row-span-7 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
-                    <Image
-                      src={mosaicProducts[0].imagenes[0]}
-                      alt={mosaicProducts[0].nombre}
-                      fill
-                      sizes="(max-width: 1024px) 60vw, 30vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      priority
-                    />
-                    <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-bold uppercase tracking-wider text-[#0A0A0A]">
-                      Lo último
-                    </div>
+                <div className="col-span-7 row-span-7 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
+                  <Image
+                    src={mosaicImages[0].src}
+                    alt={mosaicImages[0].alt}
+                    fill
+                    sizes="(max-width: 1024px) 60vw, 30vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    priority
+                  />
+                  <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-bold uppercase tracking-wider text-[#0A0A0A]">
+                    Lo último
                   </div>
-                )}
+                </div>
 
                 {/* Card 2 — small (top-right) */}
-                {mosaicProducts[1] && (
-                  <div className="col-span-5 row-span-5 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
-                    <Image
-                      src={mosaicProducts[1].imagenes[0]}
-                      alt={mosaicProducts[1].nombre}
-                      fill
-                      sizes="(max-width: 1024px) 40vw, 20vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
-                )}
+                <div className="col-span-5 row-span-5 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
+                  <Image
+                    src={mosaicImages[1].src}
+                    alt={mosaicImages[1].alt}
+                    fill
+                    sizes="(max-width: 1024px) 40vw, 20vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
 
                 {/* Card 3 — small (bottom-right top) */}
-                {mosaicProducts[2] && (
-                  <div className="col-span-5 row-span-7 col-start-8 row-start-6 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
-                    <Image
-                      src={mosaicProducts[2].imagenes[0]}
-                      alt={mosaicProducts[2].nombre}
-                      fill
-                      sizes="(max-width: 1024px) 40vw, 20vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
-                )}
+                <div className="col-span-5 row-span-7 col-start-8 row-start-6 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
+                  <Image
+                    src={mosaicImages[2].src}
+                    alt={mosaicImages[2].alt}
+                    fill
+                    sizes="(max-width: 1024px) 40vw, 20vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
 
                 {/* Card 4 — small (bottom-left) */}
-                {mosaicProducts[3] && (
-                  <div className="col-span-7 row-span-5 col-start-1 row-start-8 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
-                    <Image
-                      src={mosaicProducts[3].imagenes[0]}
-                      alt={mosaicProducts[3].nombre}
-                      fill
-                      sizes="(max-width: 1024px) 60vw, 30vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
-                )}
+                <div className="col-span-7 row-span-5 col-start-1 row-start-8 relative rounded-xl overflow-hidden bg-[#F2F2EE] group cursor-pointer" onClick={onExplore}>
+                  <Image
+                    src={mosaicImages[3].src}
+                    alt={mosaicImages[3].alt}
+                    fill
+                    sizes="(max-width: 1024px) 60vw, 30vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
 
                 {/* Floating CTA on mosaic */}
                 <button
