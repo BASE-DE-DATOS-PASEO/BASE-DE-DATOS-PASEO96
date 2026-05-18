@@ -39,9 +39,9 @@ function formatFechaCorta(iso: string) {
 }
 
 function planBadge(plan: "bronce" | "plata" | "oro") {
-  if (plan === "oro") return "bg-amber-100 text-amber-700";
-  if (plan === "plata") return "bg-slate-100 text-slate-700";
-  return "bg-orange-100 text-orange-700";
+  if (plan === "oro") return "bg-gradient-to-r from-amber-100 to-amber-50 text-amber-900 border border-amber-300/50";
+  if (plan === "plata") return "bg-[#FAFAF7] text-[#525252] border border-[#0A0A0A]/12";
+  return "bg-[#FAFAF7] text-[#525252] border border-[#0A0A0A]/08";
 }
 
 export default function MiLocalPage() {

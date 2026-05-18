@@ -33,9 +33,9 @@ function formatPrecio(precio: number): string {
 }
 
 function planBadgeColor(plan: "bronce" | "plata" | "oro") {
-  if (plan === "oro") return "bg-amber-100 text-amber-700";
-  if (plan === "plata") return "bg-slate-100 text-slate-700";
-  return "bg-orange-100 text-orange-700";
+  if (plan === "oro") return "bg-gradient-to-r from-amber-100 to-amber-50 text-amber-900 border border-amber-300/50";
+  if (plan === "plata") return "bg-[#FAFAF7] text-[#525252] border border-[#0A0A0A]/12";
+  return "bg-[#FAFAF7] text-[#525252] border border-[#0A0A0A]/08";
 }
 
 /* ── tipos del formulario ─────────────────────────────────── */
@@ -470,8 +470,8 @@ export default function MiPuestoPage() {
       </section>
 
       {/* ── Usage bars ────────────────────────────────────── */}
-      <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+      <section className="rounded-2xl border border-[#0A0A0A]/06 bg-white shadow-sm p-6">
+        <h2 className="text-lg font-semibold text-[#0A0A0A] mb-4">
           Uso del plan
         </h2>
         <div className="grid sm:grid-cols-3 gap-4">
@@ -505,16 +505,16 @@ export default function MiPuestoPage() {
             const isAtLimit = item.total > 0 && item.used >= item.total;
             const isNearLimit = pct >= 80 && !isAtLimit;
             return (
-              <div key={item.label} className="p-4 rounded-xl bg-gray-50">
+              <div key={item.label} className="p-4 rounded-xl bg-[#FAFAF7]">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-600">{item.label}</span>
+                  <span className="text-sm text-[#525252]">{item.label}</span>
                   <span
                     className={`text-sm font-bold ${
                       isAtLimit
                         ? "text-red-600"
                         : isNearLimit
                         ? "text-amber-600"
-                        : "text-gray-900"
+                        : "text-[#0A0A0A]"
                     }`}
                   >
                     {item.used}/{item.total}
@@ -556,15 +556,15 @@ export default function MiPuestoPage() {
           {/* Modal */}
           <div className="relative my-0 max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white shadow-2xl sm:my-auto sm:rounded-2xl">
             {/* Header */}
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-100 bg-white px-4 py-4 sm:px-6">
-              <h3 className="text-lg font-semibold text-gray-900">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#0A0A0A]/06 bg-white px-4 py-4 sm:px-6">
+              <h3 className="text-lg font-semibold text-[#0A0A0A]">
                 {modalMode === "crear"
                   ? "Nuevo producto"
                   : "Editar producto"}
               </h3>
               <button
                 onClick={cerrarModal}
-                className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors"
+                className="p-2 rounded-lg hover:bg-gray-100 text-[#A3A3A3] transition-colors"
               >
                 <X size={18} />
               </button>
@@ -574,7 +574,7 @@ export default function MiPuestoPage() {
             <div className="space-y-5 p-4 sm:p-6">
               {/* ── Nombre ── */}
               <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+                <label className="text-xs font-semibold text-[#737373] uppercase tracking-wider block mb-1.5">
                   Nombre del producto *
                 </label>
                 <input
@@ -584,14 +584,14 @@ export default function MiPuestoPage() {
                     setForm((f) => ({ ...f, nombre: e.target.value }))
                   }
                   placeholder="Ej: Jean Mom Azul Clásico"
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  className="w-full px-3 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-[#0A0A0A]"
                 />
               </div>
 
               {/* ── Categoría + Subcategoría ── */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+                  <label className="text-xs font-semibold text-[#737373] uppercase tracking-wider block mb-1.5">
                     Categoría *
                   </label>
                   <div className="relative">
@@ -604,7 +604,7 @@ export default function MiPuestoPage() {
                           subcategoria: "",
                         }))
                       }
-                      className="w-full appearance-none px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white pr-8"
+                      className="w-full appearance-none px-3 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-[#0A0A0A] bg-white pr-8"
                     >
                       <option value="">Seleccionar...</option>
                       {categorias.map((c) => (
@@ -613,11 +613,11 @@ export default function MiPuestoPage() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none" />
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+                  <label className="text-xs font-semibold text-[#737373] uppercase tracking-wider block mb-1.5">
                     Subcategoría
                   </label>
                   <div className="relative">
@@ -630,7 +630,7 @@ export default function MiPuestoPage() {
                         }))
                       }
                       disabled={subcategorias.length === 0}
-                      className="w-full appearance-none px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white disabled:bg-gray-50 disabled:text-gray-400 pr-8"
+                      className="w-full appearance-none px-3 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-[#0A0A0A] bg-white disabled:bg-[#FAFAF7] disabled:text-[#A3A3A3] pr-8"
                     >
                       <option value="">Seleccionar...</option>
                       {subcategorias.map((s) => (
@@ -639,23 +639,23 @@ export default function MiPuestoPage() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none" />
                   </div>
                 </div>
               </div>
 
               {/* ── Precios ── */}
               <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+                <label className="text-xs font-semibold text-[#737373] uppercase tracking-wider block mb-1.5">
                   Precios
                 </label>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div>
-                    <p className="text-[11px] text-gray-400 mb-1">
+                    <p className="text-[11px] text-[#A3A3A3] mb-1">
                       Minorista *
                     </p>
                     <div className="relative">
-                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-[#A3A3A3]">
                         $
                       </span>
                       <input
@@ -668,16 +668,16 @@ export default function MiPuestoPage() {
                           }))
                         }
                         placeholder="0"
-                        className="w-full pl-6 pr-2 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-6 pr-2 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </div>
                   <div>
-                    <p className="text-[11px] text-gray-400 mb-1">
+                    <p className="text-[11px] text-[#A3A3A3] mb-1">
                       Mayorista
                     </p>
                     <div className="relative">
-                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-[#A3A3A3]">
                         $
                       </span>
                       <input
@@ -690,16 +690,16 @@ export default function MiPuestoPage() {
                           }))
                         }
                         placeholder="0"
-                        className="w-full pl-6 pr-2 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-6 pr-2 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </div>
                   <div>
-                    <p className="text-[11px] text-gray-400 mb-1">
+                    <p className="text-[11px] text-[#A3A3A3] mb-1">
                       Anterior ↗
                     </p>
                     <div className="relative">
-                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-[#A3A3A3]">
                         $
                       </span>
                       <input
@@ -712,12 +712,12 @@ export default function MiPuestoPage() {
                           }))
                         }
                         placeholder="0"
-                        className="w-full pl-6 pr-2 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-6 pr-2 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </div>
                 </div>
-                <p className="text-[11px] text-gray-400 mt-1">
+                <p className="text-[11px] text-[#A3A3A3] mt-1">
                   Mayorista y Anterior son opcionales. El precio anterior aparece tachado como oferta.
                 </p>
               </div>
@@ -725,7 +725,7 @@ export default function MiPuestoPage() {
               {/* ── Talles ── */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+                  <label className="text-xs font-semibold text-[#737373] uppercase tracking-wider block mb-1.5">
                     Talle desde
                   </label>
                   <input
@@ -735,11 +735,11 @@ export default function MiPuestoPage() {
                       setForm((f) => ({ ...f, talleDesde: e.target.value }))
                     }
                     placeholder="Ej: S, 36, 1"
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+                  <label className="text-xs font-semibold text-[#737373] uppercase tracking-wider block mb-1.5">
                     Talle hasta
                   </label>
                   <input
@@ -749,14 +749,14 @@ export default function MiPuestoPage() {
                       setForm((f) => ({ ...f, talleHasta: e.target.value }))
                     }
                     placeholder="Ej: XL, 46, 14"
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
               {/* ── Descripción ── */}
               <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+                <label className="text-xs font-semibold text-[#737373] uppercase tracking-wider block mb-1.5">
                   Descripción
                 </label>
                 <textarea
@@ -766,7 +766,7 @@ export default function MiPuestoPage() {
                   }
                   placeholder="Material, características, colores disponibles..."
                   rows={3}
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-3 py-2.5 text-sm border border-[#0A0A0A]/12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 />
               </div>
 
@@ -784,12 +784,12 @@ export default function MiPuestoPage() {
               />
 
               {/* ── Visible toggle ── */}
-              <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-[#FAFAF7]">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-[#0A0A0A]">
                     Visible en la web
                   </p>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-xs text-[#737373] mt-0.5">
                     Si lo apagás, el producto no aparece en Paseo 96
                   </p>
                 </div>
@@ -819,10 +819,10 @@ export default function MiPuestoPage() {
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 flex flex-col gap-2 border-t border-gray-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-end sm:gap-3 sm:px-6">
+            <div className="sticky bottom-0 flex flex-col gap-2 border-t border-[#0A0A0A]/06 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-end sm:gap-3 sm:px-6">
               <button
                 onClick={cerrarModal}
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-4 py-2.5 text-sm font-medium text-[#525252] border border-[#0A0A0A]/12 rounded-lg hover:bg-[#FAFAF7] transition-colors"
               >
                 Cancelar
               </button>
