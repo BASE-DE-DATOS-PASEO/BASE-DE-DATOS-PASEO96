@@ -248,11 +248,58 @@ function rowToEgreso(r: EgresoRow): Egreso {
 }
 
 // ─── PUESTEROS ──────────────────────────────────────────────
+// Estrategia de seguridad: el sitio público lee de la VIEW
+// `puesteros_publicos` (solo campos no sensibles). El admin lee
+// de la tabla `puesteros` (RLS lo permite si está autenticado
+// como admin). Esto evita filtrar emails, gmails y observaciones
+// a usuarios anónimos.
+function rowToPuesteroFromView(r: Partial<PuesteroRow>): Puestero {
+  return {
+    id: r.id!,
+    nombreResponsable: "",   // no expuesto en la view pública
+    nombreComercial: r.nombre_comercial ?? "",
+    fila: r.fila ?? "",
+    numeroPuesto: r.numero_puesto ?? 0,
+    telefono: r.telefono ?? "",
+    email: "",               // no expuesto
+    gmailAcceso: "",         // no expuesto
+    aceptaTransferencia: r.acepta_transferencia ?? false,
+    aceptaCambios: r.acepta_cambios ?? false,
+    realizaEnvios: r.realiza_envios ?? false,
+    plan: r.plan ?? "bronce",
+    limiteProductos: 0,      // no expuesto
+    productosActivos: 0,     // no expuesto
+    estadoPago: r.estado_pago ?? "pagado",
+    estadoActividad: r.estado_actividad ?? "activo",
+    fechaAlta: "",
+    fechaProximoCobro: r.fecha_proximo_cobro ?? "",
+    observaciones: "",       // no expuesto
+    color: r.color ?? "#3B82F6",
+    logoIniciales: r.logo_iniciales ?? "",
+    logoUrl: r.logo_url ?? "",
+    vistas: r.vistas ?? 0,
+    whatsapps: r.whatsapps ?? 0,
+  };
+}
+
 export const puesterosRepo = {
   async list(): Promise<Puestero[]> {
-    const { data, error } = await supabase.from("puesteros").select("*").order("id", { ascending: true });
-    if (error) throw error;
-    return (data as PuesteroRow[]).map(rowToPuestero);
+    // Intento 1: como admin/auth → tabla completa
+    const full = await supabase
+      .from("puesteros")
+      .select("*")
+      .order("id", { ascending: true });
+    if (!full.error && full.data) {
+      return (full.data as PuesteroRow[]).map(rowToPuestero);
+    }
+
+    // Intento 2: como anon → vista pública (sin campos sensibles)
+    const pub = await supabase
+      .from("puesteros_publicos")
+      .select("*")
+      .order("id", { ascending: true });
+    if (pub.error) throw pub.error;
+    return (pub.data as Partial<PuesteroRow>[]).map(rowToPuesteroFromView);
   },
   async insert(p: Omit<Puestero, "id">): Promise<Puestero> {
     const { data, error } = await supabase.from("puesteros").insert(puesteroToRow(p)).select().single();

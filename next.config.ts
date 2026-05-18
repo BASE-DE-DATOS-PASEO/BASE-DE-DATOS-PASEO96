@@ -48,6 +48,12 @@ const nextConfig: NextConfig = {
           },
           { key: "Content-Security-Policy", value: csp },
           { key: "X-DNS-Prefetch-Control", value: "on" },
+          // Cross-origin isolation (anti side-channel + Spectre-like attacks)
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+          { key: "Origin-Agent-Cluster", value: "?1" },
+          // No reveal del stack — Vercel/Next no se puede ocultar 100% pero al
+          // menos no agregamos info extra
         ],
       },
     ];
