@@ -6,12 +6,14 @@ import {
   Search,
   Plus,
   EyeOff,
+  Eye,
   Edit2,
   Package,
   Store,
   X,
   Trash2,
   ChevronDown,
+  Tag,
 } from "lucide-react";
 import Image from "next/image";
 import { formatPrecio } from "@/lib/mock-data";
@@ -52,6 +54,7 @@ export default function ProductosPage() {
       <Header
         eyebrow="Catálogo"
         title="Productos"
+        titleAccent="de la feria."
         subtitle="Todo lo que cargan los puesteros. Editás visibilidad, precios y fotos."
         action={
           <button onClick={openNew} className="v3-admin-btn-accent">
@@ -61,48 +64,72 @@ export default function ProductosPage() {
         }
       />
 
-      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10">
+      <div className="px-5 sm:px-8 lg:px-12 py-8 sm:py-10 space-y-8">
 
-        {/* KPIs */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10">
+        {/* KPIs editorial */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {[
-            { label: "Cargados", value: productos.length, color: "text-[#0A0A0A]" },
-            { label: "En la web", value: visibles, color: "text-[#3B82F6]" },
-            { label: "Categorías", value: categorias.length, color: "text-[#0A0A0A]" },
-            { label: "Puestos activos", value: puesteros.filter((p) => p.estadoActividad === "activo").length, color: "text-emerald-600" },
-          ].map((s) => (
-            <div key={s.label} className="v3-stat-card">
-              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">{s.label}</p>
-              <p className={`text-3xl sm:text-4xl font-extrabold mt-2 tabular-nums tracking-tight ${s.color}`}>{s.value}</p>
-            </div>
-          ))}
+            { label: "Cargados", value: productos.length, color: "text-[#0A0A0A]", hint: "en la base", icon: Package },
+            { label: "En la web", value: visibles, color: "text-[#3B82F6]", hint: "visibles ahora", icon: Eye },
+            { label: "Categorías", value: categorias.length, color: "text-[#0A0A0A]", hint: "rubros activos", icon: Tag },
+            { label: "Puestos activos", value: puesteros.filter((p) => p.estadoActividad === "activo").length, color: "text-emerald-600", hint: "vendiendo", icon: Store },
+          ].map((s) => {
+            const Icon = s.icon;
+            return (
+              <div key={s.label} className="rounded-2xl bg-white border border-[#0A0A0A]/06 p-5 hover:shadow-[0_12px_28px_-12px_rgba(10,10,10,0.10)] hover:-translate-y-0.5 transition-all duration-300 group">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#737373]">{s.label}</span>
+                  <Icon size={14} className="text-[#A3A3A3] group-hover:text-[#0A0A0A] transition-colors" strokeWidth={1.8} />
+                </div>
+                <p className={`text-4xl font-extrabold tabular-nums tracking-tight ${s.color}`}>{s.value}</p>
+                <p className="text-[11px] text-[#737373] mt-2">{s.hint}</p>
+              </div>
+            );
+          })}
         </div>
 
         {/* Toolbar */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#737373]" />
+            <Search size={17} className="absolute left-5 top-1/2 -translate-y-1/2 text-[#737373]" strokeWidth={1.8} />
             <input
               type="text"
-              placeholder="Buscar producto…"
+              placeholder="Buscar producto por nombre…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 text-sm bg-white border border-[#0A0A0A]/08 rounded-2xl text-[#0A0A0A] placeholder:text-[#A3A3A3] focus:outline-none focus:border-[#0A0A0A] focus:shadow-[0_0_0_4px_rgba(10,10,10,0.04)] transition-all"
+              className="w-full pr-4 py-4 text-[15px] bg-white border border-[#0A0A0A]/08 rounded-2xl text-[#0A0A0A] placeholder:text-[#A3A3A3] focus:outline-none focus:border-[#0A0A0A] focus:shadow-[0_0_0_4px_rgba(10,10,10,0.04)] transition-all"
+              style={{ paddingLeft: "3.25rem" }}
             />
           </div>
           <div className="relative">
             <select
               value={filtroCategoria}
               onChange={(e) => setFiltroCategoria(e.target.value)}
-              className="appearance-none w-full sm:w-auto bg-white border border-[#0A0A0A]/08 rounded-2xl pl-4 pr-10 py-3 text-sm font-semibold text-[#0A0A0A] focus:outline-none focus:border-[#0A0A0A] cursor-pointer"
+              className="appearance-none w-full sm:w-auto bg-white border border-[#0A0A0A]/08 rounded-2xl pl-5 pr-12 py-4 text-sm font-semibold text-[#0A0A0A] focus:outline-none focus:border-[#0A0A0A] cursor-pointer hover:border-[#0A0A0A]/25 transition-colors"
             >
               <option value="todas">Todas las categorías</option>
               {categorias.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.nombre}</option>
               ))}
             </select>
-            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#0A0A0A] pointer-events-none" />
+            <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#0A0A0A] pointer-events-none" />
           </div>
+        </div>
+
+        {/* List header */}
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#525252]">
+              <span className="w-5 h-px bg-[#525252]" />
+              Catálogo
+            </span>
+            <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] text-[#0A0A0A]">
+              {filtered.length === productos.length ? "Todos los productos" : "Resultados"}
+            </h2>
+          </div>
+          <span className="text-[11px] font-semibold text-[#737373] tabular-nums shrink-0">
+            {filtered.length} {filtered.length === 1 ? "producto" : "productos"}
+          </span>
         </div>
 
         {/* Grid productos */}

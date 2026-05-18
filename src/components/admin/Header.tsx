@@ -8,20 +8,27 @@ interface HeaderProps {
   subtitle?: string;
   eyebrow?: string;
   action?: React.ReactNode;
+  /** Optional accent: an italic gray word at the end of the title for editorial feel */
+  titleAccent?: string;
 }
 
-export default function Header({ title, subtitle, eyebrow, action }: HeaderProps) {
+export default function Header({ title, subtitle, eyebrow, action, titleAccent }: HeaderProps) {
   return (
     <header className="border-b border-[#0A0A0A]/06 bg-[#FAFAF7]/85 backdrop-blur-md sticky top-0 z-30">
-      <div className="px-5 sm:px-8 lg:px-12 py-5 sm:py-6 flex items-end justify-between gap-4">
+      <div className="px-5 sm:px-8 lg:px-12 py-6 sm:py-8 flex items-end justify-between gap-6">
         <div className="min-w-0">
           {eyebrow && (
-            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6] mb-1.5">
+            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#3B82F6] mb-3">
               <span className="w-5 h-px bg-[#3B82F6]" />
               {eyebrow}
             </span>
           )}
-          <h1 className="v3-admin-page-title truncate">{title}</h1>
+          <h1 className="v3-admin-page-title truncate">
+            {title}
+            {titleAccent && (
+              <span className="italic font-light text-[#737373] ml-2">{titleAccent}</span>
+            )}
+          </h1>
           {subtitle && <p className="v3-admin-page-subtitle">{subtitle}</p>}
         </div>
         <div className="flex items-center gap-2 shrink-0">
