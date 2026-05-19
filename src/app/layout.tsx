@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import StoreInit from "@/components/StoreInit";
+import { Toaster } from "sonner";
 
 const BASE_URL = "https://paseo96.com";
+// Imagen OG generada dinámicamente por src/app/opengraph-image.tsx → /opengraph-image.png
+const OG_IMAGE_URL = `${BASE_URL}/opengraph-image`;
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -30,12 +33,21 @@ export const metadata: Metadata = {
     title: "Paseo 96 — Tu vidriera digital en la feria",
     description:
       "Descubrí todos los locales y productos de Paseo 96 en La Plata. Ropa, calzado, accesorios y más.",
+    images: [
+      {
+        url: OG_IMAGE_URL,
+        width: 1200,
+        height: 630,
+        alt: "Paseo 96 — Feria en La Plata",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Paseo 96 — Tu vidriera digital en la feria",
     description:
       "Descubrí todos los locales y productos de Paseo 96 en La Plata.",
+    images: [OG_IMAGE_URL],
   },
   robots: {
     index: true,
@@ -48,11 +60,15 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": "ShoppingCenter",
   name: "Paseo 96",
   description:
     "Vidriera digital de la feria Paseo Del Compra Del Sur en La Plata. Ropa, calzado, accesorios y más.",
   url: BASE_URL,
+  image: OG_IMAGE_URL,
+  priceRange: "$",
+  // TODO: reemplazar por teléfono real cuando esté confirmado.
+  telephone: "+54-221-541-0783",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Paseo Del Compra Del Sur",
@@ -60,6 +76,13 @@ const jsonLd = {
     addressRegion: "Buenos Aires",
     addressCountry: "AR",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: -34.9214,
+    longitude: -57.9544,
+  },
+  // TODO: agregar otras redes sociales (Facebook, TikTok) cuando estén.
+  sameAs: ["https://www.instagram.com/paseo96/"],
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
@@ -141,6 +164,7 @@ export default function RootLayout({
         />
         <StoreInit />
         {children}
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

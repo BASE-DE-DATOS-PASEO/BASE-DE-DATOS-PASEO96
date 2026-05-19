@@ -22,6 +22,14 @@ export default function CategoriasPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingCat, setEditingCat] = useState<Categoria | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+
+  const categoriaAEliminar = confirmDeleteId
+    ? categorias.find((c) => c.id === confirmDeleteId) ?? null
+    : null;
+  const productosEnCategoria = categoriaAEliminar
+    ? productos.filter((p) => p.categoriaId === categoriaAEliminar.id).length
+    : 0;
 
   return (
     <>
@@ -107,11 +115,7 @@ export default function CategoriasPage() {
                         <Edit2 size={13} />
                       </button>
                       <button
-                        onClick={() => {
-                          if (window.confirm(`¿Eliminar "${cat.nombre}"? No se puede deshacer.`)) {
-                            deleteCategoria(cat.id);
-                          }
-                        }}
+                        onClick={() => setConfirmDeleteId(cat.id)}
                         className="p-2 rounded-lg hover:bg-rose-50 text-[#525252] hover:text-rose-600 transition-colors"
                         title="Eliminar"
                       >
@@ -181,7 +185,72 @@ export default function CategoriasPage() {
           onClose={() => setShowForm(false)}
         />
       )}
+
+      {/* Confirmación de borrado */}
+      {categoriaAEliminar && (
+        <ConfirmDeleteModal
+          title="¿Borrar esta categoría?"
+          message={
+            productosEnCategoria > 0
+              ? `“${categoriaAEliminar.nombre}” tiene ${productosEnCategoria} ${
+                  productosEnCategoria === 1 ? "producto asociado" : "productos asociados"
+                }. ¿Seguro que querés borrarla? No se puede deshacer.`
+              : `¿Seguro que querés borrar “${categoriaAEliminar.nombre}”? No se puede deshacer.`
+          }
+          onCancel={() => setConfirmDeleteId(null)}
+          onConfirm={() => {
+            deleteCategoria(categoriaAEliminar.id);
+            setConfirmDeleteId(null);
+          }}
+        />
+      )}
     </>
+  );
+}
+
+/* ── Modal de confirmación para borrar ── */
+function ConfirmDeleteModal({
+  title,
+  message,
+  onCancel,
+  onConfirm,
+}: {
+  title: string;
+  message: string;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-[110] flex items-end justify-center sm:items-center">
+      <div className="absolute inset-0 bg-[#0A0A0A]/40 backdrop-blur-sm" onClick={onCancel} />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="confirm-delete-cat-title"
+        className="relative mx-0 w-full max-w-sm rounded-t-3xl bg-white shadow-2xl sm:mx-4 sm:rounded-2xl border border-[#0A0A0A]/08"
+      >
+        <div className="px-6 pt-6 pb-4">
+          <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center mb-3">
+            <Trash2 size={18} className="text-rose-600" />
+          </div>
+          <h3 id="confirm-delete-cat-title" className="text-lg font-bold text-[#0A0A0A] tracking-tight">
+            {title}
+          </h3>
+          <p className="text-sm text-[#525252] mt-1.5 leading-relaxed">{message}</p>
+        </div>
+        <div className="flex flex-col-reverse gap-2 border-t border-[#0A0A0A]/06 px-6 py-4 sm:flex-row sm:justify-end sm:gap-3">
+          <button onClick={onCancel} className="v3-admin-btn-ghost">
+            Cancelar
+          </button>
+          <button
+            onClick={onConfirm}
+            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-rose-600 text-white text-sm font-semibold hover:bg-rose-700 transition-colors"
+          >
+            Sí, borrar
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

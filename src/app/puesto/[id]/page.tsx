@@ -3,8 +3,10 @@
 import { use, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { ArrowLeft, MessageCircle, MapPin, Star, CreditCard, RefreshCw, Truck, Filter, ChevronDown } from "lucide-react";
 import { usePublicStore } from "@/data/mock";
+import { useStore } from "@/store/useStore";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
@@ -15,6 +17,7 @@ import { getPuesteroIdFromLocalId } from "@/lib/data-bridge";
 export default function PuestoPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { categorias, productos, getLocalById } = usePublicStore();
+  const loaded = useStore((s) => s.loaded);
   const [orden, setOrden] = useState("relevantes");
   const [categoriaActiva, setCategoriaActiva] = useState<string | null>(null);
 
@@ -29,14 +32,20 @@ export default function PuestoPage({ params }: { params: Promise<{ id: string }>
     if (puesteroId) trackingRepo.vistaPuestero(puesteroId);
   }, [id, local]);
 
+  // Si los datos ya están cargados desde Supabase y el puestero no existe →
+  // 404 real. notFound() lanza una excepción que Next.js captura para
+  // renderizar not-found.tsx con HTTP 404 (evita soft-404 penalizado por Google).
+  if (loaded && !local) {
+    notFound();
+  }
+
   if (!local) {
     return (
       <div className="public-layout min-h-screen">
         <Navbar />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <p className="text-pub-text-secondary text-lg mb-4">Puesto no encontrado</p>
-            <Link href="/" className="text-blue-600 hover:underline">Volver al inicio</Link>
+            <p className="text-pub-text-secondary text-lg mb-4">Cargando puesto…</p>
           </div>
         </div>
         <Footer />

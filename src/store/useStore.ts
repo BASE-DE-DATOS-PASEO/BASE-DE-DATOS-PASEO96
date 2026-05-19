@@ -6,6 +6,7 @@
 // ==========================================
 
 import { create } from "zustand";
+import { toast } from "sonner";
 import {
   type Puestero,
   type Producto,
@@ -77,8 +78,13 @@ function pickColor(nombre: string): string {
 }
 
 // ── Helper para errores de DB ────────────────────────────────
-function logErr(label: string, err: unknown) {
+// Loguea y, si recibe un mensaje, muestra un toast al usuario.
+// El mensaje debe ser corto, en español y útil (no jerga técnica).
+function logErr(label: string, err: unknown, userMessage?: string) {
   console.error(`[store] ${label}:`, err);
+  if (userMessage) {
+    toast.error(userMessage);
+  }
 }
 
 // ── Store ────────────────────────────────────────────────────
@@ -124,19 +130,23 @@ export const useStore = create<StoreState>((set, get) => ({
     puesterosRepo
       .insert(p)
       .then((created) => set((s) => ({ puesteros: [...s.puesteros, created] })))
-      .catch((err) => logErr("addPuestero", err));
+      .catch((err) => logErr("addPuestero", err, "No se pudo crear el puestero. Probá de nuevo."));
   },
 
   updatePuestero: (id, data) => {
     set((s) => ({
       puesteros: s.puesteros.map((p) => (p.id === id ? { ...p, ...data } : p)),
     }));
-    puesterosRepo.update(id, data).catch((err) => logErr("updatePuestero", err));
+    puesterosRepo
+      .update(id, data)
+      .catch((err) => logErr("updatePuestero", err, "No se pudo guardar el puestero. Probá de nuevo."));
   },
 
   deletePuestero: (id) => {
     set((s) => ({ puesteros: s.puesteros.filter((p) => p.id !== id) }));
-    puesterosRepo.delete(id).catch((err) => logErr("deletePuestero", err));
+    puesterosRepo
+      .delete(id)
+      .catch((err) => logErr("deletePuestero", err, "No se pudo borrar el puestero. Probá de nuevo."));
   },
 
   // ── Productos ──────────────────────────────────────────────
@@ -144,19 +154,23 @@ export const useStore = create<StoreState>((set, get) => ({
     productosRepo
       .insert(p)
       .then((created) => set((s) => ({ productos: [...s.productos, created] })))
-      .catch((err) => logErr("addProducto", err));
+      .catch((err) => logErr("addProducto", err, "No se pudo crear el producto. Probá de nuevo."));
   },
 
   updateProducto: (id, data) => {
     set((s) => ({
       productos: s.productos.map((p) => (p.id === id ? { ...p, ...data } : p)),
     }));
-    productosRepo.update(id, data).catch((err) => logErr("updateProducto", err));
+    productosRepo
+      .update(id, data)
+      .catch((err) => logErr("updateProducto", err, "No se pudo guardar el producto. Probá de nuevo."));
   },
 
   deleteProducto: (id) => {
     set((s) => ({ productos: s.productos.filter((p) => p.id !== id) }));
-    productosRepo.delete(id).catch((err) => logErr("deleteProducto", err));
+    productosRepo
+      .delete(id)
+      .catch((err) => logErr("deleteProducto", err, "No se pudo borrar el producto. Probá de nuevo."));
   },
 
   // ── Categorías ─────────────────────────────────────────────
@@ -164,19 +178,23 @@ export const useStore = create<StoreState>((set, get) => ({
     categoriasRepo
       .insert(c)
       .then((created) => set((s) => ({ categorias: [...s.categorias, created] })))
-      .catch((err) => logErr("addCategoria", err));
+      .catch((err) => logErr("addCategoria", err, "No se pudo crear la categoría. Probá de nuevo."));
   },
 
   updateCategoria: (id, data) => {
     set((s) => ({
       categorias: s.categorias.map((c) => (c.id === id ? { ...c, ...data } : c)),
     }));
-    categoriasRepo.update(id, data).catch((err) => logErr("updateCategoria", err));
+    categoriasRepo
+      .update(id, data)
+      .catch((err) => logErr("updateCategoria", err, "No se pudo guardar la categoría. Probá de nuevo."));
   },
 
   deleteCategoria: (id) => {
     set((s) => ({ categorias: s.categorias.filter((c) => c.id !== id) }));
-    categoriasRepo.delete(id).catch((err) => logErr("deleteCategoria", err));
+    categoriasRepo
+      .delete(id)
+      .catch((err) => logErr("deleteCategoria", err, "No se pudo borrar la categoría. Probá de nuevo."));
   },
 
   // ── Egresos ────────────────────────────────────────────────
@@ -184,19 +202,23 @@ export const useStore = create<StoreState>((set, get) => ({
     egresosRepo
       .insert(e)
       .then((created) => set((s) => ({ egresos: [...s.egresos, created] })))
-      .catch((err) => logErr("addEgreso", err));
+      .catch((err) => logErr("addEgreso", err, "No se pudo cargar el egreso. Probá de nuevo."));
   },
 
   updateEgreso: (id, data) => {
     set((s) => ({
       egresos: s.egresos.map((e) => (e.id === id ? { ...e, ...data } : e)),
     }));
-    egresosRepo.update(id, data).catch((err) => logErr("updateEgreso", err));
+    egresosRepo
+      .update(id, data)
+      .catch((err) => logErr("updateEgreso", err, "No se pudo guardar el egreso. Probá de nuevo."));
   },
 
   deleteEgreso: (id) => {
     set((s) => ({ egresos: s.egresos.filter((e) => e.id !== id) }));
-    egresosRepo.delete(id).catch((err) => logErr("deleteEgreso", err));
+    egresosRepo
+      .delete(id)
+      .catch((err) => logErr("deleteEgreso", err, "No se pudo borrar el egreso. Probá de nuevo."));
   },
 
   // ── Cobros ─────────────────────────────────────────────────
@@ -210,7 +232,9 @@ export const useStore = create<StoreState>((set, get) => ({
     set((s) => ({
       puesteros: s.puesteros.map((p) => (p.id === puesteroId ? { ...p, ...patch } : p)),
     }));
-    puesterosRepo.update(puesteroId, patch).catch((err) => logErr("marcarPagado", err));
+    puesterosRepo
+      .update(puesteroId, patch)
+      .catch((err) => logErr("marcarPagado", err, "No se pudo registrar el cobro. Probá de nuevo."));
   },
 
   // ── Solicitudes ────────────────────────────────────────────
@@ -228,7 +252,7 @@ export const useStore = create<StoreState>((set, get) => ({
       set((s) => ({ solicitudes: [...s.solicitudes, created] }));
       return true;
     } catch (err) {
-      logErr("addSolicitud", err);
+      logErr("addSolicitud", err, "No se pudo enviar la solicitud. Probá de nuevo.");
       return false;
     }
   },
@@ -239,7 +263,9 @@ export const useStore = create<StoreState>((set, get) => ({
         sol.id === id ? { ...sol, estado: "rechazado" as const } : sol
       ),
     }));
-    solicitudesRepo.update(id, { estado: "rechazado" }).catch((err) => logErr("rechazarSolicitud", err));
+    solicitudesRepo
+      .update(id, { estado: "rechazado" })
+      .catch((err) => logErr("rechazarSolicitud", err, "No se pudo rechazar la solicitud. Probá de nuevo."));
   },
 
   aprobarSolicitud: (id) => {
@@ -307,6 +333,6 @@ export const useStore = create<StoreState>((set, get) => ({
       .then(([created]) => {
         set((st) => ({ puesteros: [...st.puesteros, created] }));
       })
-      .catch((err) => logErr("aprobarSolicitud", err));
+      .catch((err) => logErr("aprobarSolicitud", err, "No se pudo aprobar la solicitud. Probá de nuevo."));
   },
 }));

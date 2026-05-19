@@ -4,10 +4,14 @@ export const metadata: Metadata = {
   title: "Planes y precios",
   description:
     "Elegí tu plan en Paseo 96: Bronce, Plata u Oro. Publicá tus productos en la vidriera digital de la feria en La Plata.",
+  alternates: {
+    canonical: "https://paseo96.com/planes",
+  },
   openGraph: {
     title: "Planes y precios | Paseo 96",
     description:
       "Elegí tu plan en Paseo 96: Bronce, Plata u Oro. Publicá tus productos en la vidriera digital.",
+    url: "https://paseo96.com/planes",
   },
 };
 

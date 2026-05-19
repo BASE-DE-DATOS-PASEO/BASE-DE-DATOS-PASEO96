@@ -11,6 +11,7 @@ import {
   ClipboardCheck,
   Tag,
   Package,
+  Wallet,
   LogOut,
 } from "lucide-react";
 import clsx from "clsx";
@@ -24,6 +25,7 @@ const menuItems = [
   { label: "Productos", href: "/admin/productos", icon: Package },
   { label: "Categorías", href: "/admin/categorias", icon: Tag },
   { label: "Cobros", href: "/admin/cobros", icon: CalendarDays },
+  { label: "Egresos", href: "/admin/egresos", icon: Wallet },
 ];
 
 interface SidebarProps {
@@ -171,7 +173,7 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
 
       {/* ── MOBILE ── */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#E5E7EB] px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 md:hidden">
-        <div className="mx-auto grid max-w-md grid-cols-6 gap-1">
+        <div className="mx-auto grid max-w-md grid-cols-7 gap-1">
           {menuItems.map((item) => {
             const isActive =
               pathname === item.href ||

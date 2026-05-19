@@ -234,13 +234,18 @@ export const preciosPlanes: Record<PlanKey, number> = {
 
 // ── CONFIGURACIÓN DE COBRO PRE-SUPABASE ──────────────────────
 
+// Los valores se leen desde variables de entorno para evitar exponer
+// datos bancarios personales en el repositorio o en el bundle hardcodeado.
+// Nota: usar NEXT_PUBLIC_ los incluye en el bundle del cliente. Para una
+// protección real (que el dato NUNCA llegue al cliente) habría que renderizar
+// /suscripcion como Server Component y leer las vars sin el prefijo NEXT_PUBLIC_.
 export const datosTransferencia = {
-  alias: "Jeretalavera.LEMON",
-  cbu: "0000168300000019911810",
-  titular: "Jeremías Talavera",
-  cuit: "20-46431423-8",
-  banco: "Lemon Cash",
-  whatsappAdmin: "5492215410783",
+  alias: process.env.NEXT_PUBLIC_BANK_ALIAS || "",
+  cbu: process.env.NEXT_PUBLIC_BANK_CBU || "",
+  titular: process.env.NEXT_PUBLIC_BANK_TITULAR || "",
+  cuit: process.env.NEXT_PUBLIC_BANK_CUIT || "",
+  banco: process.env.NEXT_PUBLIC_BANK_BANCO || "",
+  whatsappAdmin: process.env.NEXT_PUBLIC_WHATSAPP_ADMIN || "",
 };
 
 // ── EGRESOS ──────────────────────────────────────────────────
